@@ -27,7 +27,7 @@ file(GLOB_RECURSE AEROBOT_SOURCES "${IMPL_DIR}/*.c" "${IMPL_DIR}/*.h" "${IMPL_DI
 file(GLOB_RECURSE PHOTON_SOURCES "${PHOTON_DIR}/modules/*.c" "${IMPL_DIR}/modules/*.h" "${IMPL_DIR}/modules/*.toml")
 
 photon_init(${PHOTON_DIR})
-photon_add_library(cvm)
-photon_add_library(esc)
+photon_add_device(cvm)
+photon_add_device(esc)
 photon_generate_sources(${CMAKE_CURRENT_SOURCE_DIR}/project.toml ${IMPL_SOURCES} ${PHOTON_SOURCES})
 
