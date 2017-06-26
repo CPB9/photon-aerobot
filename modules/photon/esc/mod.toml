@@ -1,0 +1,5 @@
+name = "esc"
+decode = "esc.decode"
+dest = "photon/esc"
+id = 10
+sources = ["Stub.c"]

@@ -1,0 +1,3 @@
+[submodule "thirdparty/photon"]
+	path = thirdparty/photon
+	url = https://github.com/acsl-mipt/photon.git

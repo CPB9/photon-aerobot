@@ -1,0 +1,31 @@
+module esc
+
+struct Preset {
+    presetNum: i8,
+    poleNum: u8,
+    conf1: u16,
+    conf2: u16,
+    conf3: u16,
+    conf4: u16,
+    conf5: u16,
+    maskReg: u16,
+    runReg: u16,
+}
+
+component {
+    parameters {
+        speed: f32,
+        diag: u16,
+        temp: i8,
+    }
+
+    statuses {
+        [0, 1, true]: {speed, diag, temp}
+    }
+
+    commands {
+        fn selectPreset(presetNum: i8)
+        fn setPreset(preset: Preset)
+        fn setSpeed(speed: f32)
+    }
+}
