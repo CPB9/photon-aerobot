@@ -23,4 +23,5 @@ modules = ["test"]
 [[devices]]
 name = "esc"
 id = 2
+modules = ["esc"]
 
