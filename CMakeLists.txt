@@ -23,11 +23,11 @@ if(ASAN)
 endif()
 
 set(IMPL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/modules)
-file(GLOB_RECURSE AEROBOT_SOURCES "${IMPL_DIR}/*.c" "${IMPL_DIR}/*.h" "${IMPL_DIR}/*.toml")
-file(GLOB_RECURSE PHOTON_SOURCES "${PHOTON_DIR}/modules/*.c" "${IMPL_DIR}/modules/*.h" "${IMPL_DIR}/modules/*.toml")
+file(GLOB_RECURSE AEROBOT_SOURCES "${IMPL_DIR}/*.c" "${IMPL_DIR}/*.h" "${IMPL_DIR}/*.toml" "${IMPL_DIR}/*.decode")
+file(GLOB_RECURSE PHOTON_SOURCES "${PHOTON_DIR}/modules/*.c" "${IMPL_DIR}/modules/*.h" "${IMPL_DIR}/modules/*.toml" "${IMPL_DIR}/modules/*.decode")
 
 photon_init(${PHOTON_DIR})
 photon_add_device(cvm)
 photon_add_device(esc)
-photon_generate_sources(${CMAKE_CURRENT_SOURCE_DIR}/project.toml ${IMPL_SOURCES} ${PHOTON_SOURCES})
+photon_generate_sources(${CMAKE_CURRENT_SOURCE_DIR}/project.toml ${AEROBOT_SOURCES} ${PHOTON_SOURCES})
 
