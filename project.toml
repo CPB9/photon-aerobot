@@ -1,7 +1,7 @@
 [project]
 name = "default"
 master = "cvm"
-common_modules = ["core", "tm", "int", "fwt", "exc"]
+common_modules = ["core", "tm", "int", "fwt", "exc", "clk"]
 mcc_id = 0
 module_dirs = [
   "thirdparty/photon/modules/photon/core",
@@ -10,15 +10,17 @@ module_dirs = [
   "thirdparty/photon/modules/photon/int",
   "thirdparty/photon/modules/photon/test",
   "thirdparty/photon/modules/photon/exc",
+  "thirdparty/photon/modules/photon/clk",
+  "thirdparty/photon/modules/photon/nav",
   "modules/photon/esc",
 ]
 
 [[devices]]
 name = "cvm"
 id = 1
-cmd_targets = ["esc"]
-tm_sources = ["esc"]
-modules = ["test"]
+#cmd_targets = ["esc"]
+#tm_sources = ["esc"]
+modules = ["test", "nav"]
 
 [[devices]]
 name = "esc"
