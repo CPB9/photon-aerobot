@@ -6,73 +6,147 @@ TYPES_MAP = {
         "FLOAT" : "f32"
 }
 
-project_name = "px4_gen"
 
-output_decode = ""
-output_с = ""
+class Module:
+    def __init__(self, name):
+        self._name = name
+        self._structs = []
+        self._statuses = []
 
-def write_decode_string(text):
-    global output_decode
-    output_decode += text
+    def add_struct(self, struct):
+        self._structs.append(struct)
 
-def write_module(name):
-    write_decode_string("module {}\n\n".format(name))
+    def add_status(self, status):
+        self._statuses.append(status)
 
-def write_begin_struct(name):
-    write_decode_string("struct {} {{\n".format(name))
+    def finalize(self):
+        # generate statuses
+        for s in self._structs:
+            self.add_status(Status(len(self._statuses), 0, "false", s))
 
-def write_end_struct():
-    write_decode_string("}\n\n")
 
-def write_struct_field(name, type):
-    write_decode_string("    {}: {},\n".format(name, type))
+class Struct:
+    def __init__(self, name):
+        self._name = name
+        self._members = []
 
-def write_begin_component():
-    write_decode_string("component {\n")
+    def add_member(self, member):
+        self._members.append(member)
 
-def write_end_component():
-    write_decode_string("}\n")
+    def generate(self):
+        buffer = "struct {} {{\n".format(self._name)
+        for m in self._members:
+            buffer += "    {},\n".format(m.generate())
+        buffer += "}\n"
+        return buffer
 
-def write_begin_parameters():
-    write_decode_string("    parameters { \n")
+    def generate_parameter(self):
+        return "_{}: {}".format(self._name, self._name)
 
-def write_end_parameters():
-    write_decode_string("    }\n\n")
 
-def write_parameter(name, type):
-    write_decode_string("        {}: {},\n".format(name, type))
+class StructMember:
+    def __init__(self, name, type, default, short_desc, long_desc, min, max, unit):
+        self._name = name
+        self._type = type
+        self._default = default
+        self._short_desc = short_desc
+        self._long_desc = long_desc
+        self._min = min
+        self._max = max
+        self._unit = unit
 
-def write_begin_statuses():
-    write_decode_string("    statuses {\n")
+    def generate(self):
+        if not self._type in TYPES_MAP:
+            raise
 
-def write_end_statuses():
-    write_decode_string("    }\n\n")
+        decode_type = TYPES_MAP[self._type]
 
-def write_status(msgid, priority, enabled, name):
-    write_decode_string("        [{}, {}, {}]: {}, \n".format(msgid, priority, enabled, name))
+        return "{}: {}".format(self._name, decode_type)
 
-def write_commands():
-    write_decode_string("    commands {\n        fn setParam(name: [i8, 16], value: u32) -> u32\n    }\n")
 
-params_groups = []
+class Status:
+    def __init__(self, id, priority, enabled, struct):
+        self._id = id
+        self._priority = priority
+        self._enabled = enabled
+        self._struct = struct
+
+    def generate(self):
+        return "[{}, {}, {}]: {}".format(self._id, self._priority, self._enabled, "_{}".format(self._struct._name))
+
+
+class DecodeGenerator:
+    def __init__(self, module):
+        self._module = module
+
+    def generate(self):
+        buffer = "module {}\n\n".format(self._module._name)
+        for s in self._module._structs:
+            buffer += s.generate()
+            buffer += "\n"
+
+        buffer += "component {\n"
+        buffer += "    parameters {\n"
+        for s in self._module._structs:
+            buffer += "        {},\n".format(s.generate_parameter())
+        buffer += "    }\n\n"
+
+        buffer += "    statuses {\n"
+        for s in self._module._statuses:
+            buffer += "        {},\n".format(s.generate())
+        buffer += "    }\n\n"
+
+        buffer += "    commands {\n"
+        buffer += "        fn setParam(name: [i8, 16], value: u32) -> u32\n"
+        buffer += "    }\n"
+
+        buffer += "}\n"
+
+        return buffer
+
+
+class CodeGenerator:
+    def __init__(self, module):
+        self._module = module
+
+    def generate(self):
+        buffer = "PhotonError Photon{}_".format(self._module._name)
+        return buffer
+
+
+class ModuleGenerator:
+    def __init__(self, module):
+        self.__module__ = module
+
+    def generate(self):
+        pass
+
+
+def normalize_struct_name(src_name):
+    group_name = src_name.replace(" ", "_")
+
+    if group_name[0].islower():
+        group_name = group_name[0].upper() + group_name[1:]
+
+    return group_name
+
 
 def parse_px4_params_file(filename):
     tree = ET.parse(filename)
-    write_module("px4_gen")
-    parameters = []
+    module = Module("px4_autogen")
+
     for group in tree.findall("group"):
-        group_name = group.get("name")
-        group_name = group_name.replace(" ", "_")
-
-        if group_name[0].islower():
-            group_name = group_name[0].upper() + group_name[1:]
-
-        write_begin_struct(group_name)
-
+        group_name = normalize_struct_name(group.get("name"))
+        struct = Struct(group_name)
         for param in group.findall("parameter"):
             default = param.get("default")
             name = param.get("name")
             type = param.get("type")
+            short_desc = None
+            long_desc = None
+            unit = None
+            min = None
+            max = None
 
             short_desc_field = param.find("short_desc")
             long_desc_field = param.find("long_desc")
@@ -95,34 +169,34 @@ def parse_px4_params_file(filename):
             if max_field is not None:
                 max = float(max_field.text)
 
-            if not type in TYPES_MAP:
-                raise
+            struct.add_member(StructMember(name, type, default, short_desc, long_desc, min, max, unit))
 
-            decode_type = TYPES_MAP[type]
+        module.add_struct(struct)
 
-            write_struct_field(name, decode_type)
+    return module
+#    write_begin_component()
+#    write_begin_parameters()
+#    for param in parameters:
+#        write_parameter("_{}".format(param), param)
+#    write_end_parameters()
 
-        write_end_struct()
-        parameters.append(group_name)
+#    write_begin_statuses()
+#    status_counter = 0
+#    for param in parameters:
+#        write_status(status_counter, 0, "false", "_{}".format(param))
+#        status_counter += 1
+#    write_end_statuses()
 
-    write_begin_component()
-    write_begin_parameters()
-    for param in parameters:
-        write_parameter("_{}".format(param), param)
-    write_end_parameters()
+#    write_commands()
 
-    write_begin_statuses()
-    status_counter = 0
-    for param in parameters:
-        write_status(status_counter, 0, "false", "_{}".format(param))
-        status_counter += 1
-    write_end_statuses()
-
-    write_commands()
-
-    write_end_component()
+#    write_end_component()
 
 if __name__ == "__main__":
-    parse_px4_params_file("parameters.xml")
+    module = parse_px4_params_file("parameters.xml")
+    module.finalize()
 
-    print(output_decode)
+    decode_gen = DecodeGenerator(module)
+    print(decode_gen.generate())
+
+    code_gen = CodeGenerator(module)
+    print(code_gen.generate())
