@@ -19,7 +19,7 @@ enum LogLevel {
 
 struct StatusText {
     logLevel : LogLevel,
-    text : &[u8]
+    text : &[u8; 256]
 }
 
 struct AutopilotVersion {
