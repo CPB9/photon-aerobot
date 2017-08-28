@@ -1,4 +1,6 @@
 import xml.etree.ElementTree as ET
+import os
+import shutil
 
 TYPES_MAP = {
         "INT32" : "i32",
@@ -97,7 +99,7 @@ class DecodeGenerator:
         buffer += "    }\n\n"
 
         buffer += "    commands {\n"
-        buffer += "        fn setParam(name: [i8, 16], value: u32) -> u32\n"
+        buffer += "        fn setParam(name: [i8; 16], value: u32)\n"
         buffer += "    }\n"
 
         buffer += "}\n"
@@ -110,16 +112,52 @@ class CodeGenerator:
         self._module = module
 
     def generate(self):
-        buffer = "PhotonError Photon{}_".format(self._module._name)
+        lowerModuleName = self._module._name
+        moduleName = lowerModuleName[0].upper() + lowerModuleName[1:]
+        mainStruct = "_photon{}".format(moduleName)
+
+        lower_module_name = self._module._name.lower()
+        buffer = "#include \"photon/{}/{}.Component.h\"\n\n".format(lower_module_name, moduleName)
+
+        buffer += "PhotonError Photon{}_SetParam(int8_t name[16], uint32_t value) {{\n".format(moduleName)
+        for s in self._module._structs:
+            for p in s._members:
+                code_type = ""
+                if p._type == "INT32":
+                    code_type = "int32_t"
+                elif p._type == "UINT32":
+                    code_type = "uint32_t"
+                elif p._type == "FLOAT":
+                    code_type = "float"
+                else:
+                    raise
+
+                buffer += "    if(strcmp(name, \"{}\")) {{\n".format(p._name)
+                buffer += "        {}._{}.{} = *({}*)&value;\n".format(mainStruct, s._name, p._name, code_type)
+                buffer += "        return PhotonError_Ok;\n"
+                buffer += "    }\n"
+
+        buffer += "    return PhotonError_InvalidValue;\n"
+        buffer += "}\n\n"
+
         return buffer
 
 
 class ModuleGenerator:
     def __init__(self, module):
-        self.__module__ = module
+        self._module = module
 
     def generate(self):
-        pass
+        buffer = "name = \"{}\"\n".format(self._module._name)
+        buffer += "decode = \"{}.decode\"\n".format(self._module._name.lower())
+        buffer += "dest = \"photon/{}\"\n".format(self._module._name)
+        buffer += "id = 20\n"
+
+        lowerModuleName = self._module._name
+        moduleName = lowerModuleName[0].upper() + lowerModuleName[1:]
+
+        buffer += "sources = [\"{}.c\"]".format(moduleName)
+        return buffer
 
 
 def normalize_struct_name(src_name):
@@ -174,29 +212,37 @@ def parse_px4_params_file(filename):
         module.add_struct(struct)
 
     return module
-#    write_begin_component()
-#    write_begin_parameters()
-#    for param in parameters:
-#        write_parameter("_{}".format(param), param)
-#    write_end_parameters()
 
-#    write_begin_statuses()
-#    status_counter = 0
-#    for param in parameters:
-#        write_status(status_counter, 0, "false", "_{}".format(param))
-#        status_counter += 1
-#    write_end_statuses()
 
-#    write_commands()
+def ensure_dir(file_path):
+    directory = os.path.dirname(file_path)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
 
-#    write_end_component()
 
-if __name__ == "__main__":
+def generate_module(params_file, out_dir):
     module = parse_px4_params_file("parameters.xml")
     module.finalize()
 
     decode_gen = DecodeGenerator(module)
-    print(decode_gen.generate())
-
     code_gen = CodeGenerator(module)
-    print(code_gen.generate())
+    module_gen = ModuleGenerator(module)
+
+    module_name = module._name
+    dir_name = out_dir + "//" + module_name
+    if os.path.isdir(dir_name):
+        os.removedirs(shutil.rmtree(dir_name))
+
+    os.makedirs(dir_name)
+
+    with open(dir_name + "//{}.decode".format(module_name), "w") as decode:
+        decode.write(decode_gen.generate())
+
+    with open(dir_name + "//mod.toml", "w") as mod:
+        mod.write(module_gen.generate())
+
+    with open(dir_name + "//{}.c".format(module_name[0].upper() + module_name[1:]), "w") as code:
+        code.write(code_gen.generate())
+
+if __name__ == "__main__":
+    generate_module("parameters.xml", os.path.dirname(os.path.abspath(__file__)))

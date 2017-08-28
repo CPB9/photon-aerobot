@@ -13,6 +13,6 @@ photon_init(${PHOTON_DIR})
 photon_add_mod_dir(${CMAKE_CURRENT_SOURCE_DIR}/modules)
 photon_add_mod_dir(${PHOTON_DIR}/modules)
 photon_add_device(cvm)
-photon_add_device(esc)
+#photon_add_device(esc)
 photon_generate_sources(${CMAKE_CURRENT_SOURCE_DIR}/project.toml)
 
