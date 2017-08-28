@@ -14,7 +14,7 @@ photon_init_project(
     PHOTON_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/photon
     MODULE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/modules
     PROJECT ${CMAKE_CURRENT_SOURCE_DIR}/project.toml
-    DEVICES model1 model2
+    DEVICES cvm esc
     ENABLE_STUB
 )
 
