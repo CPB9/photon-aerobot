@@ -1,0 +1,7 @@
+name = "px4"
+decode = "px4.decode"
+dest = "photon/px4"
+id = 20
+sources = [
+  "Px4.c"
+]
