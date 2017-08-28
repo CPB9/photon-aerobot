@@ -12,10 +12,10 @@ include(Photon)
 
 photon_init_project(
     PHOTON_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/photon
-    MODULE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/modules
+    MODULE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/modules ${PHOTON_DIR}/modules
     PROJECT ${CMAKE_CURRENT_SOURCE_DIR}/project.toml
     DEVICES cvm esc
-    ENABLE_STUB
+#    ENABLE_STUB
 )
 
-#photon_link_device_test(model1 lib1 lib2 lib3...)
+#photon_link_device_tests(cvm lib1 lib2 lib3...)
