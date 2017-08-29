@@ -140,7 +140,7 @@ class CodeGenerator:
                 else:
                     raise
 
-                buffer += "    if(strcmp(name, \"{}\")) {{\n".format(p._name)
+                buffer += "    if(strcmp((const char*)name, \"{}\")) {{\n".format(p._name)
                 buffer += "        {}._{}.{} = *({}*)&value;\n".format(mainStruct, s._name, p._name, code_type)
                 buffer += "        if(_photon{}.inited)\n            PhotonTm_RequestStatusOnce(PHOTON_{}_COMPONENT_ID, PHOTON_{}_STATUS_{}_ID);\n".format(moduleName, moduleName.upper(), moduleName.upper(), s._name.upper())
                 buffer += "        return PhotonError_Ok;\n"
