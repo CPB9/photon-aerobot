@@ -89,8 +89,13 @@ class DecodeGenerator:
 
         buffer += "component {\n"
         buffer += "    parameters {\n"
+        buffer += "        inited: bool,\n"
         for s in self._module._structs:
             buffer += "        {},\n".format(s.generate_parameter())
+        buffer += "    }\n\n"
+
+        buffer += "    impl {\n"
+        buffer += "        fn init()\n"
         buffer += "    }\n\n"
 
         buffer += "    statuses {\n"
@@ -118,6 +123,9 @@ class CodeGenerator:
 
         lower_module_name = self._module._name.lower()
         buffer = "#include \"photon/{}/{}.Component.h\"\n\n".format(lower_module_name, moduleName)
+        buffer += "void Photon{}_Init() {{\n".format(moduleName)
+        buffer += "    _photon{}.inited = false;\n".format(moduleName)
+        buffer += "}\n\n"
 
         buffer += "PhotonError Photon{}_SetParam(int8_t name[16], uint32_t value) {{\n".format(moduleName)
         for s in self._module._structs:
@@ -134,6 +142,7 @@ class CodeGenerator:
 
                 buffer += "    if(strcmp(name, \"{}\")) {{\n".format(p._name)
                 buffer += "        {}._{}.{} = *({}*)&value;\n".format(mainStruct, s._name, p._name, code_type)
+                buffer += "        if(_photon{}.inited)\n            PhotonTm_RequestStatusOnce(PHOTON_{}_COMPONENT_ID, PHOTON_{}_STATUS_{}_ID);\n".format(moduleName, moduleName.upper(), moduleName.upper(), s._name.upper())
                 buffer += "        return PhotonError_Ok;\n"
                 buffer += "    }\n"
 
