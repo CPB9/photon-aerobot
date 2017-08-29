@@ -1,7 +1,5 @@
 name = "px4_autogen"
 decode = "px4_autogen.decode"
 dest = "photon/px4_autogen"
-id = 30
-sources = [
-    "Px4_autogen.c",
-]
+id = 20
+sources = ["Px4_autogen.c"]

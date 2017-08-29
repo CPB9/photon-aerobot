@@ -20,7 +20,7 @@ component {
     }
 
     statuses {
-        [0, 1, true]: {speed, diag, temp}
+        [common, 1, true]: {speed, diag, temp}
     }
 
     commands {

@@ -24,7 +24,7 @@ class Module:
     def finalize(self):
         # generate statuses
         for s in self._structs:
-            self.add_status(Status(len(self._statuses), 0, "false", s))
+            self.add_status(Status(s._name, 0, "false", s))
 
 
 class Struct:

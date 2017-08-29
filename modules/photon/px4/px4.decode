@@ -56,9 +56,9 @@ component {
     }
 
     statuses {
-        [0, 0, true]:  { heartbeat    }
-        [1, 0, true]:  { systemStatus }
-        [2, 0, false]: { rcChannels   }
+        [heartbeat, 0, true]:  { heartbeat    }
+        [systemStatus, 0, true]:  { systemStatus }
+        [rcChannels, 0, false]: { rcChannels   }
     }
 
     commands {

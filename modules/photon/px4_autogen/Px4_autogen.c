@@ -1,7 +1,5 @@
 #include "photon/px4_autogen/Px4_autogen.Component.h"
 
-#define _PHOTON_FNAME "px4_autogen/Px4_autogen.c"
-
 PhotonError PhotonPx4_autogen_SetParam(int8_t name[16], uint32_t value) {
     if(strcmp(name, "ctl_bw")) {
         _photonPx4_autogen._UAVCAN_Motor_Parameters.ctl_bw = *(int32_t*)&value;
