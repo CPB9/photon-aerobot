@@ -12,9 +12,11 @@ module_dirs = [
   "thirdparty/photon/modules/photon/exc",
   "thirdparty/photon/modules/photon/clk",
   "thirdparty/photon/modules/photon/nav",
+  "thirdparty/photon/modules/photon/fl",
   "modules/photon/esc",
   "modules/photon/px4",
-  "modules/photon/px4_autogen"
+  "modules/photon/px4_autogen",
+  "modules/photon/usm"
 ]
 
 [[devices]]
@@ -22,7 +24,7 @@ name = "cvm"
 id = 1
 #cmd_targets = ["esc"]
 #tm_sources = ["esc"]
-modules = ["test", "nav", "px4", "px4_autogen"]
+modules = ["test", "nav", "px4", "px4_autogen", "fl", "usm"]
 
 [[devices]]
 name = "esc"
