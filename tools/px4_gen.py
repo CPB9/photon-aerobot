@@ -83,6 +83,8 @@ class DecodeGenerator:
 
     def generate(self):
         buffer = "module {}\n\n".format(self._module._name)
+        buffer += "import core::{Error}\n\n"
+
         for s in self._module._structs:
             buffer += s.generate()
             buffer += "\n"
@@ -94,17 +96,15 @@ class DecodeGenerator:
             buffer += "        {},\n".format(s.generate_parameter())
         buffer += "    }\n\n"
 
-        buffer += "    impl {\n"
-        buffer += "        fn init()\n"
-        buffer += "    }\n\n"
-
         buffer += "    statuses {\n"
         for s in self._module._statuses:
             buffer += "        {},\n".format(s.generate())
         buffer += "    }\n\n"
 
-        buffer += "    commands {\n"
-        buffer += "        fn setParam(name: [i8; 16], value: u32)\n"
+        buffer += "    impl {\n"
+        buffer += "        fn init()\n"
+        buffer += "        fn initParam(name: *const char, callback: &Fn(u32))\n"
+        buffer += "        fn setParam(name: *const char, value: u32)\n"
         buffer += "    }\n"
 
         buffer += "}\n"
@@ -122,12 +122,9 @@ class CodeGenerator:
         mainStruct = "_photon{}".format(moduleName)
 
         lower_module_name = self._module._name.lower()
-        buffer = "#include \"photon/{}/{}.Component.h\"\n\n".format(lower_module_name, moduleName)
-        buffer += "void Photon{}_Init() {{\n".format(moduleName)
-        buffer += "    _photon{}.inited = false;\n".format(moduleName)
-        buffer += "}\n\n"
+        buffer = "#include \"photon/{}/{}.Component.h\"\n".format(lower_module_name, moduleName)
+        buffer += "#include \"photon/tm/Tm.Component.h\"\n\n"
 
-        buffer += "PhotonError Photon{}_SetParam(int8_t name[16], uint32_t value) {{\n".format(moduleName)
         for s in self._module._structs:
             for p in s._members:
                 code_type = ""
@@ -140,13 +137,17 @@ class CodeGenerator:
                 else:
                     raise
 
-                buffer += "    if(strcmp((const char*)name, \"{}\")) {{\n".format(p._name)
-                buffer += "        {}._{}.{} = *({}*)&value;\n".format(mainStruct, s._name, p._name, code_type)
-                buffer += "        if(_photon{}.inited)\n            PhotonTm_RequestStatusOnce(PHOTON_{}_COMPONENT_ID, PHOTON_{}_STATUS_{}_ID);\n".format(moduleName, moduleName.upper(), moduleName.upper(), s._name.upper())
-                buffer += "        return PhotonError_Ok;\n"
-                buffer += "    }\n"
+                buffer += "static void setParam_{}_{}(uint32_t value)\n{{\n".format(s._name, p._name)
+                buffer += "    {}._{}.{} = *({}*)&value;\n".format(mainStruct, s._name, p._name, code_type)
+                buffer += "    if(_photon{}.inited) {{\n        PhotonTm_RequestStatusOnce(PHOTON_{}_COMPONENT_ID, PHOTON_{}_STATUS_{}_ID);\n    }}\n".format(moduleName, moduleName.upper(), moduleName.upper(), s._name.upper())
+                buffer += "}\n\n"
 
-        buffer += "    return PhotonError_InvalidValue;\n"
+        buffer += "void Photon{}_Init() \n{{\n".format(moduleName)
+        buffer += "    _photon{}.inited = false;\n".format(moduleName)
+        for s in self._module._structs:
+            for p in s._members:
+                buffer += "    Photon{}_InitParam(\"{}\", setParam_{}_{});\n".format(moduleName, p._name, s._name, p._name)
+
         buffer += "}\n\n"
 
         return buffer

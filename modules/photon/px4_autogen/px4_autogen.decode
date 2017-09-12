@@ -1,5 +1,7 @@
 module px4_autogen
 
+import core::{Error}
+
 struct UAVCAN_Motor_Parameters {
     ctl_bw: i32,
     ctl_dir: i32,
@@ -1106,10 +1108,6 @@ component {
         _Miscellaneous: Miscellaneous,
     }
 
-    impl {
-        fn init()
-    }
-
     statuses {
         [UAVCAN_Motor_Parameters, 0, false]: _UAVCAN_Motor_Parameters,
         [Attitude_EKF_estimator, 0, false]: _Attitude_EKF_estimator,
@@ -1161,7 +1159,9 @@ component {
         [Miscellaneous, 0, false]: _Miscellaneous,
     }
 
-    commands {
-        fn setParam(name: [i8; 16], value: u32)
+    impl {
+        fn init()
+        fn initParam(name: *const char, callback: &Fn(u32))
+        fn setParam(name: *const char, value: u32)
     }
 }
