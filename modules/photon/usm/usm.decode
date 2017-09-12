@@ -49,7 +49,8 @@ component {
     }
 
     commands {
-        fn unpackFile(fileId: varuint)
+        fn getFile(fileId: varuint)
+        fn unpackFile()
         fn buildTarget()
         fn installTarget()
 
