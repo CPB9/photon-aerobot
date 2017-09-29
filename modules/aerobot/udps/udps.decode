@@ -1,0 +1,31 @@
+module udps
+
+struct IpAddress {
+    data: [u8; 4]
+}
+
+struct Client {
+    address: varuint,
+    ip: IpAddress,
+    port: u16
+}
+
+component {
+    parameters {
+        clients: &[Client; 20]
+    }
+
+    statuses {
+        [clients, 0, true]: {clients}
+    }
+
+    commands {
+        fn addClient(address: varuint, ip: IpAddress, port: u16)
+        fn removeClient(address: varuint)
+    }
+
+    impl {
+        fn init()
+        fn tick()
+    }
+}
