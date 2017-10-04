@@ -17,7 +17,7 @@ module_dirs = [
   "modules/photon/px4",
   "modules/photon/px4_autogen",
   "modules/photon/usm",
-  "modules/aerobot/udps"
+  "modules/aerobot/udp"
 ]
 
 [[devices]]
@@ -25,7 +25,7 @@ name = "cvm"
 id = 1
 #cmd_targets = ["esc"]
 #tm_sources = ["esc"]
-modules = ["test", "nav", "px4", "fl", "usm", "udps"]
+modules = ["test", "nav", "px4", "fl", "usm", "udp"]
 
 [[devices]]
 name = "esc"

@@ -1,0 +1,5 @@
+name = "udp"
+decode = "udp.decode"
+id = 20
+dest = "aerobot/udp"
+sources = []
