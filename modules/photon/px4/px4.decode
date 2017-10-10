@@ -62,6 +62,8 @@ component {
     }
 
     commands {
+        fn arm()
+        fn disarm()
     }
 
     impl {
