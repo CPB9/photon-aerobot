@@ -13,8 +13,12 @@ module_dirs = [
   "thirdparty/photon/modules/photon/clk",
   "thirdparty/photon/modules/photon/nav",
   "thirdparty/photon/modules/photon/fl",
+  "modules/photon/esc",
+  "modules/photon/px4",
+  "modules/photon/px4_autogen",
+  "modules/photon/usm",
   "modules/aerobot/udp",
-  "modules/aerobot/grp",
+  "modules/aerobot/grp"
 ]
 
 [[devices]]
@@ -22,5 +26,10 @@ name = "cvm"
 id = 1
 #cmd_targets = ["esc"]
 #tm_sources = ["esc"]
-modules = ["test", "nav", "fl", "udp", "grp"]
+modules = ["test", "nav", "px4", "fl", "usm", "udp", "grp"]
+
+[[devices]]
+name = "esc"
+id = 2
+modules = ["esc"]
 
