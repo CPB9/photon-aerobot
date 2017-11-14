@@ -1,23 +1,20 @@
 [project]
 name = "default"
 master = "cvm"
-common_modules = ["core", "tm", "int", "fwt", "exc", "clk"]
+common_modules = ["core", "tm", "pvu", "fwt", "exc", "clk"]
 mcc_id = 0
 module_dirs = [
   "thirdparty/photon/modules/photon/core",
   "thirdparty/photon/modules/photon/tm",
   "thirdparty/photon/modules/photon/fwt",
-  "thirdparty/photon/modules/photon/int",
+  "thirdparty/photon/modules/photon/pvu",
   "thirdparty/photon/modules/photon/test",
   "thirdparty/photon/modules/photon/exc",
   "thirdparty/photon/modules/photon/clk",
   "thirdparty/photon/modules/photon/nav",
   "thirdparty/photon/modules/photon/fl",
-  "modules/photon/esc",
-  "modules/photon/px4",
-  "modules/photon/px4_autogen",
-  "modules/photon/usm",
-  "modules/aerobot/udp"
+  "modules/aerobot/udp",
+  "modules/aerobot/grp",
 ]
 
 [[devices]]
@@ -25,10 +22,5 @@ name = "cvm"
 id = 1
 #cmd_targets = ["esc"]
 #tm_sources = ["esc"]
-modules = ["test", "nav", "px4", "fl", "usm", "udp"]
-
-[[devices]]
-name = "esc"
-id = 2
-modules = ["esc"]
+modules = ["test", "nav", "fl", "udp", "grp"]
 
