@@ -18,10 +18,24 @@ struct ReqAppendEntryRep {
     firstIdx: varuint
 }
 
+enum ReqErr {
+    NotLeader = 1,
+    NodeUnknown = 2,
+    OneVotingChangeOnly = 3,
+    Unknown = 4,
+}
+
+struct ReqCfgRep {
+    err: Option<ReqErr>,
+    term: TermId,
+    id: varuint,
+    idx: varuint
+}
+
 enum MemberState {
     Leader = 0,
     Candidate = 1,
-    Follower = 2,    
+    Follower = 2,
 }
 
 
@@ -33,7 +47,7 @@ component {
         state: MemberState,
         term: TermId,
         commit: varuint,
-        votedFor: Option<UavId>,        
+        votedFor: Option<UavId>,
     }
 
     impl {
@@ -43,14 +57,9 @@ component {
 
     commands {
         fn setGroupAddress(address: varuint)
-        fn addMember(group: GrpId, member: UavId)
-        fn removeMember(group: GrpId, member: UavId)
-        
-        fn reqAddNonVotingMember(term: TermId, dataId: varuint, member: UavId)
-        fn reqAddMember(term: TermId, dataId: varuint, member: UavId)
-        fn reqRemoveMember(term: TermId, dataId: varuint, member: UavId)
-        fn reqDemoteMember(term: TermId, dataId: varuint, member: UavId)
-        
+        fn addMember(group: GrpId, member: UavId) -> ReqCfgRep
+        fn removeMember(group: GrpId, member: UavId) -> ReqCfgRep
+
         fn reqVote(term: TermId, lastLogIdx: varuint, lastLogTerm: TermId) -> ReqVoteRep
         fn reqAppendEntry(term: TermId, prevLogIdx: varuint, prevLogTerm: TermId, leaderCommit: varuint, entry: varuint) -> ReqAppendEntryRep
     }
