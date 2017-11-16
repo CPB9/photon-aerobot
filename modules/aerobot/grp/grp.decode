@@ -72,6 +72,7 @@ component {
     impl {
         fn init()
         fn tick()
+        fn genRaftData(data: *mut void, writer: *mut Writer) -> Error
     }
 
     commands {
