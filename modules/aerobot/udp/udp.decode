@@ -1,5 +1,7 @@
 module udp
 
+import core::{Error}
+
 struct IpAddress {
     data: [u8; 4]
 }
@@ -27,5 +29,6 @@ component {
     impl {
         fn init()
         fn tick()
+        fn queueData(address: varuint, src: *const void, size: usize) -> Error
     }
 }
