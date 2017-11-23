@@ -13,6 +13,7 @@ module_dirs = [
   "thirdparty/photon/modules/photon/clk",
   "thirdparty/photon/modules/photon/nav",
   "thirdparty/photon/modules/photon/fl",
+  "thirdparty/photon/modules/photon/grp",
   "modules/aerobot/udp"
 ]
 
@@ -21,5 +22,5 @@ name = "cvm"
 id = 1
 #cmd_targets = ["esc"]
 #tm_sources = ["esc"]
-modules = ["test", "nav", "fl", "udp"]
+modules = ["test", "nav", "fl", "udp", "grp"]
 
