@@ -22,7 +22,7 @@ module_dirs = [
 [[devices]]
 name = "cvm"
 id = 1
-#cmd_targets = ["esc"]
-#tm_sources = ["esc"]
+cmd_targets = ["cvm"]
+tm_sources = ["cvm"]
 modules = ["test", "nav", "fl", "udp", "grp", "px4", "px4_autogen"]
 
