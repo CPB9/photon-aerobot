@@ -16,7 +16,8 @@ module_dirs = [
   "thirdparty/photon/modules/photon/grp",
   "modules/aerobot/udp",
   "modules/photon/px4",
-  "modules/photon/px4_autogen"
+  "modules/photon/px4_autogen",
+  "modules/photon/usm",
 ]
 
 [[devices]]
@@ -24,7 +25,7 @@ name = "cvm"
 id = 1
 cmd_targets = ["cvm"]
 tm_sources = ["cvm"]
-modules = ["test", "nav", "fl", "udp", "grp", "px4", "px4_autogen"]
+modules = ["test", "nav", "fl", "udp", "grp", "px4", "px4_autogen", "usm"]
 
 [[devices]]
 name = "fcu"
