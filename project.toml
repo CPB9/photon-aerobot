@@ -26,3 +26,10 @@ cmd_targets = ["cvm"]
 tm_sources = ["cvm"]
 modules = ["test", "nav", "fl", "udp", "grp", "px4", "px4_autogen"]
 
+[[devices]]
+name = "fcu"
+id = 2
+cmd_targets = ["fcu"]
+tm_sources = ["fcu"]
+modules = ["test", "nav"]
+
