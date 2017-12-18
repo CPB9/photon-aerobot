@@ -14,13 +14,13 @@ void PhotonPx4_Tick()
 {
 }
 
-PhotonError PhotonPx4_Arm()
+PhotonError PhotonPx4_ExecCmd_Arm()
 {
     setArmed(true);
     return PhotonError_Ok;
 }
 
-PhotonError PhotonPx4_Disarm()
+PhotonError PhotonPx4_ExecCmd_Disarm()
 {
     setArmed(false);
     return PhotonError_Ok;
