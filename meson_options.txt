@@ -1,2 +1,3 @@
 option('log_level', type : 'combo', choices : ['0', '1', '2', '3', '4', '5'], value : '0')
 option('use_stubs', type : 'boolean', value : true)
+option('target_tests', type : 'boolean', value : true)
