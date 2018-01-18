@@ -1,0 +1,36 @@
+[project]
+name = "default"
+master = "cvm"
+common_modules = ["core", "tm", "pvu", "fwt", "exc", "clk"]
+mcc_id = 0
+module_dirs = [
+  "@PROJECT_ROOT@/subprojects/photon/modules/photon/core",
+  "@PROJECT_ROOT@/subprojects/photon/modules/photon/tm",
+  "@PROJECT_ROOT@/subprojects/photon/modules/photon/fwt",
+  "@PROJECT_ROOT@/subprojects/photon/modules/photon/pvu",
+  "@PROJECT_ROOT@/subprojects/photon/modules/photon/test",
+  "@PROJECT_ROOT@/subprojects/photon/modules/photon/exc",
+  "@PROJECT_ROOT@/subprojects/photon/modules/photon/clk",
+  "@PROJECT_ROOT@/subprojects/photon/modules/photon/nav",
+  "@PROJECT_ROOT@/subprojects/photon/modules/photon/fl",
+  "@PROJECT_ROOT@/subprojects/photon/modules/photon/grp",
+  "@AEROBOT_ROOT@/modules/aerobot/udp",
+  "@AEROBOT_ROOT@/modules/photon/px4",
+  "@AEROBOT_ROOT@/modules/photon/px4_autogen",
+  "@AEROBOT_ROOT@/modules/photon/usm",
+]
+
+[[devices]]
+name = "cvm"
+id = 1
+cmd_targets = ["cvm"]
+tm_sources = ["cvm"]
+modules = ["test", "nav", "fl", "udp", "grp", "px4", "px4_autogen", "usm"]
+
+[[devices]]
+name = "fcu"
+id = 2
+cmd_targets = ["fcu"]
+tm_sources = ["fcu"]
+modules = ["test", "nav"]
+

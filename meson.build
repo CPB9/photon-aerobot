@@ -1,5 +1,21 @@
 project('photon-aerobot', 'c', default_options : ['c_std=c99'])
 
+cfg = configuration_data()
+
+cfg.set('PROJECT_ROOT', meson.source_root())
+
+if meson.is_subproject()
+  cfg.set('AEROBOT_ROOT', join_paths(meson.source_root(), 'subprojects/photon-aerobot'))
+else
+  cfg.set('AEROBOT_ROOT', meson.source_root())
+endif
+
+configure_file(
+  input : 'project-meson.toml.in',
+  output : 'project-meson.toml',
+  configuration : cfg,
+)
+
 modules_src = [
   'modules/photon/px4_autogen/Px4_autogen.c',
   'modules/photon/px4_autogen/px4_autogen.decode',
@@ -29,7 +45,7 @@ endforeach
 mod_opt += ']'
 
 photon_opts += 'project=project-meson.toml'
-photon_opts += 'project_prefix=' + meson.current_source_dir()
+photon_opts += 'project_prefix=' + meson.current_build_dir()
 photon_opts += 'additional_depends=' + mod_opt
 photon_opts += 'targets=[\'cvm\', \'fcu\']'
 photon_opts += 'use_stubs=' + get_option('use_stubs').to_string()
