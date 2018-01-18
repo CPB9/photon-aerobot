@@ -1,0 +1,4 @@
+[wrap-git]
+directory = photon
+url = https://github.com/acsl-mipt/photon.git
+revision = head

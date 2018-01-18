@@ -1,0 +1,1 @@
+option('use_stubs', type : 'boolean', value : true)
