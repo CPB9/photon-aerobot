@@ -2,7 +2,7 @@ project('photon-aerobot', 'c', default_options : ['c_std=c99'])
 
 cfg = configuration_data()
 
-cfg.set('PROJECT_ROOT', meson.source_root())
+cfg.set('PHOTON_ROOT', join_paths(meson.source_root(), 'subprojects/photon'))
 
 if meson.is_subproject()
   cfg.set('AEROBOT_ROOT', join_paths(meson.source_root(), 'subprojects/photon-aerobot'))
