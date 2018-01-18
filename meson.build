@@ -33,6 +33,7 @@ photon_opts += 'project_prefix=' + meson.current_source_dir()
 photon_opts += 'additional_depends=' + mod_opt
 photon_opts += 'targets=[\'cvm\', \'fcu\']'
 photon_opts += 'use_stubs=' + get_option('use_stubs').to_string()
+photon_opts += 'log_level=' + get_option('log_level')
 
 photon_mod = subproject('photon', default_options : photon_opts)
 photon_dep = photon_mod.get_variable('photon_dep')
