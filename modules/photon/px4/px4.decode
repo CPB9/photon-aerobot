@@ -47,18 +47,25 @@ struct RcChannels {
     chanRaw : [u16; 18]
 }
 
+struct LastMessage {
+    id: u32,
+    seq: u8
+}
+
 component {
     parameters {
         heartbeat: Heartbeat,
         version: AutopilotVersion,
         systemStatus: SystemStatus,
         rcChannels: RcChannels
+        lastMessage: LastMessage
     }
 
     statuses {
         [heartbeat, 0, true]:  { heartbeat    }
         [systemStatus, 0, true]:  { systemStatus }
         [rcChannels, 0, false]: { rcChannels   }
+        [lastMessage, 0, true]: { lastMessage }
     }
 
     commands {
