@@ -1,5 +1,5 @@
-#include "photon/px4_autogen/Px4_autogen.Component.h"
-#include "photon/tm/Tm.Component.h"
+#include "photongen/onboard/px4_autogen/Px4_autogen.Component.h"
+#include "photongen/onboard/tm/Tm.Component.h"
 
 static void setParam_UAVCAN_Motor_Parameters_ctl_bw(uint32_t value)
 {
@@ -7273,7 +7273,7 @@ static void setParam_Miscellaneous_EXFW_PITCH_P(uint32_t value)
     }
 }
 
-void PhotonPx4_autogen_Init() 
+void PhotonPx4_autogen_Init()
 {
     _photonPx4_autogen.inited = false;
     PhotonPx4_autogen_InitParam("ctl_bw", setParam_UAVCAN_Motor_Parameters_ctl_bw);

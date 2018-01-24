@@ -1,4 +1,4 @@
-#include "photon/px4/Px4.Component.h"
+#include "photongen/onboard/px4/Px4.Component.h"
 
 #include "photon/core/Logging.h"
 
