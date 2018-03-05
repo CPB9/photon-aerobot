@@ -14,10 +14,10 @@ module_dirs = [
   "thirdparty/photon/modules/photon/nav",
   "thirdparty/photon/modules/photon/fl",
   "thirdparty/photon/modules/photon/grp",
+  "thirdparty/photon/modules/photon/usm",
   "modules/aerobot/udp",
   "modules/photon/px4",
-  "modules/photon/px4_autogen",
-  "modules/photon/usm",
+  "modules/photon/px4_autogen"
 ]
 
 [[devices]]
