@@ -26,8 +26,6 @@ modules_src = [
   'modules/photon/px4/px4.decode',
   'modules/photon/px4/Px4.c',
   'modules/photon/px4/mod.toml',
-  'modules/photon/usm/mod.toml',
-  'modules/photon/usm/usm.decode',
   'modules/aerobot/udp/mod.toml',
   'modules/aerobot/udp/udp.decode',
 ]
@@ -54,7 +52,8 @@ photon_opts += 'target_tests=' + get_option('target_tests').to_string()
 
 photon_mod = subproject('photon', default_options : photon_opts)
 photon_dep = photon_mod.get_variable('photon_dep')
+gen_src_dep = photon_mod.get_variable('gen_src_dep')
 photon_target_cvm_lib = photon_mod.get_variable('photon_target_cvm_lib')
-photon_target_cvm_dep = photon_mod.get_variable('photon_target_cvm_dep')
+photon_target_cvm_dep = [photon_mod.get_variable('photon_target_cvm_dep'), gen_src_dep]
 photon_target_fcu_lib = photon_mod.get_variable('photon_target_fcu_lib')
-photon_target_fcu_dep = photon_mod.get_variable('photon_target_fcu_dep')
+photon_target_fcu_dep = [photon_mod.get_variable('photon_target_fcu_dep'), gen_src_dep]
