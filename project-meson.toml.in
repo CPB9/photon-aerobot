@@ -14,10 +14,10 @@ module_dirs = [
   "@PHOTON_ROOT@/modules/photon/nav",
   "@PHOTON_ROOT@/modules/photon/fl",
   "@PHOTON_ROOT@/modules/photon/grp",
+  "@PHOTON_ROOT@/modules/photon/usm",
   "@AEROBOT_ROOT@/modules/aerobot/udp",
   "@AEROBOT_ROOT@/modules/photon/px4",
   "@AEROBOT_ROOT@/modules/photon/px4_autogen",
-  "@AEROBOT_ROOT@/modules/photon/usm",
 ]
 
 [[devices]]
