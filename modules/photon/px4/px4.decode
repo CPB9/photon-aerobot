@@ -53,7 +53,7 @@ struct LastMessage {
 }
 
 component {
-    parameters {
+    variables {
         heartbeat: Heartbeat,
         version: AutopilotVersion,
         systemStatus: SystemStatus,

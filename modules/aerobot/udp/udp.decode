@@ -13,7 +13,7 @@ struct Client {
 }
 
 component {
-    parameters {
+    variables {
         clients: &[Client; 20]
     }
 

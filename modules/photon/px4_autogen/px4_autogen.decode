@@ -1056,7 +1056,7 @@ struct Miscellaneous {
 }
 
 component {
-    parameters {
+    variables {
         inited: bool,
         _UAVCAN_Motor_Parameters: UAVCAN_Motor_Parameters,
         _Attitude_EKF_estimator: Attitude_EKF_estimator,

@@ -35,7 +35,7 @@ struct PowerValues {
 }
 
 component {
-    parameters {
+    variables {
         input: PowerValues,
         power1: PowerValues,
         power2: PowerValues,
@@ -60,9 +60,10 @@ component {
     }
 
     statuses {
-        [common, 1, true]: {input}
+        [common, 1, true]: {input, beard}
         [esc, 1, true]: {power1, power2, power3, power4}
         [chan3, 1, true]: {chan3_1, chan3_2}
+        [chan5, 1, true]: {chan5_1, chan5_2}
         [chan12, 1, true]: {chan12_1, chan12_2, chan12_3, chan12_4, chan12_5, chan12_6, chan12_7}
         [sens, 1, true]: {sens1, sens2, sens3, sens4}
     }
