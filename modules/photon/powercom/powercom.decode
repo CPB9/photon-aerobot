@@ -59,6 +59,14 @@ component {
         beard: u16,
     }
 
+    statuses {
+        [common, 1, true]: {input}
+        [esc, 1, true]: {power1, power2, power3, power4}
+        [chan3, 1, true]: {chan3_1, chan3_2}
+        [chan12, 1, true]: {chan12_1, chan12_2, chan12_3, chan12_4, chan12_5, chan12_6, chan12_7}
+        [sens, 1, true]: {sens1, sens2, sens3, sens4}
+    }
+    
     commands {
         fn enableChannel(chan: Channel)
         fn disableChannel(chan: Channel)
