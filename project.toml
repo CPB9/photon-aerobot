@@ -18,6 +18,8 @@ module_dirs = [
   "modules/aerobot/udp",
   "modules/photon/px4",
   "modules/photon/px4_autogen"
+  "modules/photon/powercom",
+  "modules/photon/powerfan",
 ]
 
 [[devices]]
@@ -33,4 +35,14 @@ id = 2
 cmd_targets = ["fcu"]
 tm_sources = ["fcu"]
 modules = ["test", "nav"]
+
+[[devices]]
+name = "powercom"
+id = 3
+modules = ["powercom"]
+
+[[devices]]
+name = "powerfan"
+id = 4
+modules = ["powerfan"]
 

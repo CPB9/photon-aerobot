@@ -1,0 +1,66 @@
+module powercom
+
+enum Channel {
+    Power,
+    Power1,
+    Power2,
+    Power3,
+    Power4,
+    Sens,
+    Sens1,
+    Sens2,
+    Sens3,
+    Sens4,
+    Chan3,
+    Chan3_1
+    Chan3_2,
+    Chan5,
+    Chan5_1,
+    Chan5_2,
+    Chan12,
+    Chan12_1,
+    Chan12_2,
+    Chan12_3,
+    Chan12_4,
+    Chan12_5,
+    Chan12_6,
+    Chan12_7,
+}
+
+struct PowerValues {
+    isEnabled: bool,
+    bus_mV: f32,
+    shunt_uV: f32,
+    current_mA: f32,
+}
+
+component {
+    parameters {
+        input: PowerValues,
+        power1: PowerValues,
+        power2: PowerValues,
+        power3: PowerValues,
+        power4: PowerValues,
+        chan3_1: PowerValues,
+        chan3_2: PowerValues,
+        chan5_1: PowerValues,
+        chan5_2: PowerValues,
+        chan12_1: PowerValues,
+        chan12_2: PowerValues,
+        chan12_3: PowerValues,
+        chan12_4: PowerValues,
+        chan12_5: PowerValues,
+        chan12_6: PowerValues,
+        chan12_7: PowerValues,
+        sens1: bool,
+        sens2: bool,
+        sens3: bool,
+        sens4: bool,
+        beard: u16,
+    }
+
+    commands {
+        fn enableChannel(chan: Channel)
+        fn disableChannel(chan: Channel)
+    }
+}

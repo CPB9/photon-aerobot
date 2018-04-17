@@ -17,17 +17,23 @@ configure_file(
 )
 
 modules_src = [
-  'modules/photon/px4_autogen/Px4_autogen.c',
-  'modules/photon/px4_autogen/px4_autogen.decode',
-  'modules/photon/px4_autogen/mod.toml',
-  'modules/photon/esc/esc.decode',
-  'modules/photon/esc/mod.toml',
-  'modules/photon/esc/Stub.c',
-  'modules/photon/px4/px4.decode',
-  'modules/photon/px4/Px4.c',
-  'modules/photon/px4/mod.toml',
   'modules/aerobot/udp/mod.toml',
   'modules/aerobot/udp/udp.decode',
+  'modules/photon/powerfan/mod.toml',
+  'modules/photon/powerfan/powerfan.decode',
+  'modules/photon/powerfan/Stub.c',
+  'modules/photon/px4_autogen/mod.toml',
+  'modules/photon/px4_autogen/px4_autogen.decode',
+  'modules/photon/px4_autogen/Px4_autogen.c',
+  'modules/photon/esc/mod.toml',
+  'modules/photon/esc/Stub.c',
+  'modules/photon/esc/esc.decode',
+  'modules/photon/px4/mod.toml',
+  'modules/photon/px4/Px4.c',
+  'modules/photon/px4/px4.decode',
+  'modules/photon/powercom/mod.toml',
+  'modules/photon/powercom/Stub.c',
+  'modules/photon/powercom/powercom.decode',
 ]
 
 photon_opts = []

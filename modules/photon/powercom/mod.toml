@@ -1,0 +1,5 @@
+name = "powercom"
+decode = "powercom.decode"
+dest = "photon/powercom"
+id = 101
+sources = ["Stub.c"]
