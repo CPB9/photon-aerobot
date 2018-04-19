@@ -1,4 +1,61 @@
 module powerfan
 
+enum BldcId {
+    Bldc1,
+    Bldc2,
+}
+
+type PresetName = &[char; 32];
+
+struct A4960Config {
+    name: [char; 32],
+    CB: u8,
+    BT: u8,
+    DT: u8,
+    VR: u8,
+    VT: u8,
+    PT: u8,
+    IDS: u8,
+    HQ: u8,
+    HT: u8,
+    EC: u8,
+    SC: u8,
+    PA: u8,
+    RQ: u8,
+    RR: u8,
+    BH: u8,
+    BW: u8,
+    ESF: u8,
+    DG: u8,
+    RSC: u8,
+    BRK: u8,
+    DIR: u8,
+    RUN: u8,
+}
+
+struct Bldc {
+    speed: u32,
+    config: A4960Config,
+}
+
 component {
+    variables {
+        bldc1: Bldc,
+        bldc2: Bldc,
+    }
+
+    commands {
+        fn stop()
+        fn setFlow(flow: f32)
+        fn run(id: BldcId)
+        fn writeConfig(id: BldcId)
+        fn setCurrentPresetName(id: BldcId, name: PresetName)
+        fn saveCurrentPreset(id: BldcId)
+        fn loadPreset(id: BldcId, name: PresetName)
+        fn rmPreset(name: PresetName)
+    }
+
+    statuses {
+        [all, 1, true]: {bldc1, bldc2}
+    }
 }
