@@ -17,7 +17,7 @@ module_dirs = [
   "thirdparty/photon/modules/photon/usm",
   "modules/aerobot/udp",
   "modules/photon/px4",
-  "modules/photon/px4_autogen"
+  "modules/photon/px4_autogen",
   "modules/photon/powercom",
   "modules/photon/powerfan",
 ]
