@@ -33,6 +33,31 @@ struct A4960Config {
     RUN: u8,
 }
 
+enum Reg {
+    CB,
+    BT,
+    DT,
+    VR,
+    VT,
+    PT,
+    IDS,
+    HQ,
+    HT,
+    EC,
+    SC,
+    PA,
+    RQ,
+    RR,
+    BH,
+    BW,
+    ESF,
+    DG,
+    RSC,
+    BRK,
+    DIR,
+    RUN,
+}
+
 struct Bldc {
     speed: u32,
     config: A4960Config,
@@ -48,11 +73,11 @@ component {
         fn stop()
         fn setFlow(flow: f32)
         fn run(id: BldcId)
-        fn writeConfig(id: BldcId)
+        fn applyCurrentPreset(id: BldcId)
+        fn setCurrentPreset(id: BldcId, preset: A4960Config)
         fn setCurrentPresetName(id: BldcId, name: PresetName)
-        fn saveCurrentPreset(id: BldcId)
-        fn loadPreset(id: BldcId, name: PresetName)
-        fn rmPreset(name: PresetName)
+        fn setCurrentPresetReg(id: BldcId, reg: Reg, value: u8)
+        fn pwmSetDuty(id: BldcId, value: f64)
     }
 
     statuses {
