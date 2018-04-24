@@ -42,7 +42,11 @@ id = 3
 modules = ["powercom"]
 
 [[devices]]
-name = "powerfan"
+name = "powerfan1"
 id = 4
 modules = ["powerfan"]
 
+[[devices]]
+name = "powerfan2"
+id = 5
+modules = ["powerfan"]
