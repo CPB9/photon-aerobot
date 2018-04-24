@@ -26,7 +26,7 @@ module_dirs = [
 [[devices]]
 name = "cvm"
 id = 1
-cmd_targets = ["cvm"]
+cmd_targets = ["cvm", "powerfan1", "powerfan2"]
 tm_sources = ["cvm"]
 modules = ["test", "nav", "fl", "udp", "grp", "px4", "px4_autogen", "usm", "powercom", "powerfanproxy"]
 

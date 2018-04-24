@@ -1,12 +1,19 @@
 module powerfanproxy
 
-import powerfan::{PresetName, A4960Config, Reg, Bldc}
+import powerfan::{A4960Config, Reg}
+
+type PresetName = &[char; 32];
 
 enum BldcId {
     Bldc1,
     Bldc2,
     Bldc3,
     Bldc4,
+}
+
+struct Bldc {
+    speed: u32,
+    config: A4960Config,
 }
 
 component {
@@ -18,8 +25,8 @@ component {
     }
 
     commands {
-        fn stop()
-        fn setFlow(flow: f32)
+        fn stop(id: BldcId)
+        fn setFlow(id:BldcId, flow: f32)
         fn run(id: BldcId)
         fn applyCurrentPreset(id: BldcId)
         fn setCurrentPreset(id: BldcId, preset: A4960Config)
