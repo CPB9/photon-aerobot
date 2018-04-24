@@ -27,7 +27,7 @@ name = "cvm"
 id = 1
 cmd_targets = ["cvm"]
 tm_sources = ["cvm"]
-modules = ["test", "nav", "fl", "udp", "grp", "px4", "px4_autogen", "usm"]
+modules = ["test", "nav", "fl", "udp", "grp", "px4", "px4_autogen", "usm", "powercom"]
 
 [[devices]]
 name = "fcu"
