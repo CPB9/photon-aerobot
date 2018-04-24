@@ -1,0 +1,35 @@
+module powerfanproxy
+
+import powerfan::{PresetName, A4960Config, Reg, Bldc}
+
+enum BldcId {
+    Bldc1,
+    Bldc2,
+    Bldc3,
+    Bldc4,
+}
+
+component {
+    variables {
+        bldc1: Bldc,
+        bldc2: Bldc,
+        bldc3: Bldc,
+        bldc4: Bldc,
+    }
+
+    commands {
+        fn stop()
+        fn setFlow(flow: f32)
+        fn run(id: BldcId)
+        fn applyCurrentPreset(id: BldcId)
+        fn setCurrentPreset(id: BldcId, preset: A4960Config)
+        fn setCurrentPresetName(id: BldcId, name: PresetName)
+        fn setCurrentPresetReg(id: BldcId, reg: Reg, value: u8)
+        fn pwmSetDuty(id: BldcId, value: f64)
+    }
+
+    statuses {
+        [all1, 1, true]: {bldc1, bldc2}
+        [all2, 1, true]: {bldc3, bldc4}
+    }
+}

@@ -20,6 +20,7 @@ module_dirs = [
   "modules/photon/px4_autogen",
   "modules/photon/powercom",
   "modules/photon/powerfan",
+  "modules/photon/powerfanproxy",
 ]
 
 [[devices]]
@@ -27,7 +28,7 @@ name = "cvm"
 id = 1
 cmd_targets = ["cvm"]
 tm_sources = ["cvm"]
-modules = ["test", "nav", "fl", "udp", "grp", "px4", "px4_autogen", "usm", "powercom"]
+modules = ["test", "nav", "fl", "udp", "grp", "px4", "px4_autogen", "usm", "powercom", "powerfanproxy"]
 
 [[devices]]
 name = "fcu"

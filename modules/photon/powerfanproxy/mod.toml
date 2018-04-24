@@ -1,0 +1,5 @@
+name = "powerfanproxy"
+decode = "powerfanproxy.decode"
+dest = "photon/powerfanproxy"
+id = 101
+sources = ["Stub.c"]
