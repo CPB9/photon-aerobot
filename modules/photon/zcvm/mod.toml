@@ -1,0 +1,5 @@
+name = "zcvm"
+decode = "zcvm.decode"
+dest = "photon/zcvm"
+id = 110
+sources = ["Stub.c"]

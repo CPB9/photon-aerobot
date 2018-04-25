@@ -1,0 +1,42 @@
+module zcvm
+
+import clk::{TimePoint, Duration}
+
+enum Slaves {
+    PowerCom,
+    PowerFan1,
+    PowerFan2,
+}
+
+struct SlaveRunningState {
+    powerCom: bool,
+    powerFan1: bool,
+    powerFan2: bool,
+    powerComLastTime: TimePoint,
+    powerFan1LastTime: TimePoint,
+    powerFan2LastTime: TimePoint,    
+}
+
+component {
+    variables {
+        slavesState: SlaveRunningState
+    }
+
+    statuses {
+        [slaveState, 1, true]: {slavesState.powerCom, slavesState.powerFan1, slavesState.powerFan2}
+        [slaveLastTimes, 1, false]: {slavesState.powerComLastTime, slavesState.powerFan1LastTime, slavesState.powerFan2LastTime}
+    }
+    
+    events {
+        [slaveConnectionChanged, true]: {state: SlaveRunningState},
+    }
+    
+    impl {
+        fn init()
+        fn tick()
+        fn updateSlaveMessageTime(slave: Slaves)
+    }
+    
+    commands {
+    }
+}

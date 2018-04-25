@@ -21,14 +21,15 @@ module_dirs = [
   "modules/photon/powercom",
   "modules/photon/powerfan",
   "modules/photon/powerfanproxy",
+  "modules/photon/zcvm",
 ]
 
 [[devices]]
 name = "cvm"
 id = 1
 cmd_targets = ["cvm", "powerfan1", "powerfan2"]
-tm_sources = ["cvm"]
-modules = ["test", "nav", "fl", "udp", "grp", "px4", "px4_autogen", "usm", "powercom", "powerfanproxy"]
+tm_sources = ["cvm", "powerfan1", "powerfan2"]
+modules = ["test", "nav", "fl", "udp", "grp", "px4", "px4_autogen", "usm", "powercom", "powerfanproxy", "zcvm"]
 
 [[devices]]
 name = "fcu"
