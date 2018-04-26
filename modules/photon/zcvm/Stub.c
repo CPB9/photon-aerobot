@@ -36,11 +36,22 @@ void PhotonZcvm_Tick()
 
     if (_photonZcvm.slavesState.powerCom && !ledsDisabled)
     {
-        PhotonPowercom_ExecCmd_DisableChannel(PhotonPowercomChannel_Chan12_1);
-        PhotonPowercom_ExecCmd_DisableChannel(PhotonPowercomChannel_Chan12_2);
-        PhotonPowercom_ExecCmd_DisableChannel(PhotonPowercomChannel_Chan12_3);
-        PhotonPowercom_ExecCmd_DisableChannel(PhotonPowercomChannel_Chan12_4);
-        ledsDisabled = true;
+        if(_photonPowercom.chan12_1.isEnabled)
+            PhotonPowercom_ExecCmd_DisableChannel(PhotonPowercomChannel_Chan12_1);
+        if(_photonPowercom.chan12_2.isEnabled)
+            PhotonPowercom_ExecCmd_DisableChannel(PhotonPowercomChannel_Chan12_2);
+        if(_photonPowercom.chan12_3.isEnabled)
+            PhotonPowercom_ExecCmd_DisableChannel(PhotonPowercomChannel_Chan12_3);
+        if(_photonPowercom.chan12_4.isEnabled)
+            PhotonPowercom_ExecCmd_DisableChannel(PhotonPowercomChannel_Chan12_4);
+
+        if(!_photonPowercom.chan12_1.isEnabled &&
+           !_photonPowercom.chan12_2.isEnabled &&
+           !_photonPowercom.chan12_3.isEnabled &&
+           !_photonPowercom.chan12_4.isEnabled)
+        {
+            ledsDisabled = true;
+        }
     }
 }
 
