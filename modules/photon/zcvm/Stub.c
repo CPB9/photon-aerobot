@@ -2,6 +2,8 @@
 
 #define _PHOTON_FNAME "Zcvm.c"
 
+static bool ledsDisabled = false;
+
 void PhotonZcvm_Init()
 {
     _photonZcvm.slavesState.powerCom = false;
@@ -11,7 +13,6 @@ void PhotonZcvm_Init()
     _photonZcvm.slavesState.powerComLastTime = 0;
     _photonZcvm.slavesState.powerFan1LastTime = 0;
     _photonZcvm.slavesState.powerFan2LastTime = 0;
-
 }
 
 void PhotonZcvm_Tick()
@@ -31,6 +32,15 @@ void PhotonZcvm_Tick()
         _photonZcvm.slavesState.powerFan1 = state.powerFan1;
         _photonZcvm.slavesState.powerFan2 = state.powerFan2;
         PhotonZcvm_QueueEvent_SlaveConnectionChanged(&_photonZcvm.slavesState);
+    }
+
+    if (_photonZcvm.slavesState.powerCom && !ledsDisabled)
+    {
+        PhotonPowercom_ExecCmd_DisableChannel(PhotonPowercomChannel_Chan12_1);
+        PhotonPowercom_ExecCmd_DisableChannel(PhotonPowercomChannel_Chan12_2);
+        PhotonPowercom_ExecCmd_DisableChannel(PhotonPowercomChannel_Chan12_3);
+        PhotonPowercom_ExecCmd_DisableChannel(PhotonPowercomChannel_Chan12_4);
+        ledsDisabled = true;
     }
 }
 
