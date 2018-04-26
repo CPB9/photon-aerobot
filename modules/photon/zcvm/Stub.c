@@ -22,7 +22,7 @@ void PhotonZcvm_Tick()
     state.powerCom = PhotonClk_GetTickTime() - _photonZcvm.slavesState.powerComLastTime < warningTime;
     state.powerFan1 = PhotonClk_GetTickTime() - _photonZcvm.slavesState.powerFan1LastTime < warningTime;
     state.powerFan2 = PhotonClk_GetTickTime() - _photonZcvm.slavesState.powerFan2LastTime < warningTime;
-    PHOTON_CRITICAL("%u", PhotonClk_GetTickTime() - _photonZcvm.slavesState.powerFan1LastTime);
+    //PHOTON_CRITICAL("%u", PhotonClk_GetTickTime() - _photonZcvm.slavesState.powerFan1LastTime);
     if (_photonZcvm.slavesState.powerCom != state.powerCom ||
         _photonZcvm.slavesState.powerFan1 != state.powerFan1 ||
         _photonZcvm.slavesState.powerFan2 != state.powerFan2)
