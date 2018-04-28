@@ -219,6 +219,7 @@ enum CameraState {
 
 struct Camera {
     state: CameraState,
+    topic: String,
     basic: Basic    
 }
 
