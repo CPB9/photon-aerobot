@@ -1,0 +1,294 @@
+module ximea
+
+type Integer = varint;
+type Float = f32;
+type String = &[char; 512];
+
+enum DOWNSAMPLING_TYPE {
+    /// Downsampling is using  binning
+    BINNING = 0, 
+    /// Downsampling is using  skipping
+    SKIPPING = 1,
+}
+
+enum DOWNSAMPLING_VALUE {
+    _1x1    =1,
+    _2x2    =2,
+    _3x3    =3,
+    _4x4    =4,
+    _5x5    =5,
+    _6x6    =6,
+    _7x7    =7,
+    _8x8    =8,
+    _9x9    =9,
+    _10x10  =10,
+    _16x16  =16,
+}
+
+enum TEST_PATTERN {
+    ///  Testpattern turned off.
+    OFF               =0,
+    ///  Image is filled with darkest possible image.
+    BLACK             =1,
+    ///  Image is filled with brightest possible image.
+    WHITE             =2,
+    ///  Image is filled horizontally with an image that goes from the darkest possible value to the brightest.
+    GREY_HORIZ_RAMP   =3,
+    ///  Image is filled vertically with an image that goes from the darkest possible value to the brightest.
+    GREY_VERT_RAMP    =4,
+    ///  Image is filled horizontally with an image that goes from the darkest possible value to the brightest and moves from left to right.
+    GREY_HORIZ_RAMP_MOVING=5,
+    ///  Image is filled vertically with an image that goes from the darkest possible value to the brightest and moves from left to right.
+    GREY_VERT_RAMP_MOVING=6,
+    ///  A moving horizontal line is superimposed on the live image.
+    HORIZ_LINE_MOVING =7,
+    ///  A moving vertical line is superimposed on the live image.
+    VERT_LINE_MOVING  =8,
+    ///  Image is filled with stripes of color including White, Black, Red, Green, Blue, Cyan, Magenta and Yellow.
+    COLOR_BAR         =9,
+    ///  A frame counter is superimposed on the live image.
+    FRAME_COUNTER     =10,
+    ///  128bit counter.
+    DEVICE_SPEC_COUNTER=11,
+}
+
+enum IMG_FORMAT {
+    /// 8 bits per pixel
+    MONO8 =0,
+    /// 16 bits per pixel
+    MONO16 =1,
+    /// RGB data format
+    RGB24 =2,
+    /// RGBA data format
+    RGB32 =3,
+    /// RGB planar data format
+    RGB_PLANAR =4,
+    /// 8 bits per pixel raw data from sensor
+    RAW8 =5,
+    /// 16 bits per pixel raw data from sensor
+    RAW16 =6,
+    /// Data from transport layer (e.g. packed). Format see XI_PRM_TRANSPORT_PIXEL_FORMAT
+    FRM_TRANSPORT_DATA =7,
+    /// RGB data format
+    RGB48 =8,
+    /// RGBA data format
+    RGB64 =9,
+    /// RGB16 planar data format
+    RGB16_PLANAR =10,
+    /// 8 bits per pixel raw data from sensor(2 components in a row)
+    RAW8X2 =11,
+    /// 8 bits per pixel raw data from sensor(4 components in a row)
+    RAW8X4 =12,
+    /// 16 bits per pixel raw data from sensor(2 components in a row)
+    RAW16X2 =13,
+    /// 16 bits per pixel raw data from sensor(4 components in a row)
+    RAW16X4 =14,
+}
+
+enum SHUTTER_TYPE {
+    /// Sensor Global Shutter(CMOS sensor)
+    GLOBAL            =0,
+    /// Sensor Electronic Rolling Shutter(CMOS sensor)
+    ROLLING           =1,
+    /// Sensor Global Reset Release Shutter(CMOS sensor)
+    GLOBAL_RESET_RELEASE=2,
+}
+
+enum SENS_DEFFECTS_CORR_LIST_SELECTOR {
+    /// Factory defect correction list
+    FACTORY=0,
+    /// User defect correction list
+    USER0=1,
+}
+
+enum TEST_PATTERN_GENERATOR {
+    ///  Sensor Test Pattern Generator
+    SENSOR =0,
+    ///  FPGA Test Pattern Generator
+    FPGA   =1,
+}
+
+enum GAIN_SELECTOR_TYPE {
+    /// Gain selector selects all channels. Implementation of gain type depends on camera.
+    ALL         =0,
+    /// Gain selector selects all analog channels. This is available only on some cameras.
+    ANALOG_ALL  =1,
+    /// Gain selector selects all digital channels. This is available only on some cameras.
+    DIGITAL_ALL =2,
+    /// Gain selector selects tap 1. This is available only on some cameras.
+    ANALOG_TAP1 =3,
+    /// Gain selector selects tap 2. This is available only on some cameras.
+    ANALOG_TAP2 =4,
+    /// Gain selector selects tap 3. This is available only on some cameras.
+    ANALOG_TAP3 =5,
+    /// Gain selector selects tap 4. This is available only on some cameras.
+    ANALOG_TAP4 =6,
+}
+
+enum SENSOR_TAP_CNT { 
+    _1 = 1,
+    _2 = 2,
+    _4 = 4,
+}
+
+struct Basic {
+    ///Exposure time in microseconds 
+    exposure: Integer,
+    /// Sets the number of times of exposure in one frame. 
+    exposure_burst_count: Integer,
+    /// Gain selector for parameter Gain allows to select different type of gains. XI_GAIN_SELECTOR_TYPE    
+    gain_selector: GAIN_SELECTOR_TYPE,
+    /// Gain in dB
+    gain: Float,
+    /// Change image resolution by binning or skipping. XI_DOWNSAMPLING_VALUE    
+    downsampling: DOWNSAMPLING_VALUE,
+    /// Change image downsampling type.    
+    downsampling_type: DOWNSAMPLING_TYPE,
+    /// Selects which test pattern generator is controlled by the TestPattern feature. XI_TEST_PATTERN_GENERATOR
+    test_pattern_generator_selector: TEST_PATTERN_GENERATOR,
+    /// Selects which test pattern type is generated by the selected generator. XI_TEST_PATTERN
+    test_pattern: TEST_PATTERN,
+    /// Output data format. XI_IMG_FORMAT    
+    imgdataformat: IMG_FORMAT,
+    /// Change sensor shutter type(CMOS sensor). XI_SHUTTER_TYPE    
+    shutter_type: SHUTTER_TYPE,
+    /// Number of taps XI_SENSOR_TAP_CNT
+    #[ranges(default=1)]
+    sensor_taps: SENSOR_TAP_CNT,
+    /// Automatic exposure/gain     
+    #[ranges(default=0)]
+    aeag: bool,
+    /// Automatic exposure/gain ROI offset X     
+    aeag_roi_offset_x: Integer,
+    /// Automatic exposure/gain ROI offset Y     
+    aeag_roi_offset_y: Integer,
+    /// Automatic exposure/gain ROI Width 
+    aeag_roi_width: Integer,
+    /// Automatic exposure/gain ROI Height 
+    aeag_roi_height: Integer,
+    /// Selector of list used by Sensor Defects Correction parameter XI_SENS_DEFFECTS_CORR_LIST_SELECTOR
+    bpc_list_selector: SENS_DEFFECTS_CORR_LIST_SELECTOR,
+    /// Sets/Gets sensor defects list in special text format 
+    sens_defects_corr_list_content: String,
+    /// Correction of sensor defects (pixels, columns, rows) enable/disable 
+    bpc: bool,
+    /// Automatic white balance 
+    auto_wb: bool,
+    /// Calculates White Balance(xiGetImage function must be called) 
+    manual_wb: Integer,
+    /// White balance red coefficient
+    #[ranges(default=1.0)]
+    wb_kr: Float,
+    /// White balance green coefficient 
+    #[ranges(default=1.0)]
+    wb_kg: Float,
+    /// White balance blue coefficient 
+    #[ranges(default=1.0)]
+    wb_kb: Float,
+    /// Width of the Image provided by the device (in pixels). 
+    width: Integer,
+    /// Height of the Image provided by the device (in pixels). 
+    height: Integer,
+    /// Horizontal offset from the origin to the area of interest (in pixels). 
+    #[ranges(default=0)]
+    offsetX: Integer,
+    /// Vertical offset from the origin to the area of interest (in pixels). 
+    #[ranges(default=0)]
+    offsetY: Integer,
+    /// Selects Region in Multiple ROI which parameters are set by width, height, ... ,region mode 
+    region_selector: Integer,
+    /// Activates/deactivates Region selected by Region Selector 
+    region_mode: Integer,
+    /// Horizontal flip enable 
+    horizontal_flip: bool,
+    /// Vertical flip enable 
+    vertical_flip: bool,
+    /// Image flat field correction 
+    ffc: bool,
+    /// Set name of file to be applied for FFC processor. 
+    ffc_flat_field_file_name: String,
+    /// Set name of file to be applied for FFC processor. 
+    ffc_dark_field_file_name: String,
+}
+
+enum CameraState {
+    Off,
+    On,
+    Img,
+}
+
+struct Camera {
+    state: CameraState,
+    basic: Basic    
+}
+
+enum CameraItem {
+    Front,
+    BiFrontLeft,
+    BiFrontRight,
+    BiBottomLeft,
+    BiBottomRight,
+}
+
+component {
+    variables {
+        front  : Camera,
+        bi_front_left: Camera,
+        bi_front_right: Camera,
+        bi_bottom_left: Camera,
+        bi_bottom_right: Camera,
+    }
+
+    statuses {
+        [state, 1, true]: { front.state, bi_front_left.state, bi_front_right.state, bi_bottom_left.state, bi_bottom_right.state},
+    }
+
+    commands {
+        fn updateInfo(cam: CameraItem)
+        fn open(cam: CameraItem)
+        fn close(cam: CameraItem)
+        fn start(cam: CameraItem, number: varuint, timeout: varuint)
+        fn stop(cam: CameraItem)
+
+        fn set_exposure(cam: CameraItem, val: Integer)
+        fn set_exposure_burst_count(cam: CameraItem, val: Integer)
+        fn set_gain(cam: CameraItem, val: Float)
+        fn set_gain_selector(cam: CameraItem, val: GAIN_SELECTOR_TYPE)
+        fn set_downsampling(cam: CameraItem, val: DOWNSAMPLING_VALUE)
+        fn set_downsampling_type(cam: CameraItem, val: DOWNSAMPLING_TYPE)
+        fn set_test_pattern_generator_selector(cam: CameraItem, val: TEST_PATTERN_GENERATOR)
+        fn set_test_pattern(cam: CameraItem, val: TEST_PATTERN)
+        fn set_imgdataformat(cam: CameraItem, val: IMG_FORMAT)
+        fn set_shutter_type(cam: CameraItem, val: SHUTTER_TYPE)
+        fn set_sensor_taps(cam: CameraItem, val: SENSOR_TAP_CNT)
+        fn set_aeag(cam: CameraItem, val: bool)
+        fn set_aeag_roi_offset_x(cam: CameraItem, val: Integer)
+        fn set_aeag_roi_offset_y(cam: CameraItem, val: Integer)
+        fn set_aeag_roi_width(cam: CameraItem, val: Integer)
+        fn set_aeag_roi_height(cam: CameraItem, val: Integer)
+        fn set_bpc_list_selector(cam: CameraItem, val: SENS_DEFFECTS_CORR_LIST_SELECTOR)
+        fn set_sens_defects_corr_list_content(cam: CameraItem, val: String)
+        fn set_bpc(cam: CameraItem, val: bool)
+        fn set_auto_wb(cam: CameraItem, val: bool)
+        fn set_manual_wb(cam: CameraItem, val: Integer)
+        fn set_wb_kr(cam: CameraItem, val: Float)
+        fn set_wb_kg(cam: CameraItem, val: Float)
+        fn set_wb_kb(cam: CameraItem, val: Float)
+        fn set_width(cam: CameraItem, val: Integer)
+        fn set_height(cam: CameraItem, val: Integer)
+        fn set_offsetX(cam: CameraItem, val: Integer)
+        fn set_offsetY(cam: CameraItem, val: Integer)
+        fn set_region_selector(cam: CameraItem, val: Integer)
+        fn set_region_mode(cam: CameraItem, val: Integer)
+        fn set_horizontal_flip(cam: CameraItem, val: bool)
+        fn set_vertical_flip(cam: CameraItem, val: bool)
+        fn set_ffc(cam: CameraItem, val: bool)
+        fn set_ffc_flat_field_file_name(cam: CameraItem, val: String)
+        fn set_ffc_dark_field_file_name(cam: CameraItem, val: String) 
+    }
+
+    impl {
+        fn init()
+        fn tick()
+    }
+}

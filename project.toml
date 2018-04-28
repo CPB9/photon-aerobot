@@ -1,7 +1,7 @@
 [project]
 name = "default"
 master = "cvm"
-common_modules = ["core", "tm", "pvu", "fwt", "exc", "clk"]
+common_modules = ["core", "tm", "pvu", "fwt", "exc", "clk", "ximea"]
 mcc_id = 0
 module_dirs = [
   "thirdparty/photon/modules/photon/core",
@@ -22,6 +22,7 @@ module_dirs = [
   "modules/photon/powerfan",
   "modules/photon/powerfanproxy",
   "modules/photon/zcvm",
+  "modules/photon/ximea",
 ]
 
 [[devices]]
@@ -29,7 +30,7 @@ name = "cvm"
 id = 1
 cmd_targets = ["cvm", "powerfan1", "powerfan2"]
 tm_sources = ["cvm", "powerfan1", "powerfan2"]
-modules = ["test", "nav", "fl", "udp", "grp", "px4", "px4_autogen", "usm", "powercom", "powerfanproxy", "zcvm"]
+modules = ["test", "nav", "fl", "udp", "grp", "px4", "px4_autogen", "usm", "powercom", "powerfanproxy", "zcvm", "ximea"]
 
 [[devices]]
 name = "fcu"

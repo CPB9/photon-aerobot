@@ -1,0 +1,5 @@
+name = "ximea"
+decode = "ximea.decode"
+dest = "photon/ximea"
+id = 69
+sources = ["Stubs.c"]
