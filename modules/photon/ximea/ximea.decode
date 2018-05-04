@@ -224,11 +224,11 @@ struct Camera {
 }
 
 enum CameraItem {
-    Front,
-    BiFrontLeft,
-    BiFrontRight,
-    BiBottomLeft,
-    BiBottomRight,
+    Front         = 1,
+    BiFrontLeft   = 2,
+    BiFrontRight  = 3,
+    BiBottomLeft  = 4,
+    BiBottomRight = 5,
 }
 
 component {
