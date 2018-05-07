@@ -34,6 +34,8 @@ modules_src = [
   'modules/photon/powercom/mod.toml',
   'modules/photon/powercom/Stub.c',
   'modules/photon/powercom/powercom.decode',
+  'modules/photon/zlidar/mod.toml',
+  'modules/photon/zlidar/zlidar.decode',
 ]
 
 photon_opts = []

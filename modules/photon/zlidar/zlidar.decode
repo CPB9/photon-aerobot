@@ -1,6 +1,96 @@
+/// LeddarTech Vu8 module
 module zlidar
 
+type TextLine       = &[char;32];
+type VersionBlock   = &[u16;4];
+
+/// Detection block
+struct Detection {
+/// Channel number (0...8)
+    channel                 : u8,
+/// distance from the sensor, in meters
+    distance                : f32,
+/// signal amplitude
+    amplitude               : f32,
+}
+
+/// Device information
+struct DeviceInfo {
+    firmwareVersion         : VersionBlock,
+    bootloaderVersion       : VersionBlock,
+    internalOptions         : u32,
+    fpgaVersion             : u16,
+    moduleCode              : u16,
+    runStatus               : u8,
+    segmentsAmount          : u8,
+
+    serial                  : TextLine,
+    name                    : TextLine,
+    hardwarePartNumber      : TextLine,
+    softwarePartNumber      : TextLine,
+}
+
+enum OperationMode {
+    WriteStop               = 0,
+    WriteContinuous         = 1,
+    WriteSingle             = 2,
+
+    ReadStopped             = 10,
+    ReadContinuous          = 11,
+    ReadSingle              = 12,
+    ReadBusy                = 13,
+
+    OperationModeUnknown    ,
+}
+
+/// Device parameters
+struct DeviceParameters {
+    sensitivity             : f32,
+    segmentEnabled          : u32,
+    accumulationExponent    : u16,
+    oversamplingExponent    : u16,
+    baseSamples             : u16,
+    autoFrame               : u16,
+    autoEcho                : u16,
+/// from -16 to 16
+    smoothing               : i8,
+/// 100% max
+    ledPower                : u8,
+/// first 6 bits
+    acquisitionOption       : u8,
+    operationMode           : OperationMode,
+}
+
+/// Distances values
+struct Distances {
+    detections              : u8,
+    values                  : &[Detection;8],
+}
+
+enum Frames {
+    DeviceInfoFrame         = 1,
+    DeviceParametersFrame   = 2,
+    DistancesFrame          = 3,
+}
+
 component {
+    variables {
+        deviceInfo          : DeviceInfo,
+        deviceParameters    : DeviceParameters,
+        distances           : Distances,
+    }
+
+    statuses {
+        [deviceInfo,        1, false]: {deviceInfo},
+        [deviceParameters,  1, false]: {deviceParameters},
+        [distances,         1, false]: {distances},
+    }
+
+    commands {
+        fn requestStatus(frameCode : Frames)
+        fn activate(activation : bool)
+    }
+
     impl {
         fn init()
         fn tick()
