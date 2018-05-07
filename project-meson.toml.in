@@ -23,6 +23,7 @@ module_dirs = [
   "@AEROBOT_ROOT@/modules/photon/powerfanproxy",
   "@AEROBOT_ROOT@/modules/photon/zcvm",
   "@AEROBOT_ROOT@/modules/photon/ximea",
+  "@AEROBOT_ROOT@/modules/photon/zlidar",
 ]
 
 [[devices]]
@@ -30,7 +31,7 @@ name = "cvm"
 id = 1
 cmd_targets = ["cvm", "powerfan1", "powerfan2"]
 tm_sources = ["cvm", "powerfan1", "powerfan2"]
-modules = ["test", "nav", "fl", "udp", "grp", "px4", "px4_autogen", "usm", "powercom", "powerfanproxy", "zcvm", "ximea"]
+modules = ["test", "nav", "fl", "udp", "grp", "px4", "px4_autogen", "usm", "powercom", "powerfanproxy", "zcvm", "ximea", "zlidar"]
 
 [[devices]]
 name = "fcu"

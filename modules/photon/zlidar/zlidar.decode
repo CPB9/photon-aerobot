@@ -1,0 +1,8 @@
+module zlidar
+
+component {
+    impl {
+        fn init()
+        fn tick()
+    }
+}
