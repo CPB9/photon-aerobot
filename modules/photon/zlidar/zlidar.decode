@@ -40,7 +40,7 @@ enum OperationMode {
     ReadSingle              = 12,
     ReadBusy                = 13,
 
-    OperationModeUnknown    ,
+    Unknown                 ,
 }
 
 /// Device parameters
@@ -87,8 +87,9 @@ component {
     }
 
     commands {
-        fn requestStatus(frameCode : Frames)
-        fn activate(activation : bool)
+        fn updateInfo(frameCode : Frames)
+        fn start()
+        fn stop()
     }
 
     impl {
