@@ -36,6 +36,8 @@ modules_src = [
   'modules/photon/powercom/powercom.decode',
   'modules/photon/zlidar/mod.toml',
   'modules/photon/zlidar/zlidar.decode',
+  'modules/photon/ximea/ximea.toml',
+  'modules/photon/ximea/ximea.decode',
 ]
 
 photon_opts = []

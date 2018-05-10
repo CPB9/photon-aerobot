@@ -240,7 +240,12 @@ component {
     }
 
     statuses {
-        [state, 1, true]: { front.state, bi_front_left.state, bi_front_right.state, bi_bottom_left.state, bi_bottom_right.state},
+        [state,             1, true]: { front.state, bi_front_left.state, bi_front_right.state, bi_bottom_left.state, bi_bottom_right.state},
+        [state_front,       1, true]: { front },
+        [state_front_left,  1, true]: { bi_front_left   },
+        [state_front_right, 1, true]: { bi_front_right  },
+        [state_bottom_left, 1, true]: { bi_bottom_left  },
+        [state_bottom_right,1, true]: { bi_bottom_right },
     }
 
     commands {
