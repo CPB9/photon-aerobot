@@ -34,9 +34,10 @@ modules_src = [
   'modules/photon/powercom/mod.toml',
   'modules/photon/powercom/Stub.c',
   'modules/photon/powercom/powercom.decode',
+  'modules/photon/powerfanproxy/powerfanproxy.decode',
   'modules/photon/zlidar/mod.toml',
   'modules/photon/zlidar/zlidar.decode',
-  'modules/photon/ximea/ximea.toml',
+  'modules/photon/ximea/mod.toml',
   'modules/photon/ximea/ximea.decode',
 ]
 

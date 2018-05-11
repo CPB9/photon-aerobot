@@ -63,10 +63,19 @@ struct Bldc {
     config: A4960Config,
 }
 
+struct Pwm {
+    outDuty: f32,
+    length: u16,
+    input: u16,
+    step: u16,
+}
+
 component {
     variables {
         bldc1: Bldc,
         bldc2: Bldc,
+        pwm1: Pwm,
+        pwm2: Pwm,
     }
 
     commands {
@@ -78,9 +87,10 @@ component {
         fn setCurrentPresetName(id: BldcId, name: PresetName)
         fn setCurrentPresetReg(id: BldcId, reg: Reg, value: u8)
         fn pwmSetDuty(id: BldcId, value: f64)
+        fn pwmSetStep(id: BldcId, value: u16)
     }
 
     statuses {
-        [all, 1, true]: {bldc1, bldc2}
+        [all, 1, true]: {bldc1, bldc2, pwm1, pwm2}
     }
 }
