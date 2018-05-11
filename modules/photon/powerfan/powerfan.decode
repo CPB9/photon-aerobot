@@ -93,4 +93,9 @@ component {
     statuses {
         [all, 1, true]: {bldc1, bldc2, pwm1, pwm2}
     }
+
+    autosave {
+        bldc1.config,
+        bldc2.config,
+    }
 }

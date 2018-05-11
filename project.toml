@@ -4,6 +4,7 @@ master = "cvm"
 common_modules = ["core", "tm", "pvu", "fwt", "exc", "clk"]
 mcc_id = 0
 module_dirs = [
+  "thirdparty/photon/modules/photon/asv",
   "thirdparty/photon/modules/photon/core",
   "thirdparty/photon/modules/photon/tm",
   "thirdparty/photon/modules/photon/fwt",
@@ -48,10 +49,10 @@ modules = ["powercom"]
 [[devices]]
 name = "powerfan1"
 id = 4
-modules = ["powerfan"]
+modules = ["powerfan", "asv"]
 
 [[devices]]
 name = "powerfan2"
 id = 5
-modules = ["powerfan"]
+modules = ["powerfan", "asv"]
 
