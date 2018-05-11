@@ -1,6 +1,6 @@
 module powerfanproxy
 
-import powerfan::{A4960Config, Reg}
+import powerfan::{A4960Config, Reg, Bldc, Pwm}
 
 type PresetName = &[char; 32];
 
@@ -11,32 +11,34 @@ enum BldcId {
     Bldc4,
 }
 
-struct Bldc {
-    speed: u32,
-    config: A4960Config,
-}
-
 component {
     variables {
         bldc1: Bldc,
         bldc2: Bldc,
         bldc3: Bldc,
         bldc4: Bldc,
+        pwm1: Pwm,
+        pwm2: Pwm,
+        pwm3: Pwm,
+        pwm4: Pwm,
     }
 
     commands {
         fn stop(id: BldcId)
-        fn setFlow(id:BldcId, flow: f32)
+        fn setFlow(id: BldcId, flow: f32)
         fn run(id: BldcId)
         fn applyCurrentPreset(id: BldcId)
         fn setCurrentPreset(id: BldcId, preset: A4960Config)
         fn setCurrentPresetName(id: BldcId, name: PresetName)
         fn setCurrentPresetReg(id: BldcId, reg: Reg, value: u8)
         fn pwmSetDuty(id: BldcId, value: f64)
+        fn pwmSetStep(id: BldcId, value: u16)
     }
 
     statuses {
         [all1, 1, true]: {bldc1, bldc2}
         [all2, 1, true]: {bldc3, bldc4}
+        [pwm1, 1, true]: {pwm1, pwm2}
+        [pwm2, 1, true]: {pwm3, pwm4}
     }
 }
