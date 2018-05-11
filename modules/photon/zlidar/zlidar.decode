@@ -67,23 +67,53 @@ struct Distances {
     values                  : &[Detection;8],
 }
 
+/// Temporary distances datagram
+struct DistancesTemp {
+    detections              : u8,
+    value0                  : Detection,
+    value1                  : Detection,
+    value2                  : Detection,
+    value3                  : Detection,
+    value4                  : Detection,
+    value5                  : Detection,
+    value6                  : Detection,
+    value7                  : Detection,
+}
+
+enum ErrorCode {
+    WrongSensorsAmount      = 1,
+}
+
+/// Current device status
+struct DeviceStatus {
+    started                 : bool,
+    errorCode               : u16,
+}
+
+/// List of avaiable frames
 enum Frames {
     DeviceInfoFrame         = 1,
     DeviceParametersFrame   = 2,
-    DistancesFrame          = 3,
+    DeviceStatusFrame       = 3,
+    DistancesFrame          = 4,
+    DistancesTempFrame      = 5,
 }
 
 component {
     variables {
         deviceInfo          : DeviceInfo,
         deviceParameters    : DeviceParameters,
+        deviceStatus        : DeviceStatus,
         distances           : Distances,
+        distancesTemp       : DistancesTemp,
     }
 
     statuses {
         [deviceInfo,        1, false]: {deviceInfo},
         [deviceParameters,  1, false]: {deviceParameters},
+        [deviceStatus,      1, false]: {deviceStatus},
         [distances,         1, false]: {distances},
+        [distancesTemp,     1, false]: {distancesTemp},
     }
 
     commands {
