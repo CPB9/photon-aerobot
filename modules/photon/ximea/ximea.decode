@@ -1,215 +1,864 @@
 module ximea
 
-type Integer = varint;
-type Float = f32;
-type String = &[char; 512];
+type xiTypeInteger = varint;
+type xiTypeFloat = f32;
+type xiTypeBoolean = bool;
+type xiTypeCommand = varint;
+type xiTypeString = &[char; 512];
 
-enum DOWNSAMPLING_TYPE {
-    /// Downsampling is using  binning
-    BINNING = 0, 
-    /// Downsampling is using  skipping
-    SKIPPING = 1,
+enum XI_DOWNSAMPLING_VALUE {
+    XI_DWN_1x1 = 1,
+    XI_DWN_2x2 = 2,
+    XI_DWN_3x3 = 3,
+    XI_DWN_4x4 = 4,
+    XI_DWN_5x5 = 5,
+    XI_DWN_6x6 = 6,
+    XI_DWN_7x7 = 7,
+    XI_DWN_8x8 = 8,
+    XI_DWN_9x9 = 9,
+    XI_DWN_10x10 = 10,
+    XI_DWN_16x16 = 16,
 }
 
-enum DOWNSAMPLING_VALUE {
-    _1x1    =1,
-    _2x2    =2,
-    _3x3    =3,
-    _4x4    =4,
-    _5x5    =5,
-    _6x6    =6,
-    _7x7    =7,
-    _8x8    =8,
-    _9x9    =9,
-    _10x10  =10,
-    _16x16  =16,
+enum XI_TEST_PATTERN_GENERATOR {
+    XI_TESTPAT_GEN_SENSOR = 0,
+    XI_TESTPAT_GEN_FPGA = 1,
 }
 
-enum TEST_PATTERN {
-    ///  Testpattern turned off.
-    OFF               =0,
-    ///  Image is filled with darkest possible image.
-    BLACK             =1,
-    ///  Image is filled with brightest possible image.
-    WHITE             =2,
-    ///  Image is filled horizontally with an image that goes from the darkest possible value to the brightest.
-    GREY_HORIZ_RAMP   =3,
-    ///  Image is filled vertically with an image that goes from the darkest possible value to the brightest.
-    GREY_VERT_RAMP    =4,
-    ///  Image is filled horizontally with an image that goes from the darkest possible value to the brightest and moves from left to right.
-    GREY_HORIZ_RAMP_MOVING=5,
-    ///  Image is filled vertically with an image that goes from the darkest possible value to the brightest and moves from left to right.
-    GREY_VERT_RAMP_MOVING=6,
-    ///  A moving horizontal line is superimposed on the live image.
-    HORIZ_LINE_MOVING =7,
-    ///  A moving vertical line is superimposed on the live image.
-    VERT_LINE_MOVING  =8,
-    ///  Image is filled with stripes of color including White, Black, Red, Green, Blue, Cyan, Magenta and Yellow.
-    COLOR_BAR         =9,
-    ///  A frame counter is superimposed on the live image.
-    FRAME_COUNTER     =10,
-    ///  128bit counter.
-    DEVICE_SPEC_COUNTER=11,
+enum XI_TEST_PATTERN {
+    XI_TESTPAT_OFF = 0,
+    XI_TESTPAT_BLACK = 1,
+    XI_TESTPAT_WHITE = 2,
+    XI_TESTPAT_GREY_HORIZ_RAMP = 3,
+    XI_TESTPAT_GREY_VERT_RAMP = 4,
+    XI_TESTPAT_GREY_HORIZ_RAMP_MOVING = 5,
+    XI_TESTPAT_GREY_VERT_RAMP_MOVING = 6,
+    XI_TESTPAT_HORIZ_LINE_MOVING = 7,
+    XI_TESTPAT_VERT_LINE_MOVING = 8,
+    XI_TESTPAT_COLOR_BAR = 9,
+    XI_TESTPAT_FRAME_COUNTER = 10,
+    XI_TESTPAT_DEVICE_SPEC_COUNTER = 11,
 }
 
-enum IMG_FORMAT {
-    /// 8 bits per pixel
-    MONO8 =0,
-    /// 16 bits per pixel
-    MONO16 =1,
-    /// RGB data format
-    RGB24 =2,
-    /// RGBA data format
-    RGB32 =3,
-    /// RGB planar data format
-    RGB_PLANAR =4,
-    /// 8 bits per pixel raw data from sensor
-    RAW8 =5,
-    /// 16 bits per pixel raw data from sensor
-    RAW16 =6,
-    /// Data from transport layer (e.g. packed). Format see XI_PRM_TRANSPORT_PIXEL_FORMAT
-    FRM_TRANSPORT_DATA =7,
-    /// RGB data format
-    RGB48 =8,
-    /// RGBA data format
-    RGB64 =9,
-    /// RGB16 planar data format
-    RGB16_PLANAR =10,
-    /// 8 bits per pixel raw data from sensor(2 components in a row)
-    RAW8X2 =11,
-    /// 8 bits per pixel raw data from sensor(4 components in a row)
-    RAW8X4 =12,
-    /// 16 bits per pixel raw data from sensor(2 components in a row)
-    RAW16X2 =13,
-    /// 16 bits per pixel raw data from sensor(4 components in a row)
-    RAW16X4 =14,
+enum XI_DEC_PATTERN {
+    XI_DEC_MONO = 1,
+    XI_DEC_BAYER = 2,
 }
 
-enum SHUTTER_TYPE {
-    /// Sensor Global Shutter(CMOS sensor)
-    GLOBAL            =0,
-    /// Sensor Electronic Rolling Shutter(CMOS sensor)
-    ROLLING           =1,
-    /// Sensor Global Reset Release Shutter(CMOS sensor)
-    GLOBAL_RESET_RELEASE=2,
+enum XI_BIN_PATTERN {
+    XI_BIN_MONO = 1,
+    XI_BIN_BAYER = 2,
 }
 
-enum SENS_DEFFECTS_CORR_LIST_SELECTOR {
-    /// Factory defect correction list
-    FACTORY=0,
-    /// User defect correction list
-    USER0=1,
+enum XI_BIN_SELECTOR {
+    XI_BIN_SELECT_SENSOR = 0,
+    XI_BIN_SELECT_DEVICE_FPGA = 1,
+    XI_BIN_SELECT_HOST_CPU = 2,
 }
 
-enum TEST_PATTERN_GENERATOR {
-    ///  Sensor Test Pattern Generator
-    SENSOR =0,
-    ///  FPGA Test Pattern Generator
-    FPGA   =1,
+enum XI_BIN_MODE {
+    XI_BIN_MODE_SUM = 0,
+    XI_BIN_MODE_AVERAGE = 1,
 }
 
-enum GAIN_SELECTOR_TYPE {
-    /// Gain selector selects all channels. Implementation of gain type depends on camera.
-    ALL         =0,
-    /// Gain selector selects all analog channels. This is available only on some cameras.
-    ANALOG_ALL  =1,
-    /// Gain selector selects all digital channels. This is available only on some cameras.
-    DIGITAL_ALL =2,
-    /// Gain selector selects tap 1. This is available only on some cameras.
-    ANALOG_TAP1 =3,
-    /// Gain selector selects tap 2. This is available only on some cameras.
-    ANALOG_TAP2 =4,
-    /// Gain selector selects tap 3. This is available only on some cameras.
-    ANALOG_TAP3 =5,
-    /// Gain selector selects tap 4. This is available only on some cameras.
-    ANALOG_TAP4 =6,
+enum XI_DEC_SELECTOR {
+    XI_DEC_SELECT_SENSOR = 0,
+    XI_DEC_SELECT_DEVICE_FPGA = 1,
+    XI_DEC_SELECT_HOST_CPU = 2,
 }
 
-enum SENSOR_TAP_CNT { 
-    _1 = 1,
-    _2 = 2,
-    _4 = 4,
+enum XI_SENSOR_TAP_CNT {
+    XI_TAP_CNT_1 = 1,
+    XI_TAP_CNT_2 = 2,
+    XI_TAP_CNT_4 = 4,
 }
 
-struct Basic {
-    ///Exposure time in microseconds 
-    exposure: Integer,
-    /// Sets the number of times of exposure in one frame. 
-    exposure_burst_count: Integer,
-    /// Gain selector for parameter Gain allows to select different type of gains. XI_GAIN_SELECTOR_TYPE    
-    gain_selector: GAIN_SELECTOR_TYPE,
-    /// Gain in dB
-    gain: Float,
-    /// Change image resolution by binning or skipping. XI_DOWNSAMPLING_VALUE    
-    downsampling: DOWNSAMPLING_VALUE,
-    /// Change image downsampling type.    
-    downsampling_type: DOWNSAMPLING_TYPE,
-    /// Selects which test pattern generator is controlled by the TestPattern feature. XI_TEST_PATTERN_GENERATOR
-    test_pattern_generator_selector: TEST_PATTERN_GENERATOR,
-    /// Selects which test pattern type is generated by the selected generator. XI_TEST_PATTERN
-    test_pattern: TEST_PATTERN,
-    /// Output data format. XI_IMG_FORMAT    
-    imgdataformat: IMG_FORMAT,
-    /// Change sensor shutter type(CMOS sensor). XI_SHUTTER_TYPE    
-    shutter_type: SHUTTER_TYPE,
-    /// Number of taps XI_SENSOR_TAP_CNT
-    #[ranges(default=1)]
-    sensor_taps: SENSOR_TAP_CNT,
-    /// Automatic exposure/gain     
-    #[ranges(default=0)]
-    aeag: bool,
-    /// Automatic exposure/gain ROI offset X     
-    aeag_roi_offset_x: Integer,
-    /// Automatic exposure/gain ROI offset Y     
-    aeag_roi_offset_y: Integer,
-    /// Automatic exposure/gain ROI Width 
-    aeag_roi_width: Integer,
-    /// Automatic exposure/gain ROI Height 
-    aeag_roi_height: Integer,
-    /// Selector of list used by Sensor Defects Correction parameter XI_SENS_DEFFECTS_CORR_LIST_SELECTOR
-    bpc_list_selector: SENS_DEFFECTS_CORR_LIST_SELECTOR,
-    /// Sets/Gets sensor defects list in special text format 
-    sens_defects_corr_list_content: String,
-    /// Correction of sensor defects (pixels, columns, rows) enable/disable 
-    bpc: bool,
-    /// Automatic white balance 
-    auto_wb: bool,
-    /// Calculates White Balance(xiGetImage function must be called) 
-    manual_wb: Integer,
-    /// White balance red coefficient
-    #[ranges(default=1.0)]
-    wb_kr: Float,
-    /// White balance green coefficient 
-    #[ranges(default=1.0)]
-    wb_kg: Float,
-    /// White balance blue coefficient 
-    #[ranges(default=1.0)]
-    wb_kb: Float,
-    /// Width of the Image provided by the device (in pixels). 
-    width: Integer,
-    /// Height of the Image provided by the device (in pixels). 
-    height: Integer,
-    /// Horizontal offset from the origin to the area of interest (in pixels). 
-    #[ranges(default=0)]
-    offsetX: Integer,
-    /// Vertical offset from the origin to the area of interest (in pixels). 
-    #[ranges(default=0)]
-    offsetY: Integer,
-    /// Selects Region in Multiple ROI which parameters are set by width, height, ... ,region mode 
-    region_selector: Integer,
-    /// Activates/deactivates Region selected by Region Selector 
-    region_mode: Integer,
-    /// Horizontal flip enable 
-    horizontal_flip: bool,
-    /// Vertical flip enable 
-    vertical_flip: bool,
-    /// Image flat field correction 
-    ffc: bool,
-    /// Set name of file to be applied for FFC processor. 
-    ffc_flat_field_file_name: String,
-    /// Set name of file to be applied for FFC processor. 
-    ffc_dark_field_file_name: String,
+enum XI_BIT_DEPTH {
+    XI_BPP_8 = 8,
+    XI_BPP_9 = 9,
+    XI_BPP_10 = 10,
+    XI_BPP_11 = 11,
+    XI_BPP_12 = 12,
+    XI_BPP_14 = 14,
+    XI_BPP_16 = 16,
 }
+
+enum XI_DEBUG_LEVEL {
+    XI_DL_DETAIL = 0,
+    XI_DL_TRACE = 1,
+    XI_DL_WARNING = 2,
+    XI_DL_ERROR = 3,
+    XI_DL_FATAL = 4,
+    XI_DL_DISABLED = 100,
+}
+
+enum XI_IMG_FORMAT {
+    XI_MONO8 = 0,
+    XI_MONO16 = 1,
+    XI_RGB24 = 2,
+    XI_RGB32 = 3,
+    XI_RGB_PLANAR = 4,
+    XI_RAW8 = 5,
+    XI_RAW16 = 6,
+    XI_FRM_TRANSPORT_DATA = 7,
+    XI_RGB48 = 8,
+    XI_RGB64 = 9,
+    XI_RGB16_PLANAR = 10,
+    XI_RAW8X2 = 11,
+    XI_RAW8X4 = 12,
+    XI_RAW16X2 = 13,
+    XI_RAW16X4 = 14,
+}
+
+enum XI_COLOR_FILTER_ARRAY {
+    XI_CFA_NONE = 0,
+    XI_CFA_BAYER_RGGB = 1,
+    XI_CFA_CMYG = 2,
+    XI_CFA_RGR = 3,
+    XI_CFA_BAYER_BGGR = 4,
+    XI_CFA_BAYER_GRBG = 5,
+    XI_CFA_BAYER_GBRG = 6,
+}
+
+enum XI_BP {
+    XI_BP_UNSAFE = 0,
+    XI_BP_SAFE = 1,
+}
+
+enum XI_TRG_SOURCE {
+    XI_TRG_OFF = 0,
+    XI_TRG_EDGE_RISING = 1,
+    XI_TRG_EDGE_FALLING = 2,
+    XI_TRG_SOFTWARE = 3,
+    XI_TRG_LEVEL_HIGH = 4,
+    XI_TRG_LEVEL_LOW = 5,
+}
+
+enum XI_TRG_SELECTOR {
+    XI_TRG_SEL_FRAME_START = 0,
+    XI_TRG_SEL_EXPOSURE_ACTIVE = 1,
+    XI_TRG_SEL_FRAME_BURST_START = 2,
+    XI_TRG_SEL_FRAME_BURST_ACTIVE = 3,
+    XI_TRG_SEL_MULTIPLE_EXPOSURES = 4,
+    XI_TRG_SEL_EXPOSURE_START = 5,
+    XI_TRG_SEL_MULTI_SLOPE_PHASE_CHANGE = 6,
+    XI_TRG_SEL_ACQUISITION_START = 7,
+}
+
+enum XI_TRG_OVERLAP {
+    XI_TRG_OVERLAP_OFF = 0,
+    XI_TRG_OVERLAP_READ_OUT = 1,
+    XI_TRG_OVERLAP_PREV_FRAME = 2,
+}
+
+enum XI_ACQ_TIMING_MODE {
+    XI_ACQ_TIMING_MODE_FREE_RUN = 0,
+    XI_ACQ_TIMING_MODE_FRAME_RATE = 1,
+    XI_ACQ_TIMING_MODE_FRAME_RATE_LIMIT = 2,
+}
+
+enum XI_TRANSPORT_DATA_TARGET_MODE {
+    XI_TRANSPORT_DATA_TARGET_CPU_RAM = 0,
+    XI_TRANSPORT_DATA_TARGET_GPU_RAM = 1,
+}
+
+enum XI_GPI_SEL_CB {
+    XI_GPI_SEL_CB_IN1 = 1,
+    XI_GPI_SEL_CB_IN2 = 2,
+    XI_GPI_SEL_CB_INOUT1 = 3,
+    XI_GPI_SEL_CB_INOUT2 = 4,
+    XI_GPI_SEL_CB_INOUT3 = 5,
+    XI_GPI_SEL_CB_INOUT4 = 6,
+}
+
+enum XI_GPO_SEL_CB {
+    XI_GPO_SEL_CB_OUT1 = 1,
+    XI_GPO_SEL_CB_OUT2 = 2,
+    XI_GPO_SEL_CB_INOUT1 = 3,
+    XI_GPO_SEL_CB_INOUT2 = 4,
+    XI_GPO_SEL_CB_INOUT3 = 5,
+    XI_GPO_SEL_CB_INOUT4 = 6,
+}
+
+enum XI_GPI_MODE {
+    XI_GPI_OFF = 0,
+    XI_GPI_TRIGGER = 1,
+    XI_GPI_EXT_EVENT = 2,
+}
+
+enum XI_GPI_SELECTOR {
+    XI_GPI_PORT1 = 1,
+    XI_GPI_PORT2 = 2,
+    XI_GPI_PORT3 = 3,
+    XI_GPI_PORT4 = 4,
+    XI_GPI_PORT5 = 5,
+    XI_GPI_PORT6 = 6,
+}
+
+enum XI_GPO_MODE {
+    XI_GPO_OFF = 0,
+    XI_GPO_ON = 1,
+    XI_GPO_FRAME_ACTIVE = 2,
+    XI_GPO_FRAME_ACTIVE_NEG = 3,
+    XI_GPO_EXPOSURE_ACTIVE = 4,
+    XI_GPO_EXPOSURE_ACTIVE_NEG = 5,
+    XI_GPO_FRAME_TRIGGER_WAIT = 6,
+    XI_GPO_FRAME_TRIGGER_WAIT_NEG = 7,
+    XI_GPO_EXPOSURE_PULSE = 8,
+    XI_GPO_EXPOSURE_PULSE_NEG = 9,
+    XI_GPO_BUSY = 10,
+    XI_GPO_BUSY_NEG = 11,
+    XI_GPO_HIGH_IMPEDANCE = 12,
+    XI_GPO_FRAME_BUFFER_OVERFLOW = 13,
+}
+
+enum XI_GPO_SELECTOR {
+    XI_GPO_PORT1 = 1,
+    XI_GPO_PORT2 = 2,
+    XI_GPO_PORT3 = 3,
+    XI_GPO_PORT4 = 4,
+    XI_GPO_PORT5 = 5,
+    XI_GPO_PORT6 = 6,
+}
+
+enum XI_LED_MODE {
+    XI_LED_HEARTBEAT = 0,
+    XI_LED_TRIGGER_ACTIVE = 1,
+    XI_LED_EXT_EVENT_ACTIVE = 2,
+    XI_LED_LINK = 3,
+    XI_LED_ACQUISITION = 4,
+    XI_LED_EXPOSURE_ACTIVE = 5,
+    XI_LED_FRAME_ACTIVE = 6,
+    XI_LED_OFF = 7,
+    XI_LED_ON = 8,
+    XI_LED_BLINK = 9,
+}
+
+enum XI_LED_SELECTOR {
+    XI_LED_SEL1 = 1,
+    XI_LED_SEL2 = 2,
+    XI_LED_SEL3 = 3,
+    XI_LED_SEL4 = 4,
+}
+
+enum XI_COUNTER_SELECTOR {
+    XI_CNT_SEL_TRANSPORT_SKIPPED_FRAMES = 0,
+    XI_CNT_SEL_API_SKIPPED_FRAMES = 1,
+    XI_CNT_SEL_TRANSPORT_TRANSFERRED_FRAMES = 2,
+    XI_CNT_SEL_FRAME_MISSED_TRIGGER_DUETO_OVERLAP = 3,
+    XI_CNT_SEL_FRAME_MISSED_TRIGGER_DUETO_FRAME_BUFFER_OVR = 4,
+    XI_CNT_SEL_FRAME_BUFFER_OVERFLOW = 5,
+}
+
+enum XI_TS_RST_MODE {
+    XI_TS_RST_ARM_ONCE = 0,
+    XI_TS_RST_ARM_PERSIST = 1,
+}
+
+enum XI_TS_RST_SOURCE {
+    XI_TS_RST_OFF = 0,
+    XI_TS_RST_SRC_GPI_1 = 1,
+    XI_TS_RST_SRC_GPI_2 = 2,
+    XI_TS_RST_SRC_GPI_3 = 3,
+    XI_TS_RST_SRC_GPI_4 = 4,
+    XI_TS_RST_SRC_GPI_1_INV = 5,
+    XI_TS_RST_SRC_GPI_2_INV = 6,
+    XI_TS_RST_SRC_GPI_3_INV = 7,
+    XI_TS_RST_SRC_GPI_4_INV = 8,
+    XI_TS_RST_SRC_GPO_1 = 9,
+    XI_TS_RST_SRC_GPO_2 = 10,
+    XI_TS_RST_SRC_GPO_3 = 11,
+    XI_TS_RST_SRC_GPO_4 = 12,
+    XI_TS_RST_SRC_GPO_1_INV = 13,
+    XI_TS_RST_SRC_GPO_2_INV = 14,
+    XI_TS_RST_SRC_GPO_3_INV = 15,
+    XI_TS_RST_SRC_GPO_4_INV = 16,
+    XI_TS_RST_SRC_TRIGGER = 17,
+    XI_TS_RST_SRC_TRIGGER_INV = 18,
+    XI_TS_RST_SRC_SW = 19,
+    XI_TS_RST_SRC_EXPACTIVE = 20,
+    XI_TS_RST_SRC_EXPACTIVE_INV = 21,
+    XI_TS_RST_SRC_FVAL = 22,
+    XI_TS_RST_SRC_FVAL_INV = 23,
+}
+
+enum XI_PRM_TYPE {
+    xiTypeInteger = 0,
+    xiTypeFloat = 1,
+    xiTypeString = 2,
+    xiTypeEnum = 0,
+    xiTypeBoolean = 0,
+    xiTypeCommand = 0,
+}
+
+enum XI_SWITCH {
+    XI_OFF = 0,
+    XI_ON = 1,
+}
+
+enum XI_TEMP_SELECTOR {
+    XI_TEMP_IMAGE_SENSOR_DIE_RAW = 0,
+    XI_TEMP_IMAGE_SENSOR_DIE = 1,
+    XI_TEMP_SENSOR_BOARD = 2,
+    XI_TEMP_INTERFACE_BOARD = 3,
+    XI_TEMP_FRONT_HOUSING = 4,
+    XI_TEMP_REAR_HOUSING = 5,
+    XI_TEMP_TEC1_COLD = 6,
+    XI_TEMP_TEC1_HOT = 7,
+}
+
+enum XI_TEMP_CTRL_MODE_SELECTOR {
+    XI_TEMP_CTRL_MODE_OFF = 0,
+    XI_TEMP_CTRL_MODE_AUTO = 1,
+    XI_TEMP_CTRL_MODE_MANUAL = 2,
+}
+
+enum XI_TEMP_ELEMENT_SELECTOR {
+    XI_TEMP_ELEM_TEC1 = 11,
+    XI_TEMP_ELEM_TEC2 = 12,
+    XI_TEMP_ELEM_FAN1 = 31,
+    XI_TEMP_ELEM_FAN1_THRS_TEMP = 32,
+}
+
+enum XI_OUTPUT_DATA_PACKING_TYPE {
+    XI_DATA_PACK_XI_GROUPING = 0,
+    XI_DATA_PACK_PFNC_LSB_PACKING = 1,
+}
+
+enum XI_DOWNSAMPLING_TYPE {
+    XI_BINNING = 0,
+    XI_SKIPPING = 1,
+}
+
+enum XI_IMAGE_CORRECTION_SELECTOR {
+    XI_CORRECTION_TYPE_SELECTOR = 0,
+    XI_DEFECT_ID = 1,
+    XI_DEFECTS_COUNT_BY_TYPE = 2,
+    XI_DEFECT_TYPE = 3,
+    XI_DEFECT_SUB_TYPE = 4,
+    XI_DEFECT_POS_X = 5,
+    XI_DEFECT_POS_Y = 6,
+    XI_DEFECT_CMD_ADD = 7,
+    XI_DEFECT_CMD_DELETE = 8,
+    XI_DEFECT_CMD_APPLY_CHANGES = 9,
+    XI_DEFECT_CMD_LIST_CLEAR = 10,
+    XI_DEFECT_CMD_LISTS_CLEAR = 11,
+    XI_DEFECT_CMD_SAVE = 12,
+    XI_CORRECTION_TYPE_ENABLED = 13,
+    XI_DEFECT_ID_BY_TYPE = 14,
+    XI_LIST_ID = 15,
+    XI_DEFECT_CMD_APPLY_CHANGES_ALL = 16,
+    XI_LIST_STATUS = 17,
+    XI_IMG_COR_TAP_SELECTOR = 64,
+    XI_IMG_COR_GAIN_TUNE = 65,
+    XI_IMG_COR_OFFSET_TUNE = 66,
+}
+
+enum XI_TYPE_CORRECTION_SELECTOR {
+    XI_CORR_TYPE_SENSOR_DEFECTS_FACTORY = 0,
+    XI_CORR_TYPE_SENSOR_COLUMN_FPN = 1,
+    XI_CORR_TYPE_SENSOR_ADC_BLO = 2,
+    XI_CORR_TYPE_SENSOR_ROW_FPN = 3,
+    XI_CORR_TYPE_SENSOR_DEFECTS_USER0 = 4,
+    XI_CORR_TYPE_SENSOR_CHANNELS_TUNE = 5,
+}
+
+enum XI_IMAGE_DEFECT_TYPE {
+    XI_IMAGE_DEFECT_TYPE_PIXEL = 0,
+    XI_IMAGE_DEFECT_TYPE_COLUMN = 1,
+    XI_IMAGE_DEFECT_TYPE_ROW = 2,
+}
+
+enum XI_IMAGE_DEFECT_SUB_TYPE {
+    XI_IMAGE_DEFECT_SUB_TYPE_DARK = 0,
+    XI_IMAGE_DEFECT_SUB_TYPE_BRIGHT = 1,
+    XI_IMAGE_DEFECT_SUB_TYPE_HOT = 2,
+}
+
+enum XI_GAIN_SELECTOR_TYPE {
+    XI_GAIN_SELECTOR_ALL = 0,
+    XI_GAIN_SELECTOR_ANALOG_ALL = 1,
+    XI_GAIN_SELECTOR_DIGITAL_ALL = 2,
+    XI_GAIN_SELECTOR_ANALOG_TAP1 = 3,
+    XI_GAIN_SELECTOR_ANALOG_TAP2 = 4,
+    XI_GAIN_SELECTOR_ANALOG_TAP3 = 5,
+    XI_GAIN_SELECTOR_ANALOG_TAP4 = 6,
+}
+
+enum XI_SHUTTER_TYPE {
+    XI_SHUTTER_GLOBAL = 0,
+    XI_SHUTTER_ROLLING = 1,
+    XI_SHUTTER_GLOBAL_RESET_RELEASE = 2,
+}
+
+enum XI_CMS_MODE {
+    XI_CMS_DIS = 0,
+    XI_CMS_EN = 1,
+    XI_CMS_EN_FAST = 2,
+}
+
+enum XI_CMS_INTENT {
+    XI_CMS_INTENT_PERCEPTUAL = 0,
+    XI_CMS_INTENT_RELATIVE_COLORIMETRIC = 1,
+    XI_CMS_INTENT_SATURATION = 2,
+    XI_CMS_INTENT_ABSOLUTE_COLORIMETRIC = 3,
+}
+
+enum XI_OPEN_BY {
+    XI_OPEN_BY_INST_PATH = 0,
+    XI_OPEN_BY_SN = 1,
+    XI_OPEN_BY_USER_ID = 2,
+    XI_OPEN_BY_LOC_PATH = 3,
+}
+
+enum XI_LENS_FEATURE {
+    XI_LENS_FEATURE_MOTORIZED_FOCUS_SWITCH = 1,
+    XI_LENS_FEATURE_MOTORIZED_FOCUS_BOUNDED = 2,
+    XI_LENS_FEATURE_MOTORIZED_FOCUS_CALIBRATION = 3,
+    XI_LENS_FEATURE_IMAGE_STABILIZATION_ENABLED = 4,
+    XI_LENS_FEATURE_IMAGE_STABILIZATION_SWITCH_STATUS = 5,
+    XI_LENS_FEATURE_IMAGE_ZOOM_SUPPORTED = 6,
+}
+
+enum XI_SENSOR_FEATURE_SELECTOR {
+    XI_SENSOR_FEATURE_ZEROROT_ENABLE = 0,
+    XI_SENSOR_FEATURE_BLACK_LEVEL_CLAMP = 1,
+    XI_SENSOR_FEATURE_MD_FPGA_DIGITAL_GAIN_DISABLE = 2,
+    XI_SENSOR_FEATURE_ACQUISITION_RUNNING = 3,
+}
+
+enum XI_EXT_FEATURE_SELECTOR {
+    XI_EXT_FEATURE_SEL_SIMULATOR_GENERATOR_FRAME_LOST_PERIOD_MIN = 1,
+    XI_EXT_FEATURE_SEL_SIMULATOR_GENERATOR_FRAME_LOST_PERIOD_MAX = 2,
+    XI_EXT_FEATURE_SEL_SIMULATOR_IMAGE_DATA_FORMAT = 3,
+    XI_EXT_FEATURE_SEL_BANDWIDTH_MEASUREMENT_TIME_SECONDS = 4,
+    XI_EXT_FEATURE_SEL_IMAGE_INTENSIFIER_VOLTAGE = 5,
+    XI_EXT_FEATURE_SEL_TRIG_FRAME = 6,
+    XI_EXT_FEATURE_SEL_IMAGE_OVERSAMPLING = 7,
+    XI_EXT_FEATURE_SEL_APPLY_DATA_FINAL = 8,
+    XI_EXT_FEATURE_SEL_FAN_RPM = 9,
+    XI_EXT_FEATURE_SEL_DITHERING_HOST = 10,
+    XI_EXT_FEATURE_SEL_DITHERING_DEVICE = 11,
+    XI_EXT_FEATURE_SEL_FAN_THR_TEMP = 12,
+}
+
+enum XI_DEVICE_UNIT_SELECTOR {
+    XI_DEVICE_UNIT_SENSOR1 = 0,
+    XI_DEVICE_UNIT_FPGA1 = 1,
+    XI_DEVICE_UNIT_SAL = 2,
+    XI_DEVICE_UNIT_DAL = 3,
+    XI_DEVICE_UNIT_SCM = 4,
+    XI_DEVICE_UNIT_FGENTL = 5,
+    XI_DEVICE_UNIT_MCU1 = 6,
+    XI_DEVICE_UNIT_MCU2 = 7,
+    XI_DEVICE_UNIT_CHF = 8,
+}
+
+enum XI_SENSOR_MODE {
+    XI_SENS_MD0 = 0,
+    XI_SENS_MD1 = 1,
+    XI_SENS_MD2 = 2,
+    XI_SENS_MD3 = 3,
+    XI_SENS_MD4 = 4,
+    XI_SENS_MD5 = 5,
+    XI_SENS_MD6 = 6,
+    XI_SENS_MD7 = 7,
+    XI_SENS_MD8 = 8,
+    XI_SENS_MD9 = 9,
+    XI_SENS_MD10 = 10,
+    XI_SENS_MD11 = 11,
+    XI_SENS_MD12 = 12,
+    XI_SENS_MD13 = 13,
+    XI_SENS_MD14 = 14,
+    XI_SENS_MD15 = 15,
+}
+
+enum XI_SENSOR_OUTPUT_CHANNEL_COUNT {
+    XI_CHANN_CNT2 = 2,
+    XI_CHANN_CNT4 = 4,
+    XI_CHANN_CNT8 = 8,
+    XI_CHANN_CNT16 = 16,
+    XI_CHANN_CNT32 = 32,
+}
+
+enum XI_SENS_DEFFECTS_CORR_LIST_SELECTOR {
+    XI_SENS_DEFFECTS_CORR_LIST_SEL_FACTORY = 0,
+    XI_SENS_DEFFECTS_CORR_LIST_SEL_USER0 = 1,
+}
+
+enum XI_ACQUISITION_STATUS_SELECTOR {
+    XI_ACQUISITION_STATUS_ACQ_ACTIVE = 0,
+}
+
+enum XI_GenTL_Image_Format_e {
+    XI_GenTL_Image_Format_Mono8 = 0x01080001,
+}
+
+struct Fields {
+    ///Exposure time in microseconds
+    exposure: xiTypeInteger,
+    ///Sets the number of times of exposure in one frame.
+    exposure_burst_count: xiTypeInteger,
+    ///Gain selector for parameter Gain allows to select different type of gains.
+    gain_selector:  XI_GAIN_SELECTOR_TYPE,
+    ///Gain in dB
+    gain: xiTypeFloat,
+    ///Change image resolution by binning or skipping.
+    downsampling:  XI_DOWNSAMPLING_VALUE,
+    ///Change image downsampling type.
+    downsampling_type:  XI_DOWNSAMPLING_TYPE,
+    ///Selects which test pattern generator is controlled by the TestPattern feature.
+    test_pattern_generator_selector:  XI_TEST_PATTERN_GENERATOR,
+    ///Selects which test pattern type is generated by the selected generator.
+    test_pattern:  XI_TEST_PATTERN,
+    ///Output data format.
+    imgdataformat:  XI_IMG_FORMAT,
+    ///Change sensor shutter type(CMOS sensor).
+    shutter_type:  XI_SHUTTER_TYPE,
+    ///Number of taps
+    sensor_taps:  XI_SENSOR_TAP_CNT,
+    ///Automatic exposure/gain
+    aeag: xiTypeBoolean,
+    ///Automatic exposure/gain ROI offset X
+    aeag_roi_offset_x: xiTypeInteger,
+    ///Automatic exposure/gain ROI offset Y
+    aeag_roi_offset_y: xiTypeInteger,
+    ///Automatic exposure/gain ROI Width
+    aeag_roi_width: xiTypeInteger,
+    ///Automatic exposure/gain ROI Height
+    aeag_roi_height: xiTypeInteger,
+    ///Selector of list used by Sensor Defects Correction parameter
+    bpc_list_selector:  XI_SENS_DEFFECTS_CORR_LIST_SELECTOR,
+    ///Correction of sensor defects (pixels, columns, rows) enable/disable
+    bpc: xiTypeBoolean,
+    ///Automatic white balance
+    auto_wb: xiTypeBoolean,
+    ///Calculates White Balance(xiGetImage function must be called)
+    manual_wb: xiTypeCommand,
+    ///White balance red coefficient
+    wb_kr: xiTypeFloat,
+    ///White balance green coefficient
+    wb_kg: xiTypeFloat,
+    ///White balance blue coefficient
+    wb_kb: xiTypeFloat,
+    ///Width of the Image provided by the device (in pixels).
+    width: xiTypeInteger,
+    ///Height of the Image provided by the device (in pixels).
+    height: xiTypeInteger,
+    ///Horizontal offset from the origin to the area of interest (in pixels).
+    offsetX: xiTypeInteger,
+    ///Vertical offset from the origin to the area of interest (in pixels).
+    offsetY: xiTypeInteger,
+    ///Selects Region in Multiple ROI which parameters are set by width, height, ... ,region mode
+    region_selector: xiTypeInteger,
+    ///Activates/deactivates Region selected by Region Selector
+    region_mode: xiTypeInteger,
+    ///Horizontal flip enable
+    horizontal_flip: xiTypeBoolean,
+    ///Vertical flip enable
+    vertical_flip: xiTypeBoolean,
+    ///Image flat field correction
+    ffc: xiTypeBoolean,
+    ///Binning engine selector.
+    binning_selector:  XI_BIN_SELECTOR,
+    ///Sets the mode to use to combine vertical pixel together.
+    binning_vertical_mode:  XI_BIN_MODE,
+    ///Vertical Binning - number of vertical photo-sensitive cells to combine together.
+    binning_vertical: xiTypeInteger,
+    ///Sets the mode to use to combine horizontal pixel together.
+    binning_horizontal_mode:  XI_BIN_MODE,
+    ///Horizontal Binning - number of horizontal photo-sensitive cells to combine together.
+    binning_horizontal: xiTypeInteger,
+    ///Binning horizontal pattern type.
+    binning_horizontal_pattern:  XI_BIN_PATTERN,
+    ///Binning vertical pattern type.
+    binning_vertical_pattern:  XI_BIN_PATTERN,
+    ///Decimation engine selector.
+    decimation_selector:  XI_DEC_SELECTOR,
+    ///Vertical Decimation - vertical sub-sampling of the image - reduces the vertical resolution of the image by the specified vertical decimation factor.
+    decimation_vertical: xiTypeInteger,
+    ///Horizontal Decimation - horizontal sub-sampling of the image - reduces the horizontal resolution of the image by the specified vertical decimation factor.
+    decimation_horizontal: xiTypeInteger,
+    ///Decimation horizontal pattern type.
+    decimation_horizontal_pattern:  XI_DEC_PATTERN,
+    ///Decimation vertical pattern type.
+    decimation_vertical_pattern:  XI_DEC_PATTERN,
+    ///Exposure priority (0.8 - exposure 80%, gain 20%).
+    exp_priority: xiTypeFloat,
+    ///Maximum limit of gain in AEAG procedure
+    ag_max_limit: xiTypeFloat,
+    ///Maximum time (us) used for exposure in AEAG procedure
+    ae_max_limit: xiTypeInteger,
+    ///Average intensity of output signal AEAG should achieve(in %)
+    aeag_level: xiTypeInteger,
+    ///Set/get bandwidth(datarate)(in Megabits)
+    limit_bandwidth: xiTypeInteger,
+    ///Bandwidth limit enabled
+    limit_bandwidth_mode:  XI_SWITCH,
+    ///Image sensor line period in us
+    sensor_line_period: xiTypeFloat,
+    ///Sensor output data bit depth.
+    sensor_bit_depth:  XI_BIT_DEPTH,
+    ///Device output data bit depth.
+    output_bit_depth:  XI_BIT_DEPTH,
+    ///bitdepth of data returned by function xiGetImage
+    image_data_bit_depth:  XI_BIT_DEPTH,
+    ///Device output data packing (or grouping) enabled. Packing could be enabled if output_data_bit_depth > 8 and packing capability is available.
+    output_bit_packing: xiTypeBoolean,
+    ///Data packing type. Some cameras supports only specific packing type.
+    output_bit_packing_type:  XI_OUTPUT_DATA_PACKING_TYPE,
+    ///Returns 1 for cameras that support cooling.
+    iscooled: xiTypeBoolean,
+    ///Temperature control mode.
+    cooling:  XI_TEMP_CTRL_MODE_SELECTOR,
+    ///Set sensor target temperature for cooling.
+    target_temp: xiTypeFloat,
+    ///Selector of mechanical point where thermometer is located.
+    temp_selector:  XI_TEMP_SELECTOR,
+    ///Camera temperature (selected by XI_PRM_TEMP_SELECTOR)
+    temp: xiTypeFloat,
+    ///Temperature control mode.
+    device_temperature_ctrl_mode:  XI_TEMP_CTRL_MODE_SELECTOR,
+    ///Camera sensor temperature
+    chip_temp: xiTypeFloat,
+    ///Camera housing tepmerature
+    hous_temp: xiTypeFloat,
+    ///Camera housing back side tepmerature
+    hous_back_side_temp: xiTypeFloat,
+    ///Camera sensor board temperature
+    sensor_board_temp: xiTypeFloat,
+    ///Temperature element selector (TEC(Peltier), Fan).
+    device_temperature_element_sel:  XI_TEMP_ELEMENT_SELECTOR,
+    ///Temperature element value in percents of full control range
+    device_temperature_element_val: xiTypeFloat,
+    ///Mode of color management system.
+    cms:  XI_CMS_MODE,
+    ///Intent of color management system.
+    cms_intent:  XI_CMS_INTENT,
+    ///Enable applying of CMS profiles to xiGetImage (see XI_PRM_INPUT_CMS_PROFILE, XI_PRM_OUTPUT_CMS_PROFILE).
+    apply_cms: xiTypeBoolean,
+    ///Returns 1 for color cameras.
+    iscolor: xiTypeBoolean,
+    ///Returns color filter array type of RAW data.
+    cfa:  XI_COLOR_FILTER_ARRAY,
+    ///Luminosity gamma
+    gammaY: xiTypeFloat,
+    ///Chromaticity gamma
+    gammaC: xiTypeFloat,
+    ///Sharpness Strenght
+    sharpness: xiTypeFloat,
+    ///Color Correction Matrix element [0][0]
+    ccMTX00: xiTypeFloat,
+    ///Color Correction Matrix element [0][1]
+    ccMTX01: xiTypeFloat,
+    ///Color Correction Matrix element [0][2]
+    ccMTX02: xiTypeFloat,
+    ///Color Correction Matrix element [0][3]
+    ccMTX03: xiTypeFloat,
+    ///Color Correction Matrix element [1][0]
+    ccMTX10: xiTypeFloat,
+    ///Color Correction Matrix element [1][1]
+    ccMTX11: xiTypeFloat,
+    ///Color Correction Matrix element [1][2]
+    ccMTX12: xiTypeFloat,
+    ///Color Correction Matrix element [1][3]
+    ccMTX13: xiTypeFloat,
+    ///Color Correction Matrix element [2][0]
+    ccMTX20: xiTypeFloat,
+    ///Color Correction Matrix element [2][1]
+    ccMTX21: xiTypeFloat,
+    ///Color Correction Matrix element [2][2]
+    ccMTX22: xiTypeFloat,
+    ///Color Correction Matrix element [2][3]
+    ccMTX23: xiTypeFloat,
+    ///Color Correction Matrix element [3][0]
+    ccMTX30: xiTypeFloat,
+    ///Color Correction Matrix element [3][1]
+    ccMTX31: xiTypeFloat,
+    ///Color Correction Matrix element [3][2]
+    ccMTX32: xiTypeFloat,
+    ///Color Correction Matrix element [3][3]
+    ccMTX33: xiTypeFloat,
+    ///Set default Color Correction Matrix
+    defccMTX: xiTypeCommand,
+    ///Defines source of trigger.
+    trigger_source:  XI_TRG_SOURCE,
+    ///Generates an internal trigger. XI_PRM_TRG_SOURCE must be set to TRG_SOFTWARE.
+    trigger_software: xiTypeCommand,
+    ///Selects the type of trigger.
+    trigger_selector:  XI_TRG_SELECTOR,
+    ///The mode of Trigger Overlap. This influences of trigger acception/rejection policy
+    trigger_overlap:  XI_TRG_OVERLAP,
+    ///Sets number of frames acquired by burst. This burst is used only if trigger is set to FrameBurstStart
+    acq_frame_burst_count: xiTypeInteger,
+    ///Selects GPI
+    gpi_selector:  XI_GPI_SELECTOR,
+    ///Defines GPI functionality
+    gpi_mode:  XI_GPI_MODE,
+    ///GPI level
+    gpi_level: xiTypeInteger,
+    ///Selects GPO
+    gpo_selector:  XI_GPO_SELECTOR,
+    ///Defines GPO functionality
+    gpo_mode:  XI_GPO_MODE,
+    ///Selects LED
+    led_selector:  XI_LED_SELECTOR,
+    ///Defines LED functionality
+    led_mode:  XI_LED_MODE,
+    ///Enable/Disable debounce to selected GPI
+    dbnc_en: xiTypeBoolean,
+    ///Debounce time (x * 10us)
+    dbnc_t0: xiTypeInteger,
+    ///Debounce time (x * 10us)
+    dbnc_t1: xiTypeInteger,
+    ///Debounce polarity (pol = 1 t0 - falling edge, t1 - rising edge)
+    dbnc_pol: xiTypeInteger,
+    ///Status of lens control interface. This shall be set to XI_ON before any Lens operations.
+    lens_mode: xiTypeBoolean,
+    ///Current lens aperture value in stops. Examples: 2.8, 4, 5.6, 8, 11
+    lens_aperture_value: xiTypeFloat,
+    ///Lens current focus movement value to be used by XI_PRM_LENS_FOCUS_MOVE in motor steps.
+    lens_focus_movement_value: xiTypeInteger,
+    ///Moves lens focus motor by steps set in XI_PRM_LENS_FOCUS_MOVEMENT_VALUE.
+    lens_focus_move: xiTypeCommand,
+    ///Lens focus distance in cm.
+    lens_focus_distance: xiTypeFloat,
+    ///Lens focal distance in mm.
+    lens_focal_length: xiTypeFloat,
+    ///Selects the current feature which is accessible by XI_PRM_LENS_FEATURE.
+    lens_feature_selector:  XI_LENS_FEATURE,
+    ///Allows access to lens feature value currently selected by XI_PRM_LENS_FEATURE_SELECTOR.
+    lens_feature: xiTypeFloat,
+    ///Return device model id
+    device_model_id: xiTypeInteger,
+    ///Return device sensor model id
+    sensor_model_id: xiTypeInteger,
+    ///User image data at image header to track parameters synchronization.
+    image_user_data: xiTypeInteger,
+    ///The alpha channel of RGB32 output image format.
+    imgdataformatrgb32alpha: xiTypeInteger,
+    ///Buffer size in bytes sufficient for output image returned by xiGetImage
+    imgpayloadsize: xiTypeInteger,
+    ///Current format of pixels on transport layer.
+    transport_pixel_format:  XI_GenTL_Image_Format_e,
+    ///Target selector for data - CPU RAM or GPU RAM
+    transport_data_target:  XI_TRANSPORT_DATA_TARGET_MODE,
+    ///Sensor clock frequency in Hz.
+    sensor_clock_freq_hz: xiTypeFloat,
+    ///Sensor clock frequency index. Sensor with selected frequencies have possibility to set the frequency only by this index.
+    sensor_clock_freq_index: xiTypeInteger,
+    ///Number of output channels from sensor used for data transfer.
+    sensor_output_channel_count:  XI_SENSOR_OUTPUT_CHANNEL_COUNT,
+    ///Define framerate in Hz
+    framerate: xiTypeFloat,
+    ///Select counter
+    counter_selector:  XI_COUNTER_SELECTOR,
+    ///Counter status
+    counter_value: xiTypeInteger,
+    ///Type of sensor frames timing.
+    acq_timing_mode:  XI_ACQ_TIMING_MODE,
+    ///Measure and return available interface bandwidth(int Megabits)
+    available_bandwidth: xiTypeInteger,
+    ///Data move policy
+    buffer_policy:  XI_BP,
+    ///Activates LUT.
+    LUTEnable: xiTypeBoolean,
+    ///Control the index (offset) of the coefficient to access in the LUT.
+    LUTIndex: xiTypeInteger,
+    ///Value at entry LUTIndex of the LUT
+    LUTValue: xiTypeInteger,
+    ///Specifies the delay in microseconds (us) to apply after the trigger reception before activating it.
+    trigger_delay: xiTypeInteger,
+    ///Defines how time stamp reset engine will be armed
+    ts_rst_mode:  XI_TS_RST_MODE,
+    ///Defines which source will be used for timestamp reset. Writing this parameter will trigger settings of engine (arming)
+    ts_rst_source:  XI_TS_RST_SOURCE,
+    ///Returns 1 if camera connected and works properly.
+    isexist: xiTypeBoolean,
+    ///Acquisition buffer size in buffer_size_unit. Default bytes.
+    acq_buffer_size: xiTypeInteger,
+    ///Acquisition buffer size unit in bytes. Default 1. E.g. Value 1024 means that buffer_size is in KiBytes
+    acq_buffer_size_unit: xiTypeInteger,
+    ///Acquisition transport buffer size in bytes
+    acq_transport_buffer_size: xiTypeInteger,
+    ///Acquisition transport packet size in bytes
+    acq_transport_packet_size: xiTypeInteger,
+    ///Queue of field/frame buffers
+    buffers_queue_size: xiTypeInteger,
+    ///Number of buffers to commit to low level
+    acq_transport_buffer_commit: xiTypeInteger,
+    ///GetImage returns most recent frame
+    recent_frame: xiTypeBoolean,
+    ///Resets the camera to default state.
+    device_reset: xiTypeCommand,
+    ///Correction of column FPN
+    column_fpn_correction:  XI_SWITCH,
+    ///Correction of row FPN
+    row_fpn_correction:  XI_SWITCH,
+    ///Select image correction function
+    image_correction_selector:  XI_IMAGE_CORRECTION_SELECTOR,
+    ///Select image correction selected function value
+    image_correction_value: xiTypeFloat,
+    ///Current sensor mode. Allows to select sensor mode by one integer. Setting of this parameter affects: image dimensions and downsampling.
+    sensor_mode:  XI_SENSOR_MODE,
+    ///Enable High Dynamic Range feature.
+    hdr: xiTypeBoolean,
+    ///The number of kneepoints in the PWLR.
+    hdr_kneepoint_count: xiTypeInteger,
+    ///position of first kneepoint(in % of XI_PRM_EXPOSURE)
+    hdr_t1: xiTypeInteger,
+    ///position of second kneepoint (in % of XI_PRM_EXPOSURE)
+    hdr_t2: xiTypeInteger,
+    ///value of first kneepoint (% of sensor saturation)
+    hdr_kneepoint1: xiTypeInteger,
+    ///value of second kneepoint (% of sensor saturation)
+    hdr_kneepoint2: xiTypeInteger,
+    ///Last image black level counts. Can be used for Offline processing to recall it.
+    image_black_level: xiTypeInteger,
+    ///Set debug level
+    debug_level:  XI_DEBUG_LEVEL,
+    ///Automatic bandwidth calculation,
+    auto_bandwidth_calculation: xiTypeBoolean,
+    ///Enables (2015/FAPI) processing chain for MQ MU cameras
+    new_process_chain_enable: xiTypeBoolean,
+    ///Enable enumeration of golden devices
+    cam_enum_golden_enabled: xiTypeBoolean,
+    ///Resets USB device if started as bootloader
+    reset_usb_if_bootloader: xiTypeBoolean,
+    ///Number of camera simulators to be available.
+    cam_simulators_count: xiTypeInteger,
+    ///Camera sensor will not be initialized when 1=XI_ON is set.
+    cam_sensor_init_disabled: xiTypeBoolean,
+    ///File number.
+    ffs_file_id: xiTypeInteger,
+    ///Size of file.
+    ffs_file_size: xiTypeInteger,
+    ///Size of free camera FFS.
+    free_ffs_size: xiTypeInteger,
+    ///Size of used camera FFS.
+    used_ffs_size: xiTypeInteger,
+    ///Setting of key enables file operations on some cameras.
+    ffs_access_key: xiTypeInteger,
+    ///Selects the current feature which is accessible by XI_PRM_SENSOR_FEATURE_VALUE.
+    sensor_feature_selector:  XI_SENSOR_FEATURE_SELECTOR,
+    ///Allows access to sensor feature value currently selected by XI_PRM_SENSOR_FEATURE_SELECTOR.
+    sensor_feature_value: xiTypeInteger,
+    ///Selection of extended feature.
+    ext_feature_selector:  XI_EXT_FEATURE_SELECTOR,
+    ///Extended feature value.
+    ext_feature: xiTypeInteger,
+    ///Selects device unit.
+    device_unit_selector:  XI_DEVICE_UNIT_SELECTOR,
+    ///Selects register of selected device unit(XI_PRM_DEVICE_UNIT_SELECTOR).
+    device_unit_register_selector: xiTypeInteger,
+    ///Sets/gets register value of selected device unit(XI_PRM_DEVICE_UNIT_SELECTOR).
+    device_unit_register_value: xiTypeInteger,
+    ///Selects the internal acquisition signal to read using XI_PRM_ACQUISITION_STATUS.
+    acquisition_status_selector:  XI_ACQUISITION_STATUS_SELECTOR,
+    ///Acquisition status(True/False)
+    acquisition_status:  XI_SWITCH,
+}
+
 
 enum CameraState {
     Off,
@@ -219,7 +868,7 @@ enum CameraState {
 
 struct Camera {
     state: CameraState,
-    basic: Basic    
+    basic: Fields,
 }
 
 enum CameraItem {
@@ -231,6 +880,7 @@ enum CameraItem {
 }
 
 component {
+
     variables {
         front  : Camera,
         bi_front_left: Camera,
@@ -255,41 +905,424 @@ component {
         fn start(cam: CameraItem, number: varuint, timeout: varuint)
         fn stop(cam: CameraItem)
 
-        fn set_exposure(cam: CameraItem, val: Integer)
-        fn set_exposure_burst_count(cam: CameraItem, val: Integer)
-        fn set_gain(cam: CameraItem, val: Float)
-        fn set_gain_selector(cam: CameraItem, val: GAIN_SELECTOR_TYPE)
-        fn set_downsampling(cam: CameraItem, val: DOWNSAMPLING_VALUE)
-        fn set_downsampling_type(cam: CameraItem, val: DOWNSAMPLING_TYPE)
-        fn set_test_pattern_generator_selector(cam: CameraItem, val: TEST_PATTERN_GENERATOR)
-        fn set_test_pattern(cam: CameraItem, val: TEST_PATTERN)
-        fn set_imgdataformat(cam: CameraItem, val: IMG_FORMAT)
-        fn set_shutter_type(cam: CameraItem, val: SHUTTER_TYPE)
-        fn set_sensor_taps(cam: CameraItem, val: SENSOR_TAP_CNT)
-        fn set_aeag(cam: CameraItem, val: bool)
-        fn set_aeag_roi_offset_x(cam: CameraItem, val: Integer)
-        fn set_aeag_roi_offset_y(cam: CameraItem, val: Integer)
-        fn set_aeag_roi_width(cam: CameraItem, val: Integer)
-        fn set_aeag_roi_height(cam: CameraItem, val: Integer)
-        fn set_bpc_list_selector(cam: CameraItem, val: SENS_DEFFECTS_CORR_LIST_SELECTOR)
-        fn set_sens_defects_corr_list_content(cam: CameraItem, val: String)
-        fn set_bpc(cam: CameraItem, val: bool)
-        fn set_auto_wb(cam: CameraItem, val: bool)
-        fn set_manual_wb(cam: CameraItem, val: Integer)
-        fn set_wb_kr(cam: CameraItem, val: Float)
-        fn set_wb_kg(cam: CameraItem, val: Float)
-        fn set_wb_kb(cam: CameraItem, val: Float)
-        fn set_width(cam: CameraItem, val: Integer)
-        fn set_height(cam: CameraItem, val: Integer)
-        fn set_offsetX(cam: CameraItem, val: Integer)
-        fn set_offsetY(cam: CameraItem, val: Integer)
-        fn set_region_selector(cam: CameraItem, val: Integer)
-        fn set_region_mode(cam: CameraItem, val: Integer)
-        fn set_horizontal_flip(cam: CameraItem, val: bool)
-        fn set_vertical_flip(cam: CameraItem, val: bool)
-        fn set_ffc(cam: CameraItem, val: bool)
-        fn set_ffc_flat_field_file_name(cam: CameraItem, val: String)
-        fn set_ffc_dark_field_file_name(cam: CameraItem, val: String) 
+        ///Exposure time in microseconds
+        fn set_exposure(cam: CameraItem, val: xiTypeInteger)
+        ///Sets the number of times of exposure in one frame.
+        fn set_exposure_burst_count(cam: CameraItem, val: xiTypeInteger)
+        ///Gain selector for parameter Gain allows to select different type of gains.
+        fn set_gain_selector(cam: CameraItem, val:  XI_GAIN_SELECTOR_TYPE)
+        ///Gain in dB
+        fn set_gain(cam: CameraItem, val: xiTypeFloat)
+        ///Change image resolution by binning or skipping.
+        fn set_downsampling(cam: CameraItem, val:  XI_DOWNSAMPLING_VALUE)
+        ///Change image downsampling type.
+        fn set_downsampling_type(cam: CameraItem, val:  XI_DOWNSAMPLING_TYPE)
+        ///Selects which test pattern generator is controlled by the TestPattern feature.
+        fn set_test_pattern_generator_selector(cam: CameraItem, val:  XI_TEST_PATTERN_GENERATOR)
+        ///Selects which test pattern type is generated by the selected generator.
+        fn set_test_pattern(cam: CameraItem, val:  XI_TEST_PATTERN)
+        ///Output data format.
+        fn set_imgdataformat(cam: CameraItem, val:  XI_IMG_FORMAT)
+        ///Change sensor shutter type(CMOS sensor).
+        fn set_shutter_type(cam: CameraItem, val:  XI_SHUTTER_TYPE)
+        ///Number of taps
+        fn set_sensor_taps(cam: CameraItem, val:  XI_SENSOR_TAP_CNT)
+        ///Automatic exposure/gain
+        fn set_aeag(cam: CameraItem, val: xiTypeBoolean)
+        ///Automatic exposure/gain ROI offset X
+        fn set_aeag_roi_offset_x(cam: CameraItem, val: xiTypeInteger)
+        ///Automatic exposure/gain ROI offset Y
+        fn set_aeag_roi_offset_y(cam: CameraItem, val: xiTypeInteger)
+        ///Automatic exposure/gain ROI Width
+        fn set_aeag_roi_width(cam: CameraItem, val: xiTypeInteger)
+        ///Automatic exposure/gain ROI Height
+        fn set_aeag_roi_height(cam: CameraItem, val: xiTypeInteger)
+        ///Selector of list used by Sensor Defects Correction parameter
+        fn set_bpc_list_selector(cam: CameraItem, val:  XI_SENS_DEFFECTS_CORR_LIST_SELECTOR)
+        ///Sets/Gets sensor defects list in special text format
+        fn set_sens_defects_corr_list_content(cam: CameraItem, val: xiTypeString)
+        ///Correction of sensor defects (pixels, columns, rows) enable/disable
+        fn set_bpc(cam: CameraItem, val: xiTypeBoolean)
+        ///Automatic white balance
+        fn set_auto_wb(cam: CameraItem, val: xiTypeBoolean)
+        ///Calculates White Balance(xiGetImage function must be called)
+        fn set_manual_wb(cam: CameraItem, val: xiTypeCommand)
+        ///White balance red coefficient
+        fn set_wb_kr(cam: CameraItem, val: xiTypeFloat)
+        ///White balance green coefficient
+        fn set_wb_kg(cam: CameraItem, val: xiTypeFloat)
+        ///White balance blue coefficient
+        fn set_wb_kb(cam: CameraItem, val: xiTypeFloat)
+        ///Width of the Image provided by the device (in pixels).
+        fn set_width(cam: CameraItem, val: xiTypeInteger)
+        ///Height of the Image provided by the device (in pixels).
+        fn set_height(cam: CameraItem, val: xiTypeInteger)
+        ///Horizontal offset from the origin to the area of interest (in pixels).
+        fn set_offsetX(cam: CameraItem, val: xiTypeInteger)
+        ///Vertical offset from the origin to the area of interest (in pixels).
+        fn set_offsetY(cam: CameraItem, val: xiTypeInteger)
+        ///Selects Region in Multiple ROI which parameters are set by width, height, ... ,region mode
+        fn set_region_selector(cam: CameraItem, val: xiTypeInteger)
+        ///Activates/deactivates Region selected by Region Selector
+        fn set_region_mode(cam: CameraItem, val: xiTypeInteger)
+        ///Horizontal flip enable
+        fn set_horizontal_flip(cam: CameraItem, val: xiTypeBoolean)
+        ///Vertical flip enable
+        fn set_vertical_flip(cam: CameraItem, val: xiTypeBoolean)
+        ///Image flat field correction
+        fn set_ffc(cam: CameraItem, val: xiTypeBoolean)
+        ///Set name of file to be applied for FFC processor.
+        fn set_ffc_flat_field_file_name(cam: CameraItem, val: xiTypeString)
+        ///Set name of file to be applied for FFC processor.
+        fn set_ffc_dark_field_file_name(cam: CameraItem, val: xiTypeString)
+        ///Binning engine selector.
+        fn set_binning_selector(cam: CameraItem, val:  XI_BIN_SELECTOR)
+        ///Sets the mode to use to combine vertical pixel together.
+        fn set_binning_vertical_mode(cam: CameraItem, val:  XI_BIN_MODE)
+        ///Vertical Binning - number of vertical photo-sensitive cells to combine together.
+        fn set_binning_vertical(cam: CameraItem, val: xiTypeInteger)
+        ///Sets the mode to use to combine horizontal pixel together.
+        fn set_binning_horizontal_mode(cam: CameraItem, val:  XI_BIN_MODE)
+        ///Horizontal Binning - number of horizontal photo-sensitive cells to combine together.
+        fn set_binning_horizontal(cam: CameraItem, val: xiTypeInteger)
+        ///Binning horizontal pattern type.
+        fn set_binning_horizontal_pattern(cam: CameraItem, val:  XI_BIN_PATTERN)
+        ///Binning vertical pattern type.
+        fn set_binning_vertical_pattern(cam: CameraItem, val:  XI_BIN_PATTERN)
+        ///Decimation engine selector.
+        fn set_decimation_selector(cam: CameraItem, val:  XI_DEC_SELECTOR)
+        ///Vertical Decimation - vertical sub-sampling of the image - reduces the vertical resolution of the image by the specified vertical decimation factor.
+        fn set_decimation_vertical(cam: CameraItem, val: xiTypeInteger)
+        ///Horizontal Decimation - horizontal sub-sampling of the image - reduces the horizontal resolution of the image by the specified vertical decimation factor.
+        fn set_decimation_horizontal(cam: CameraItem, val: xiTypeInteger)
+        ///Decimation horizontal pattern type.
+        fn set_decimation_horizontal_pattern(cam: CameraItem, val:  XI_DEC_PATTERN)
+        ///Decimation vertical pattern type.
+        fn set_decimation_vertical_pattern(cam: CameraItem, val:  XI_DEC_PATTERN)
+        ///Exposure priority (0.8 - exposure 80%, gain 20%).
+        fn set_exp_priority(cam: CameraItem, val: xiTypeFloat)
+        ///Maximum limit of gain in AEAG procedure
+        fn set_ag_max_limit(cam: CameraItem, val: xiTypeFloat)
+        ///Maximum time (us) used for exposure in AEAG procedure
+        fn set_ae_max_limit(cam: CameraItem, val: xiTypeInteger)
+        ///Average intensity of output signal AEAG should achieve(in %)
+        fn set_aeag_level(cam: CameraItem, val: xiTypeInteger)
+        ///Set/get bandwidth(datarate)(in Megabits)
+        fn set_limit_bandwidth(cam: CameraItem, val: xiTypeInteger)
+        ///Bandwidth limit enabled
+        fn set_limit_bandwidth_mode(cam: CameraItem, val:  XI_SWITCH)
+        ///Image sensor line period in us
+        fn set_sensor_line_period(cam: CameraItem, val: xiTypeFloat)
+        ///Sensor output data bit depth.
+        fn set_sensor_bit_depth(cam: CameraItem, val:  XI_BIT_DEPTH)
+        ///Device output data bit depth.
+        fn set_output_bit_depth(cam: CameraItem, val:  XI_BIT_DEPTH)
+        ///bitdepth of data returned by function xiGetImage
+        fn set_image_data_bit_depth(cam: CameraItem, val:  XI_BIT_DEPTH)
+        ///Device output data packing (or grouping) enabled. Packing could be enabled if output_data_bit_depth > 8 and packing capability is available.
+        fn set_output_bit_packing(cam: CameraItem, val: xiTypeBoolean)
+        ///Data packing type. Some cameras supports only specific packing type.
+        fn set_output_bit_packing_type(cam: CameraItem, val:  XI_OUTPUT_DATA_PACKING_TYPE)
+        ///Returns 1 for cameras that support cooling.
+        fn set_iscooled(cam: CameraItem, val: xiTypeBoolean)
+        ///Temperature control mode.
+        fn set_cooling(cam: CameraItem, val:  XI_TEMP_CTRL_MODE_SELECTOR)
+        ///Set sensor target temperature for cooling.
+        fn set_target_temp(cam: CameraItem, val: xiTypeFloat)
+        ///Selector of mechanical point where thermometer is located.
+        fn set_temp_selector(cam: CameraItem, val:  XI_TEMP_SELECTOR)
+        ///Camera temperature (selected by XI_PRM_TEMP_SELECTOR)
+        fn set_temp(cam: CameraItem, val: xiTypeFloat)
+        ///Temperature control mode.
+        fn set_device_temperature_ctrl_mode(cam: CameraItem, val:  XI_TEMP_CTRL_MODE_SELECTOR)
+        ///Camera sensor temperature
+        fn set_chip_temp(cam: CameraItem, val: xiTypeFloat)
+        ///Camera housing tepmerature
+        fn set_hous_temp(cam: CameraItem, val: xiTypeFloat)
+        ///Camera housing back side tepmerature
+        fn set_hous_back_side_temp(cam: CameraItem, val: xiTypeFloat)
+        ///Camera sensor board temperature
+        fn set_sensor_board_temp(cam: CameraItem, val: xiTypeFloat)
+        ///Temperature element selector (TEC(Peltier), Fan).
+        fn set_device_temperature_element_sel(cam: CameraItem, val:  XI_TEMP_ELEMENT_SELECTOR)
+        ///Temperature element value in percents of full control range
+        fn set_device_temperature_element_val(cam: CameraItem, val: xiTypeFloat)
+        ///Mode of color management system.
+        fn set_cms(cam: CameraItem, val:  XI_CMS_MODE)
+        ///Intent of color management system.
+        fn set_cms_intent(cam: CameraItem, val:  XI_CMS_INTENT)
+        ///Enable applying of CMS profiles to xiGetImage (see XI_PRM_INPUT_CMS_PROFILE, XI_PRM_OUTPUT_CMS_PROFILE).
+        fn set_apply_cms(cam: CameraItem, val: xiTypeBoolean)
+        ///Filename for input cms profile (e.g. input.icc)
+        fn set_input_cms_profile(cam: CameraItem, val: xiTypeString)
+        ///Filename for output cms profile (e.g. input.icc)
+        fn set_output_cms_profile(cam: CameraItem, val: xiTypeString)
+        ///Returns 1 for color cameras.
+        fn set_iscolor(cam: CameraItem, val: xiTypeBoolean)
+        ///Returns color filter array type of RAW data.
+        fn set_cfa(cam: CameraItem, val:  XI_COLOR_FILTER_ARRAY)
+        ///Luminosity gamma
+        fn set_gammaY(cam: CameraItem, val: xiTypeFloat)
+        ///Chromaticity gamma
+        fn set_gammaC(cam: CameraItem, val: xiTypeFloat)
+        ///Sharpness Strenght
+        fn set_sharpness(cam: CameraItem, val: xiTypeFloat)
+        ///Color Correction Matrix element [0][0]
+        fn set_ccMTX00(cam: CameraItem, val: xiTypeFloat)
+        ///Color Correction Matrix element [0][1]
+        fn set_ccMTX01(cam: CameraItem, val: xiTypeFloat)
+        ///Color Correction Matrix element [0][2]
+        fn set_ccMTX02(cam: CameraItem, val: xiTypeFloat)
+        ///Color Correction Matrix element [0][3]
+        fn set_ccMTX03(cam: CameraItem, val: xiTypeFloat)
+        ///Color Correction Matrix element [1][0]
+        fn set_ccMTX10(cam: CameraItem, val: xiTypeFloat)
+        ///Color Correction Matrix element [1][1]
+        fn set_ccMTX11(cam: CameraItem, val: xiTypeFloat)
+        ///Color Correction Matrix element [1][2]
+        fn set_ccMTX12(cam: CameraItem, val: xiTypeFloat)
+        ///Color Correction Matrix element [1][3]
+        fn set_ccMTX13(cam: CameraItem, val: xiTypeFloat)
+        ///Color Correction Matrix element [2][0]
+        fn set_ccMTX20(cam: CameraItem, val: xiTypeFloat)
+        ///Color Correction Matrix element [2][1]
+        fn set_ccMTX21(cam: CameraItem, val: xiTypeFloat)
+        ///Color Correction Matrix element [2][2]
+        fn set_ccMTX22(cam: CameraItem, val: xiTypeFloat)
+        ///Color Correction Matrix element [2][3]
+        fn set_ccMTX23(cam: CameraItem, val: xiTypeFloat)
+        ///Color Correction Matrix element [3][0]
+        fn set_ccMTX30(cam: CameraItem, val: xiTypeFloat)
+        ///Color Correction Matrix element [3][1]
+        fn set_ccMTX31(cam: CameraItem, val: xiTypeFloat)
+        ///Color Correction Matrix element [3][2]
+        fn set_ccMTX32(cam: CameraItem, val: xiTypeFloat)
+        ///Color Correction Matrix element [3][3]
+        fn set_ccMTX33(cam: CameraItem, val: xiTypeFloat)
+        ///Set default Color Correction Matrix
+        fn set_defccMTX(cam: CameraItem, val: xiTypeCommand)
+        ///Defines source of trigger.
+        fn set_trigger_source(cam: CameraItem, val:  XI_TRG_SOURCE)
+        ///Generates an internal trigger. XI_PRM_TRG_SOURCE must be set to TRG_SOFTWARE.
+        fn set_trigger_software(cam: CameraItem, val: xiTypeCommand)
+        ///Selects the type of trigger.
+        fn set_trigger_selector(cam: CameraItem, val:  XI_TRG_SELECTOR)
+        ///The mode of Trigger Overlap. This influences of trigger acception/rejection policy
+        fn set_trigger_overlap(cam: CameraItem, val:  XI_TRG_OVERLAP)
+        ///Sets number of frames acquired by burst. This burst is used only if trigger is set to FrameBurstStart
+        fn set_acq_frame_burst_count(cam: CameraItem, val: xiTypeInteger)
+        ///Selects GPI
+        fn set_gpi_selector(cam: CameraItem, val:  XI_GPI_SELECTOR)
+        ///Defines GPI functionality
+        fn set_gpi_mode(cam: CameraItem, val:  XI_GPI_MODE)
+        ///GPI level
+        fn set_gpi_level(cam: CameraItem, val: xiTypeInteger)
+        ///Selects GPO
+        fn set_gpo_selector(cam: CameraItem, val:  XI_GPO_SELECTOR)
+        ///Defines GPO functionality
+        fn set_gpo_mode(cam: CameraItem, val:  XI_GPO_MODE)
+        ///Selects LED
+        fn set_led_selector(cam: CameraItem, val:  XI_LED_SELECTOR)
+        ///Defines LED functionality
+        fn set_led_mode(cam: CameraItem, val:  XI_LED_MODE)
+        ///Enable/Disable debounce to selected GPI
+        fn set_dbnc_en(cam: CameraItem, val: xiTypeBoolean)
+        ///Debounce time (x * 10us)
+        fn set_dbnc_t0(cam: CameraItem, val: xiTypeInteger)
+        ///Debounce time (x * 10us)
+        fn set_dbnc_t1(cam: CameraItem, val: xiTypeInteger)
+        ///Debounce polarity (pol = 1 t0 - falling edge, t1 - rising edge)
+        fn set_dbnc_pol(cam: CameraItem, val: xiTypeInteger)
+        ///Status of lens control interface. This shall be set to XI_ON before any Lens operations.
+        fn set_lens_mode(cam: CameraItem, val: xiTypeBoolean)
+        ///Current lens aperture value in stops. Examples: 2.8, 4, 5.6, 8, 11
+        fn set_lens_aperture_value(cam: CameraItem, val: xiTypeFloat)
+        ///Lens current focus movement value to be used by XI_PRM_LENS_FOCUS_MOVE in motor steps.
+        fn set_lens_focus_movement_value(cam: CameraItem, val: xiTypeInteger)
+        ///Moves lens focus motor by steps set in XI_PRM_LENS_FOCUS_MOVEMENT_VALUE.
+        fn set_lens_focus_move(cam: CameraItem, val: xiTypeCommand)
+        ///Lens focus distance in cm.
+        fn set_lens_focus_distance(cam: CameraItem, val: xiTypeFloat)
+        ///Lens focal distance in mm.
+        fn set_lens_focal_length(cam: CameraItem, val: xiTypeFloat)
+        ///Selects the current feature which is accessible by XI_PRM_LENS_FEATURE.
+        fn set_lens_feature_selector(cam: CameraItem, val:  XI_LENS_FEATURE)
+        ///Allows access to lens feature value currently selected by XI_PRM_LENS_FEATURE_SELECTOR.
+        fn set_lens_feature(cam: CameraItem, val: xiTypeFloat)
+        ///Write/Read data sequences to/from lens
+        fn set_lens_comm_data(cam: CameraItem, val: xiTypeString)
+        ///Return device name
+        fn set_device_name(cam: CameraItem, val: xiTypeString)
+        ///Return device type
+        fn set_device_type(cam: CameraItem, val: xiTypeString)
+        ///Return device model id
+        fn set_device_model_id(cam: CameraItem, val: xiTypeInteger)
+        ///Return device sensor model id
+        fn set_sensor_model_id(cam: CameraItem, val: xiTypeInteger)
+        ///Return device serial number
+        fn set_device_sn(cam: CameraItem, val: xiTypeString)
+        ///Return sensor serial number
+        fn set_device_sens_sn(cam: CameraItem, val: xiTypeString)
+        ///Return unique device ID
+        fn set_device_id(cam: CameraItem, val: xiTypeString)
+        ///Return device system instance path.
+        fn set_device_inst_path(cam: CameraItem, val: xiTypeString)
+        ///Represents the location of the device in the device tree.
+        fn set_device_loc_path(cam: CameraItem, val: xiTypeString)
+        ///Return custom ID of camera.
+        fn set_device_user_id(cam: CameraItem, val: xiTypeString)
+        ///Return device capability description XML.
+        fn set_device_manifest(cam: CameraItem, val: xiTypeString)
+        ///User image data at image header to track parameters synchronization.
+        fn set_image_user_data(cam: CameraItem, val: xiTypeInteger)
+        ///The alpha channel of RGB32 output image format.
+        fn set_imgdataformatrgb32alpha(cam: CameraItem, val: xiTypeInteger)
+        ///Buffer size in bytes sufficient for output image returned by xiGetImage
+        fn set_imgpayloadsize(cam: CameraItem, val: xiTypeInteger)
+        ///Current format of pixels on transport layer.
+        fn set_transport_pixel_format(cam: CameraItem, val:  XI_GenTL_Image_Format_e)
+        ///Target selector for data - CPU RAM or GPU RAM
+        fn set_transport_data_target(cam: CameraItem, val:  XI_TRANSPORT_DATA_TARGET_MODE)
+        ///Sensor clock frequency in Hz.
+        fn set_sensor_clock_freq_hz(cam: CameraItem, val: xiTypeFloat)
+        ///Sensor clock frequency index. Sensor with selected frequencies have possibility to set the frequency only by this index.
+        fn set_sensor_clock_freq_index(cam: CameraItem, val: xiTypeInteger)
+        ///Number of output channels from sensor used for data transfer.
+        fn set_sensor_output_channel_count(cam: CameraItem, val:  XI_SENSOR_OUTPUT_CHANNEL_COUNT)
+        ///Define framerate in Hz
+        fn set_framerate(cam: CameraItem, val: xiTypeFloat)
+        ///Select counter
+        fn set_counter_selector(cam: CameraItem, val:  XI_COUNTER_SELECTOR)
+        ///Counter status
+        fn set_counter_value(cam: CameraItem, val: xiTypeInteger)
+        ///Type of sensor frames timing.
+        fn set_acq_timing_mode(cam: CameraItem, val:  XI_ACQ_TIMING_MODE)
+        ///Measure and return available interface bandwidth(int Megabits)
+        fn set_available_bandwidth(cam: CameraItem, val: xiTypeInteger)
+        ///Data move policy
+        fn set_buffer_policy(cam: CameraItem, val:  XI_BP)
+        ///Activates LUT.
+        fn set_LUTEnable(cam: CameraItem, val: xiTypeBoolean)
+        ///Control the index (offset) of the coefficient to access in the LUT.
+        fn set_LUTIndex(cam: CameraItem, val: xiTypeInteger)
+        ///Value at entry LUTIndex of the LUT
+        fn set_LUTValue(cam: CameraItem, val: xiTypeInteger)
+        ///Specifies the delay in microseconds (us) to apply after the trigger reception before activating it.
+        fn set_trigger_delay(cam: CameraItem, val: xiTypeInteger)
+        ///Defines how time stamp reset engine will be armed
+        fn set_ts_rst_mode(cam: CameraItem, val:  XI_TS_RST_MODE)
+        ///Defines which source will be used for timestamp reset. Writing this parameter will trigger settings of engine (arming)
+        fn set_ts_rst_source(cam: CameraItem, val:  XI_TS_RST_SOURCE)
+        ///Returns 1 if camera connected and works properly.
+        fn set_isexist(cam: CameraItem, val: xiTypeBoolean)
+        ///Acquisition buffer size in buffer_size_unit. Default bytes.
+        fn set_acq_buffer_size(cam: CameraItem, val: xiTypeInteger)
+        ///Acquisition buffer size unit in bytes. Default 1. E.g. Value 1024 means that buffer_size is in KiBytes
+        fn set_acq_buffer_size_unit(cam: CameraItem, val: xiTypeInteger)
+        ///Acquisition transport buffer size in bytes
+        fn set_acq_transport_buffer_size(cam: CameraItem, val: xiTypeInteger)
+        ///Acquisition transport packet size in bytes
+        fn set_acq_transport_packet_size(cam: CameraItem, val: xiTypeInteger)
+        ///Queue of field/frame buffers
+        fn set_buffers_queue_size(cam: CameraItem, val: xiTypeInteger)
+        ///Number of buffers to commit to low level
+        fn set_acq_transport_buffer_commit(cam: CameraItem, val: xiTypeInteger)
+        ///GetImage returns most recent frame
+        fn set_recent_frame(cam: CameraItem, val: xiTypeBoolean)
+        ///Resets the camera to default state.
+        fn set_device_reset(cam: CameraItem, val: xiTypeCommand)
+        ///Correction of column FPN
+        fn set_column_fpn_correction(cam: CameraItem, val:  XI_SWITCH)
+        ///Correction of row FPN
+        fn set_row_fpn_correction(cam: CameraItem, val:  XI_SWITCH)
+        ///Select image correction function
+        fn set_image_correction_selector(cam: CameraItem, val:  XI_IMAGE_CORRECTION_SELECTOR)
+        ///Select image correction selected function value
+        fn set_image_correction_value(cam: CameraItem, val: xiTypeFloat)
+        ///Current sensor mode. Allows to select sensor mode by one integer. Setting of this parameter affects: image dimensions and downsampling.
+        fn set_sensor_mode(cam: CameraItem, val:  XI_SENSOR_MODE)
+        ///Enable High Dynamic Range feature.
+        fn set_hdr(cam: CameraItem, val: xiTypeBoolean)
+        ///The number of kneepoints in the PWLR.
+        fn set_hdr_kneepoint_count(cam: CameraItem, val: xiTypeInteger)
+        ///position of first kneepoint(in % of XI_PRM_EXPOSURE)
+        fn set_hdr_t1(cam: CameraItem, val: xiTypeInteger)
+        ///position of second kneepoint (in % of XI_PRM_EXPOSURE)
+        fn set_hdr_t2(cam: CameraItem, val: xiTypeInteger)
+        ///value of first kneepoint (% of sensor saturation)
+        fn set_hdr_kneepoint1(cam: CameraItem, val: xiTypeInteger)
+        ///value of second kneepoint (% of sensor saturation)
+        fn set_hdr_kneepoint2(cam: CameraItem, val: xiTypeInteger)
+        ///Last image black level counts. Can be used for Offline processing to recall it.
+        fn set_image_black_level(cam: CameraItem, val: xiTypeInteger)
+        ///Returns version of API.
+        fn set_api_version(cam: CameraItem, val: xiTypeString)
+        ///Returns version of current device driver.
+        fn set_drv_version(cam: CameraItem, val: xiTypeString)
+        ///Returns version of MCU1 firmware.
+        fn set_version_mcu1(cam: CameraItem, val: xiTypeString)
+        ///Returns version of MCU2 firmware.
+        fn set_version_mcu2(cam: CameraItem, val: xiTypeString)
+        ///Returns version of MCU3 firmware.
+        fn set_version_mcu3(cam: CameraItem, val: xiTypeString)
+        ///Returns version of FPGA1 firmware.
+        fn set_version_fpga1(cam: CameraItem, val: xiTypeString)
+        ///Returns version of XML manifest.
+        fn set_version_xmlman(cam: CameraItem, val: xiTypeString)
+        ///Returns hardware revision number.
+        fn set_hw_revision(cam: CameraItem, val: xiTypeString)
+        ///Set debug level
+        fn set_debug_level(cam: CameraItem, val:  XI_DEBUG_LEVEL)
+        ///Automatic bandwidth calculation,
+        fn set_auto_bandwidth_calculation(cam: CameraItem, val: xiTypeBoolean)
+        ///Enables (2015/FAPI) processing chain for MQ MU cameras
+        fn set_new_process_chain_enable(cam: CameraItem, val: xiTypeBoolean)
+        ///Enable enumeration of golden devices
+        fn set_cam_enum_golden_enabled(cam: CameraItem, val: xiTypeBoolean)
+        ///Resets USB device if started as bootloader
+        fn set_reset_usb_if_bootloader(cam: CameraItem, val: xiTypeBoolean)
+        ///Number of camera simulators to be available.
+        fn set_cam_simulators_count(cam: CameraItem, val: xiTypeInteger)
+        ///Camera sensor will not be initialized when 1=XI_ON is set.
+        fn set_cam_sensor_init_disabled(cam: CameraItem, val: xiTypeBoolean)
+        ///Read file from camera flash filesystem.
+        fn set_read_file_ffs(cam: CameraItem, val: xiTypeString)
+        ///Write file to camera flash filesystem.
+        fn set_write_file_ffs(cam: CameraItem, val: xiTypeString)
+        ///Set name of file to be written/read from camera FFS.
+        fn set_ffs_file_name(cam: CameraItem, val: xiTypeString)
+        ///File number.
+        fn set_ffs_file_id(cam: CameraItem, val: xiTypeInteger)
+        ///Size of file.
+        fn set_ffs_file_size(cam: CameraItem, val: xiTypeInteger)
+        ///Size of free camera FFS.
+        fn set_free_ffs_size(cam: CameraItem, val: xiTypeInteger)
+        ///Size of used camera FFS.
+        fn set_used_ffs_size(cam: CameraItem, val: xiTypeInteger)
+        ///Setting of key enables file operations on some cameras.
+        fn set_ffs_access_key(cam: CameraItem, val: xiTypeInteger)
+        ///List of current parameters settings context - parameters with values. Used for offline processing.
+        fn set_xiapi_context_list(cam: CameraItem, val: xiTypeString)
+        ///Selects the current feature which is accessible by XI_PRM_SENSOR_FEATURE_VALUE.
+        fn set_sensor_feature_selector(cam: CameraItem, val:  XI_SENSOR_FEATURE_SELECTOR)
+        ///Allows access to sensor feature value currently selected by XI_PRM_SENSOR_FEATURE_SELECTOR.
+        fn set_sensor_feature_value(cam: CameraItem, val: xiTypeInteger)
+        ///Selection of extended feature.
+        fn set_ext_feature_selector(cam: CameraItem, val:  XI_EXT_FEATURE_SELECTOR)
+        ///Extended feature value.
+        fn set_ext_feature(cam: CameraItem, val: xiTypeInteger)
+        ///Selects device unit.
+        fn set_device_unit_selector(cam: CameraItem, val:  XI_DEVICE_UNIT_SELECTOR)
+        ///Selects register of selected device unit(XI_PRM_DEVICE_UNIT_SELECTOR).
+        fn set_device_unit_register_selector(cam: CameraItem, val: xiTypeInteger)
+        ///Sets/gets register value of selected device unit(XI_PRM_DEVICE_UNIT_SELECTOR).
+        fn set_device_unit_register_value(cam: CameraItem, val: xiTypeInteger)
+        ///Callback address of pointer that is called upon long tasks (e.g. XI_PRM_WRITE_FILE_FFS).
+        fn set_api_progress_callback(cam: CameraItem, val: xiTypeString)
+        ///Selects the internal acquisition signal to read using XI_PRM_ACQUISITION_STATUS.
+        fn set_acquisition_status_selector(cam: CameraItem, val:  XI_ACQUISITION_STATUS_SELECTOR)
+        ///Acquisition status(True/False)
+        fn set_acquisition_status(cam: CameraItem, val:  XI_SWITCH)
     }
 
     impl {
