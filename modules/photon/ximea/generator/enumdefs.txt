@@ -536,7 +536,7 @@ XI_ACQUISITION_STATUS_SELECTOR = {
     "XI_ACQUISITION_STATUS_ACQ_ACTIVE": c_uint(0),    # Device is currently doing an acquisition of one or many frames.
     }
 
-
+#XI_GenTL_Image_Format_e
 XI_GenTL_Image_Format_e = { 
-    "XI_GenTL_Image_Format_Mono8": c_uint(0x01080001),    
+    "XI_GenTL_Image_Format_Mono8": c_uint(0x01080001),    # XI_GenTL_Image_Format_e
     }

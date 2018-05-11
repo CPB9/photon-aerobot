@@ -5,7 +5,7 @@ ModuleDef = """module ximea
 type xiTypeInteger = varint;
 type xiTypeFloat = f32;
 type xiTypeBoolean = bool;
-type xiTypeCommand = ;
+type xiTypeCommand = varint;
 type xiTypeString = &[char; 512];
 """
 
@@ -18,7 +18,7 @@ enum CameraState {
 
 struct Camera {
     state: CameraState,
-    basic: Basic    
+    basic: Fields,
 }
 
 enum CameraItem {
@@ -56,9 +56,16 @@ Impl = """
     }
 """
 
+Cmds = """
+        fn updateInfo(cam: CameraItem)
+        fn open(cam: CameraItem)
+        fn close(cam: CameraItem)
+        fn start(cam: CameraItem, number: varuint, timeout: varuint)
+        fn stop(cam: CameraItem)
+"""
+
 
 file_enums = open("enums.txt")
-file_enumdefs = open("enumdefs.txt")
 file_params = open("params.txt")
 
 class Param:
@@ -67,6 +74,32 @@ class Param:
 class Enum:
     pass
 
+class EnumVal:
+    pass
+
+def get_enumdefs():
+    content = ''
+    with open('enumdefs.txt', 'r') as myfile:
+        content=myfile.read()
+
+    enums = []
+    enum_strs = re.findall(r'#[^}]*}', content, re.MULTILINE|re.DOTALL)
+    for enum_str in enum_strs:
+        enum_items = enum_str.split('\n')
+        e = Enum()
+        e.comment = enum_items[0][2:-1]
+        e.name = enum_items[1].split(' ')[0]
+        e.vals = []
+        for val_str in enum_items[2:-1]:
+            ev = EnumVal()
+            ev.name = val_str.split('\"')[1]
+            ev.value = val_str.replace(')', '(').split('(')[1]
+            ev.comment = val_str.split('#')[1]
+            e.vals.append(ev)
+        enums.append(e)
+    return enums
+
+enums = get_enumdefs()
 ps = {}
 types = {}
 
@@ -88,15 +121,22 @@ for line in file_enums:
     e.comment = line[line.find('#'):-1]
     ps[e.name].enum = e.type
 
-decode = open('ximea_.decode', 'w+')
+decode = open('ximea.decode', 'w+')
 
 decode.write(ModuleDef)
 decode.write('\n')
 
+for i in enums:
+    decode.write('enum {} {{\n'.format(i.name))
+    for j in i.vals:
+        decode.write('    {} = {},\n'.format(j.name, j.value))
+    decode.write('}\n\n')
+
 decode.write('struct Fields {\n')
 for key, p in ps.items():
-    decode.write('    ///{}\n'.format(p.comment))
-    decode.write('    {}: {},\n'.format(p.name, p.type if p.type != 'xiTypeEnum' else p.enum))
+    if p.type != 'xiTypeString':
+        decode.write('    ///{}\n'.format(p.comment))
+        decode.write('    {}: {},\n'.format(p.name, p.type if p.type != 'xiTypeEnum' else p.enum))
 decode.write('}\n')
 
 decode.write('\n')
@@ -106,21 +146,23 @@ decode.write('\n')
 decode.write('component {\n')
 decode.write(Vars)
 decode.write('\n')
-decode.write('    commands {\n')
+decode.write('    commands {')
+decode.write(Cmds)
+decode.write('\n')
 for key, p in ps.items():
     decode.write('        ///{}\n'.format(p.comment))
     decode.write('        fn set_{}(cam: CameraItem, val: {})\n'.format(p.name, p.type if p.type != 'xiTypeEnum' else p.enum))
 decode.write('    }\n')
 
 decode.write(Impl)
-decode.write('\n')
+decode.write('}\n')
 decode.write('')
 
 
 decode.close()
 
 
-cpp = open('ximea_.cpp', 'w+')
+cpp = open('ximea.cpp', 'w+')
 for key, p in ps.items():
     cmd_str = 'PhotonError PhotonXimea_ExecCmd_Set_{0}(PhotonXimeaCameraItem cam, PhotonXimeaxiType{1} val) {{ return PhotonXimea_Send_Integer(cam, \"{0}\", val); }}\n'
     if p.type == 'xiTypeInteger':
@@ -131,8 +173,8 @@ for key, p in ps.items():
         cpp.write(cmd_str.format(p.name, p.type, 'Bool'))
     elif p.type == 'xiTypeCommand':
         cpp.write(cmd_str.format(p.name, p.type, 'Integer'))
-    elif p.type == 'xiTypeString':
-        cpp.write(cmd_str.format(p.name, p.type, 'String'))
+#    elif p.type == 'xiTypeString':
+#        cpp.write(cmd_str.format(p.name, p.type, 'String'))
     elif p.type == 'xiTypeEnum':
         cpp.write(cmd_str.format(p.name, p.type, 'String'))
 
