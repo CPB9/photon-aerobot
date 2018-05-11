@@ -4,6 +4,8 @@
 
 static bool ledsDisabled = false;
 
+PhotonClkTimePoint bldcCmdTime = 0;
+
 void PhotonZcvm_Init()
 {
     _photonZcvm.slavesState.powerCom = false;
@@ -17,6 +19,8 @@ void PhotonZcvm_Init()
 
 void setBldcDir(PhotonPowerfanproxyBldcId id, PhotonPowerfanReg reg, uint8_t value)
 {
+    bldcCmdTime = PhotonClk_GetTickTime();
+
     PhotonZcvm_QueueEvent_RestoreBldcReg(id, reg, value);
 
     PhotonPowerfanproxy_ExecCmd_SetCurrentPresetReg(id, PhotonPowerfanReg_DIR, value);
@@ -66,25 +70,32 @@ void PhotonZcvm_Tick()
 
     if (_photonZcvm.slavesState.powerFan1)
     {
-        if (_photonPowerfanproxy.bldc1.config.DIR != 0)
+        bool canSend = (PhotonClk_GetTickTime() - bldcCmdTime) > 1000;
+        if (_photonPowerfanproxy.bldc1.config.DIR != 0 && canSend)
         {
             setBldcDir(PhotonPowerfanproxyBldcId_Bldc1, PhotonPowerfanReg_DIR, 1);
+            return;
         }
-        if (_photonPowerfanproxy.bldc2.config.DIR != 1)
+        if (_photonPowerfanproxy.bldc2.config.DIR != 1 && canSend)
         {
             setBldcDir(PhotonPowerfanproxyBldcId_Bldc2, PhotonPowerfanReg_DIR, 0);
+            return;
         }
     }
 
     if (_photonZcvm.slavesState.powerFan2)
     {
-        if (_photonPowerfanproxy.bldc3.config.DIR != 0)
+        bool canSend = (PhotonClk_GetTickTime() - bldcCmdTime) > 1000;
+
+        if (_photonPowerfanproxy.bldc3.config.DIR != 0 && canSend)
         {
             setBldcDir(PhotonPowerfanproxyBldcId_Bldc3, PhotonPowerfanReg_DIR, 1);
+            return;
         }
-        if (_photonPowerfanproxy.bldc4.config.DIR != 1)
+        if (_photonPowerfanproxy.bldc4.config.DIR != 1 && canSend)
         {
             setBldcDir(PhotonPowerfanproxyBldcId_Bldc4, PhotonPowerfanReg_DIR, 0);
+            return;
         }
     }
 }
