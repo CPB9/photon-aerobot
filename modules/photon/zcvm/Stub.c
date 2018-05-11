@@ -15,6 +15,16 @@ void PhotonZcvm_Init()
     _photonZcvm.slavesState.powerFan2LastTime = 0;
 }
 
+void setBldcDir(PhotonPowerfanproxyBldcId id, PhotonPowerfanReg reg, uint8_t value)
+{
+    PhotonZcvm_QueueEvent_RestoreBldcReg(id, reg, value);
+
+    PhotonPowerfanproxy_ExecCmd_SetCurrentPresetReg(id, PhotonPowerfanReg_DIR, value);
+    PhotonPowerfanproxy_ExecCmd_SetCurrentPresetReg(id, PhotonPowerfanReg_RUN, 0);
+    PhotonPowerfanproxy_ExecCmd_ApplyCurrentPreset(id);
+    PhotonPowerfanproxy_ExecCmd_SetCurrentPresetReg(id, PhotonPowerfanReg_RUN, 1);
+}
+
 void PhotonZcvm_Tick()
 {
     const int warningTime = 1 * 1e3;
@@ -58,13 +68,11 @@ void PhotonZcvm_Tick()
     {
         if (_photonPowerfanproxy.bldc1.config.DIR != 0)
         {
-            PhotonZcvm_QueueEvent_RestoreBldcReg(PhotonPowerfanproxyBldcId_Bldc1, PhotonPowerfanReg_DIR, 0);
-            PhotonPowerfanproxy_ExecCmd_SetCurrentPresetReg(PhotonPowerfanproxyBldcId_Bldc1, PhotonPowerfanReg_DIR, 0);
+            setBldcDir(PhotonPowerfanproxyBldcId_Bldc1, PhotonPowerfanReg_DIR, 1);
         }
         if (_photonPowerfanproxy.bldc2.config.DIR != 1)
         {
-            PhotonZcvm_QueueEvent_RestoreBldcReg(PhotonPowerfanproxyBldcId_Bldc2, PhotonPowerfanReg_DIR, 1);
-            PhotonPowerfanproxy_ExecCmd_SetCurrentPresetReg(PhotonPowerfanproxyBldcId_Bldc2, PhotonPowerfanReg_DIR, 1);
+            setBldcDir(PhotonPowerfanproxyBldcId_Bldc2, PhotonPowerfanReg_DIR, 0);
         }
     }
 
@@ -72,13 +80,11 @@ void PhotonZcvm_Tick()
     {
         if (_photonPowerfanproxy.bldc3.config.DIR != 0)
         {
-            PhotonZcvm_QueueEvent_RestoreBldcReg(PhotonPowerfanproxyBldcId_Bldc3, PhotonPowerfanReg_DIR, 0);
-            PhotonPowerfanproxy_ExecCmd_SetCurrentPresetReg(PhotonPowerfanproxyBldcId_Bldc3, PhotonPowerfanReg_DIR, 0);
+            setBldcDir(PhotonPowerfanproxyBldcId_Bldc3, PhotonPowerfanReg_DIR, 1);
         }
         if (_photonPowerfanproxy.bldc4.config.DIR != 1)
         {
-            PhotonZcvm_QueueEvent_RestoreBldcReg(PhotonPowerfanproxyBldcId_Bldc4, PhotonPowerfanReg_DIR, 1);
-            PhotonPowerfanproxy_ExecCmd_SetCurrentPresetReg(PhotonPowerfanproxyBldcId_Bldc4, PhotonPowerfanReg_DIR, 1);
+            setBldcDir(PhotonPowerfanproxyBldcId_Bldc4, PhotonPowerfanReg_DIR, 0);
         }
     }
 }
