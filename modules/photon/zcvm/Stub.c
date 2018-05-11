@@ -53,6 +53,22 @@ void PhotonZcvm_Tick()
             ledsDisabled = true;
         }
     }
+
+    if (_photonZcvm.slavesState.powerFan1)
+    {
+        if (_photonPowerfanproxy.bldc1.config.DIR != 0)
+            PhotonPowerfanproxy_ExecCmd_SetCurrentPresetReg(PhotonPowerfanproxyBldcId_Bldc1, PhotonPowerfanReg_DIR, 0);
+        if (_photonPowerfanproxy.bldc2.config.DIR != 1)
+            PhotonPowerfanproxy_ExecCmd_SetCurrentPresetReg(PhotonPowerfanproxyBldcId_Bldc2, PhotonPowerfanReg_DIR, 1);
+    }
+
+    if (_photonZcvm.slavesState.powerFan2)
+    {
+        if (_photonPowerfanproxy.bldc3.config.DIR != 0)
+            PhotonPowerfanproxy_ExecCmd_SetCurrentPresetReg(PhotonPowerfanproxyBldcId_Bldc3, PhotonPowerfanReg_DIR, 0);
+        if (_photonPowerfanproxy.bldc4.config.DIR != 1)
+            PhotonPowerfanproxy_ExecCmd_SetCurrentPresetReg(PhotonPowerfanproxyBldcId_Bldc4, PhotonPowerfanReg_DIR, 1);
+    }
 }
 
 void PhotonZcvm_UpdateSlaveMessageTime(PhotonZcvmSlaves slave)
