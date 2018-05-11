@@ -71,12 +71,12 @@ void PhotonZcvm_Tick()
     if (_photonZcvm.slavesState.powerFan1)
     {
         bool canSend = (PhotonClk_GetTickTime() - bldcCmdTime) > 1000;
-        if (_photonPowerfanproxy.bldc1.config.DIR != 0 && canSend)
+        if (_photonPowerfanproxy.bldc1.config.DIR != 1 && canSend)
         {
             setBldcDir(PhotonPowerfanproxyBldcId_Bldc1, PhotonPowerfanReg_DIR, 1);
             return;
         }
-        if (_photonPowerfanproxy.bldc2.config.DIR != 1 && canSend)
+        if (_photonPowerfanproxy.bldc2.config.DIR != 0 && canSend)
         {
             setBldcDir(PhotonPowerfanproxyBldcId_Bldc2, PhotonPowerfanReg_DIR, 0);
             return;
@@ -89,12 +89,12 @@ void PhotonZcvm_Tick()
 
         if (_photonPowerfanproxy.bldc3.config.DIR != 0 && canSend)
         {
-            setBldcDir(PhotonPowerfanproxyBldcId_Bldc3, PhotonPowerfanReg_DIR, 1);
+            setBldcDir(PhotonPowerfanproxyBldcId_Bldc3, PhotonPowerfanReg_DIR, 0);
             return;
         }
         if (_photonPowerfanproxy.bldc4.config.DIR != 1 && canSend)
         {
-            setBldcDir(PhotonPowerfanproxyBldcId_Bldc4, PhotonPowerfanReg_DIR, 0);
+            setBldcDir(PhotonPowerfanproxyBldcId_Bldc4, PhotonPowerfanReg_DIR, 1);
             return;
         }
     }
