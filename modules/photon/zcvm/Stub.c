@@ -58,12 +58,12 @@ void PhotonZcvm_Tick()
     {
         if (_photonPowerfanproxy.bldc1.config.DIR != 0)
         {
-            PHOTON_WARNING("Trying to set bldc1 DIR to 0");
+            PhotonZcvm_QueueEvent_RestoreBldcReg(PhotonPowerfanproxyBldcId_Bldc1, PhotonPowerfanReg_DIR, 0);
             PhotonPowerfanproxy_ExecCmd_SetCurrentPresetReg(PhotonPowerfanproxyBldcId_Bldc1, PhotonPowerfanReg_DIR, 0);
         }
         if (_photonPowerfanproxy.bldc2.config.DIR != 1)
         {
-            PHOTON_WARNING("Trying to set bldc2 DIR to 1");
+            PhotonZcvm_QueueEvent_RestoreBldcReg(PhotonPowerfanproxyBldcId_Bldc2, PhotonPowerfanReg_DIR, 1);
             PhotonPowerfanproxy_ExecCmd_SetCurrentPresetReg(PhotonPowerfanproxyBldcId_Bldc2, PhotonPowerfanReg_DIR, 1);
         }
     }
@@ -72,12 +72,12 @@ void PhotonZcvm_Tick()
     {
         if (_photonPowerfanproxy.bldc3.config.DIR != 0)
         {
-            PHOTON_WARNING("Trying to set bldc3 DIR to 0");
+            PhotonZcvm_QueueEvent_RestoreBldcReg(PhotonPowerfanproxyBldcId_Bldc3, PhotonPowerfanReg_DIR, 0);
             PhotonPowerfanproxy_ExecCmd_SetCurrentPresetReg(PhotonPowerfanproxyBldcId_Bldc3, PhotonPowerfanReg_DIR, 0);
         }
         if (_photonPowerfanproxy.bldc4.config.DIR != 1)
         {
-            PHOTON_WARNING("Trying to set bldc4 DIR to 1");
+            PhotonZcvm_QueueEvent_RestoreBldcReg(PhotonPowerfanproxyBldcId_Bldc4, PhotonPowerfanReg_DIR, 1);
             PhotonPowerfanproxy_ExecCmd_SetCurrentPresetReg(PhotonPowerfanproxyBldcId_Bldc4, PhotonPowerfanReg_DIR, 1);
         }
     }

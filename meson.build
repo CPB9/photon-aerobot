@@ -39,6 +39,8 @@ modules_src = [
   'modules/photon/zlidar/zlidar.decode',
   'modules/photon/ximea/mod.toml',
   'modules/photon/ximea/ximea.decode',
+  'modules/photon/zcvm/Stub.c',
+  'modules/photon/zcvm/zcvm.decode',
 ]
 
 photon_opts = []

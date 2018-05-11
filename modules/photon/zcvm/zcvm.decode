@@ -1,6 +1,8 @@
 module zcvm
 
 import clk::{TimePoint, Duration}
+import powerfan::{Reg}
+import powerfanproxy::{BldcId}
 
 enum Slaves {
     PowerCom,
@@ -32,6 +34,7 @@ component {
     
     events {
         [slaveConnectionChanged, true]: {state: SlaveRunningState},
+        [restoreBldcReg, true]: {bldc: BldcId, reg: Reg, value: u8},
     }
     
     impl {
