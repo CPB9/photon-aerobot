@@ -37,7 +37,7 @@ modules_src = [
   'modules/photon/powerfanproxy/powerfanproxy.decode',
   'modules/photon/zlidar/mod.toml',
   'modules/photon/zlidar/zlidar.decode',
-  'modules/photon/ximea/ximea.toml',
+  'modules/photon/ximea/mod.toml',
   'modules/photon/ximea/ximea.decode',
 ]
 
