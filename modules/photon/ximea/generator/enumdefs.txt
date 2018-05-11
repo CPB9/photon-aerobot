@@ -1,0 +1,542 @@
+#Downsampling value enumerator.
+XI_DOWNSAMPLING_VALUE = { 
+    "XI_DWN_1x1": c_uint(1),    #Downsampling 1x1.
+    "XI_DWN_2x2": c_uint(2),    #Downsampling 2x2.
+    "XI_DWN_3x3": c_uint(3),    #Downsampling 3x3.
+    "XI_DWN_4x4": c_uint(4),    #Downsampling 4x4.
+    "XI_DWN_5x5": c_uint(5),    #Downsampling 5x5.
+    "XI_DWN_6x6": c_uint(6),    #Downsampling 6x6.
+    "XI_DWN_7x7": c_uint(7),    #Downsampling 7x7.
+    "XI_DWN_8x8": c_uint(8),    #Downsampling 8x8.
+    "XI_DWN_9x9": c_uint(9),    #Downsampling 9x9.
+    "XI_DWN_10x10": c_uint(10),    #Downsampling 10x10.
+    "XI_DWN_16x16": c_uint(16),    #Downsampling 16x16.
+    }
+
+#Test Pattern Generator
+XI_TEST_PATTERN_GENERATOR = { 
+    "XI_TESTPAT_GEN_SENSOR": c_uint(0),    # Sensor Test Pattern Generator
+    "XI_TESTPAT_GEN_FPGA": c_uint(1),    # FPGA Test Pattern Generator
+    }
+
+#Test Pattern Type
+XI_TEST_PATTERN = { 
+    "XI_TESTPAT_OFF": c_uint(0),    # Testpattern turned off.
+    "XI_TESTPAT_BLACK": c_uint(1),    # Image is filled with darkest possible image.
+    "XI_TESTPAT_WHITE": c_uint(2),    # Image is filled with brightest possible image.
+    "XI_TESTPAT_GREY_HORIZ_RAMP": c_uint(3),    # Image is filled horizontally with an image that goes from the darkest possible value to the brightest.
+    "XI_TESTPAT_GREY_VERT_RAMP": c_uint(4),    # Image is filled vertically with an image that goes from the darkest possible value to the brightest.
+    "XI_TESTPAT_GREY_HORIZ_RAMP_MOVING": c_uint(5),    # Image is filled horizontally with an image that goes from the darkest possible value to the brightest and moves from left to right.
+    "XI_TESTPAT_GREY_VERT_RAMP_MOVING": c_uint(6),    # Image is filled vertically with an image that goes from the darkest possible value to the brightest and moves from left to right.
+    "XI_TESTPAT_HORIZ_LINE_MOVING": c_uint(7),    # A moving horizontal line is superimposed on the live image.
+    "XI_TESTPAT_VERT_LINE_MOVING": c_uint(8),    # A moving vertical line is superimposed on the live image.
+    "XI_TESTPAT_COLOR_BAR": c_uint(9),    # Image is filled with stripes of color including White, Black, Red, Green, Blue, Cyan, Magenta and Yellow.
+    "XI_TESTPAT_FRAME_COUNTER": c_uint(10),    # A frame counter is superimposed on the live image.
+    "XI_TESTPAT_DEVICE_SPEC_COUNTER": c_uint(11),    # 128bit counter.
+    }
+
+#Decimation Pattern Format
+XI_DEC_PATTERN = { 
+    "XI_DEC_MONO": c_uint(1),    # Monochrome Decimation Format
+    "XI_DEC_BAYER": c_uint(2),    # Bayer Decimation Format
+    }
+
+#Binning Pattern Format
+XI_BIN_PATTERN = { 
+    "XI_BIN_MONO": c_uint(1),    # Monochrome Binning Format
+    "XI_BIN_BAYER": c_uint(2),    # Bayer Binning Format
+    }
+
+#Binning Engine Selector
+XI_BIN_SELECTOR = { 
+    "XI_BIN_SELECT_SENSOR": c_uint(0),    #Sensor Binning Engine
+    "XI_BIN_SELECT_DEVICE_FPGA": c_uint(1),    #FPGA Binning Engine on device side
+    "XI_BIN_SELECT_HOST_CPU": c_uint(2),    # CPU Binning Engine on Host side
+    }
+
+#Binning Mode
+XI_BIN_MODE = { 
+    "XI_BIN_MODE_SUM": c_uint(0),    #The response from the combined pixels will be added, resulting in increased sensitivity.
+    "XI_BIN_MODE_AVERAGE": c_uint(1),    #The response from the combined pixels will be averaged, resulting in increased signal/noise ratio.
+    }
+
+#Decimation Engine Selector
+XI_DEC_SELECTOR = { 
+    "XI_DEC_SELECT_SENSOR": c_uint(0),    # Sensor Decimation Engine
+    "XI_DEC_SELECT_DEVICE_FPGA": c_uint(1),    #FPGA Decimation Engine on device side
+    "XI_DEC_SELECT_HOST_CPU": c_uint(2),    # CPU Decimation Engine on Host side
+    }
+
+#Sensor tap count enumerator.
+XI_SENSOR_TAP_CNT = { 
+    "XI_TAP_CNT_1": c_uint(1),    #1 sensor tap selected.
+    "XI_TAP_CNT_2": c_uint(2),    #2 sensor taps selected.
+    "XI_TAP_CNT_4": c_uint(4),    #4 sensor taps selected.
+    }
+
+#Bit depth enumerator.
+XI_BIT_DEPTH = { 
+    "XI_BPP_8": c_uint(8),    #8 bit per pixel
+    "XI_BPP_9": c_uint(9),    #9 bit per pixel
+    "XI_BPP_10": c_uint(10),    #10 bit per pixel
+    "XI_BPP_11": c_uint(11),    #11 bit per pixel
+    "XI_BPP_12": c_uint(12),    #12 bit per pixel
+    "XI_BPP_14": c_uint(14),    #14 bit per pixel
+    "XI_BPP_16": c_uint(16),    #16 bit per pixel
+    }
+
+#Debug level enumerator.
+XI_DEBUG_LEVEL = { 
+    "XI_DL_DETAIL": c_uint(0),    #Same as trace plus locking resources
+    "XI_DL_TRACE": c_uint(1),    #Information level.
+    "XI_DL_WARNING": c_uint(2),    #Warning level.
+    "XI_DL_ERROR": c_uint(3),    #Error level.
+    "XI_DL_FATAL": c_uint(4),    #Fatal error level.
+    "XI_DL_DISABLED": c_uint(100),    #Print no errors at all.
+    }
+
+#Image output format enumerator.
+XI_IMG_FORMAT = { 
+    "XI_MONO8": c_uint(0),    #8 bits per pixel
+    "XI_MONO16": c_uint(1),    #16 bits per pixel
+    "XI_RGB24": c_uint(2),    #RGB data format
+    "XI_RGB32": c_uint(3),    #RGBA data format
+    "XI_RGB_PLANAR": c_uint(4),    #RGB planar data format
+    "XI_RAW8": c_uint(5),    #8 bits per pixel raw data from sensor
+    "XI_RAW16": c_uint(6),    #16 bits per pixel raw data from sensor
+    "XI_FRM_TRANSPORT_DATA": c_uint(7),    #Data from transport layer (e.g. packed). Format see XI_PRM_TRANSPORT_PIXEL_FORMAT
+    "XI_RGB48": c_uint(8),    #RGB data format
+    "XI_RGB64": c_uint(9),    #RGBA data format
+    "XI_RGB16_PLANAR": c_uint(10),    #RGB16 planar data format
+    "XI_RAW8X2": c_uint(11),    #8 bits per pixel raw data from sensor(2 components in a row)
+    "XI_RAW8X4": c_uint(12),    #8 bits per pixel raw data from sensor(4 components in a row)
+    "XI_RAW16X2": c_uint(13),    #16 bits per pixel raw data from sensor(2 components in a row)
+    "XI_RAW16X4": c_uint(14),    #16 bits per pixel raw data from sensor(4 components in a row)
+    }
+
+#Bayer color matrix enumerator.
+XI_COLOR_FILTER_ARRAY = { 
+    "XI_CFA_NONE": c_uint(0),    # B/W sensors
+    "XI_CFA_BAYER_RGGB": c_uint(1),    #Regular RGGB
+    "XI_CFA_CMYG": c_uint(2),    #AK Sony sens
+    "XI_CFA_RGR": c_uint(3),    #2R+G readout
+    "XI_CFA_BAYER_BGGR": c_uint(4),    #BGGR readout
+    "XI_CFA_BAYER_GRBG": c_uint(5),    #GRBG readout
+    "XI_CFA_BAYER_GBRG": c_uint(6),    #GBRG readout
+    }
+
+#structure containing information about buffer policy(can be safe, data will be copied to user/app buffer or unsafe, user will get internally allocated buffer without data copy).
+XI_BP = { 
+    "XI_BP_UNSAFE": c_uint(0),    #User gets pointer to internally allocated circle buffer and data may be overwritten by device.
+    "XI_BP_SAFE": c_uint(1),    #Data from device will be copied to user allocated buffer or xiApi allocated memory.
+    }
+
+#structure containing information about trigger source
+XI_TRG_SOURCE = { 
+    "XI_TRG_OFF": c_uint(0),    #Camera works in free run mode.
+    "XI_TRG_EDGE_RISING": c_uint(1),    #External trigger (rising edge).
+    "XI_TRG_EDGE_FALLING": c_uint(2),    #External trigger (falling edge).
+    "XI_TRG_SOFTWARE": c_uint(3),    #Software(manual) trigger.
+    "XI_TRG_LEVEL_HIGH": c_uint(4),    #Specifies that the trigger is considered valid as long as the level of the source signal is high.
+    "XI_TRG_LEVEL_LOW": c_uint(5),    #Specifies that the trigger is considered valid as long as the level of the source signal is low.
+    }
+
+#structure containing information about trigger functionality
+XI_TRG_SELECTOR = { 
+    "XI_TRG_SEL_FRAME_START": c_uint(0),    #Selects a trigger starting the capture of one frame
+    "XI_TRG_SEL_EXPOSURE_ACTIVE": c_uint(1),    #Selects a trigger controlling the duration of one frame.
+    "XI_TRG_SEL_FRAME_BURST_START": c_uint(2),    #Selects a trigger starting the capture of the bursts of frames in an acquisition.
+    "XI_TRG_SEL_FRAME_BURST_ACTIVE": c_uint(3),    #Selects a trigger controlling the duration of the capture of the bursts of frames in an acquisition.
+    "XI_TRG_SEL_MULTIPLE_EXPOSURES": c_uint(4),    #Selects a trigger which when first trigger starts exposure and consequent pulses are gating exposure(active HI)
+    "XI_TRG_SEL_EXPOSURE_START": c_uint(5),    #Selects a trigger controlling the start of the exposure of one Frame.
+    "XI_TRG_SEL_MULTI_SLOPE_PHASE_CHANGE": c_uint(6),    #Selects a trigger controlling the multi slope phase in one Frame (phase0 -> phase1) or (phase1 -> phase2).
+    "XI_TRG_SEL_ACQUISITION_START": c_uint(7),    #Selects a trigger starting acquisition of first frame.
+    }
+
+#Trigger overlap modes
+XI_TRG_OVERLAP = { 
+    "XI_TRG_OVERLAP_OFF": c_uint(0),    #No trigger overlap is permitted. If camera is in read-out phase, all triggers are rejected.
+    "XI_TRG_OVERLAP_READ_OUT": c_uint(1),    #Trigger is accepted only when sensor is ready to start next exposure with defined exposure time. Trigger is rejected when sensor is not ready for new exposure with defined exposure time.
+    "XI_TRG_OVERLAP_PREV_FRAME": c_uint(2),    #Trigger is accepted by camera any time. If sensor is not ready for the next exposure - the trigger is latched and sensor starts exposure as soon as exposure can be started with defined exposure time.
+    }
+
+#structure containing information about acqisition timing modes
+XI_ACQ_TIMING_MODE = { 
+    "XI_ACQ_TIMING_MODE_FREE_RUN": c_uint(0),    #Selects a mode when sensor timing is given by fastest framerate possible (by exposure time and readout).
+    "XI_ACQ_TIMING_MODE_FRAME_RATE": c_uint(1),    #Selects a mode when sensor frame acquisition frequency is set to XI_PRM_FRAMERATE
+    "XI_ACQ_TIMING_MODE_FRAME_RATE_LIMIT": c_uint(2),    #Selects a mode when sensor frame acquisition frequency is limited by XI_PRM_FRAMERATE
+    }
+
+#Enumerator for data target modes
+XI_TRANSPORT_DATA_TARGET_MODE = { 
+    "XI_TRANSPORT_DATA_TARGET_CPU_RAM": c_uint(0),    #Selects a CPU RAM as target for delivered data from the camera.
+    "XI_TRANSPORT_DATA_TARGET_GPU_RAM": c_uint(1),    #Selects a GPU RAM as target for delivered data from the camera.
+    }
+
+#Enumeration for XI_PRM_GPI_SELECTOR for CB cameras.
+XI_GPI_SEL_CB = { 
+    "XI_GPI_SEL_CB_IN1": c_uint(1),    #Input1 - Pin3 (Opto Isolated).
+    "XI_GPI_SEL_CB_IN2": c_uint(2),    #Input2 - Pin4 (Opto Isolated).
+    "XI_GPI_SEL_CB_INOUT1": c_uint(3),    #Input/Output1 - Pin6
+    "XI_GPI_SEL_CB_INOUT2": c_uint(4),    #Input/Output2 - Pin7
+    "XI_GPI_SEL_CB_INOUT3": c_uint(5),    #Input/Output3 - Pin11
+    "XI_GPI_SEL_CB_INOUT4": c_uint(6),    #Input/Output4 - Pin12
+    }
+
+#Enumeration for XI_PRM_GPO_SELECTOR for CB cameras.
+XI_GPO_SEL_CB = { 
+    "XI_GPO_SEL_CB_OUT1": c_uint(1),    #Output1 - Pin8 (Opto Isolated).
+    "XI_GPO_SEL_CB_OUT2": c_uint(2),    #Output2 - Pin9 (Opto Isolated).
+    "XI_GPO_SEL_CB_INOUT1": c_uint(3),    #Input/Output1 - Pin6
+    "XI_GPO_SEL_CB_INOUT2": c_uint(4),    #Input/Output2 - Pin7
+    "XI_GPO_SEL_CB_INOUT3": c_uint(5),    #Input/Output3 - Pin11
+    "XI_GPO_SEL_CB_INOUT4": c_uint(6),    #Input/Output4 - Pin12
+    }
+
+#structure containing information about GPI functionality
+XI_GPI_MODE = { 
+    "XI_GPI_OFF": c_uint(0),    #Input off. In this mode the input level can be get using parameter XI_PRM_GPI_LEVEL.
+    "XI_GPI_TRIGGER": c_uint(1),    #Trigger input
+    "XI_GPI_EXT_EVENT": c_uint(2),    #External signal input. It is not implemented yet.
+    }
+
+#Enumerator for GPI port selection.
+XI_GPI_SELECTOR = { 
+    "XI_GPI_PORT1": c_uint(1),    #GPI port 1
+    "XI_GPI_PORT2": c_uint(2),    #GPI port 2
+    "XI_GPI_PORT3": c_uint(3),    #GPI port 3
+    "XI_GPI_PORT4": c_uint(4),    #GPI port 4
+    "XI_GPI_PORT5": c_uint(5),    #GPI port 5
+    "XI_GPI_PORT6": c_uint(6),    #GPI port 6
+    }
+
+#structure containing information about GPO functionality
+XI_GPO_MODE = { 
+    "XI_GPO_OFF": c_uint(0),    #Output off
+    "XI_GPO_ON": c_uint(1),    #Logical level.
+    "XI_GPO_FRAME_ACTIVE": c_uint(2),    #On from exposure started until read out finished.
+    "XI_GPO_FRAME_ACTIVE_NEG": c_uint(3),    #Off from exposure started until read out finished.
+    "XI_GPO_EXPOSURE_ACTIVE": c_uint(4),    #On during exposure(integration) time
+    "XI_GPO_EXPOSURE_ACTIVE_NEG": c_uint(5),    #Off during exposure(integration) time
+    "XI_GPO_FRAME_TRIGGER_WAIT": c_uint(6),    #On when sensor is ready for next trigger edge.
+    "XI_GPO_FRAME_TRIGGER_WAIT_NEG": c_uint(7),    #Off when sensor is ready for next trigger edge.
+    "XI_GPO_EXPOSURE_PULSE": c_uint(8),    #Short On/Off pulse on start of each exposure.
+    "XI_GPO_EXPOSURE_PULSE_NEG": c_uint(9),    #Short Off/On pulse on start of each exposure.
+    "XI_GPO_BUSY": c_uint(10),    #ON when camera is busy (trigger mode - starts with trigger reception and ends with end of frame transfer from sensor; freerun - active when acq active)
+    "XI_GPO_BUSY_NEG": c_uint(11),    #OFF when camera is busy (trigger mode  - starts with trigger reception and ends with end of frame transfer from sensor; freerun - active when acq active)
+    "XI_GPO_HIGH_IMPEDANCE": c_uint(12),    #Hi impedance of output (if three state logic is used).
+    "XI_GPO_FRAME_BUFFER_OVERFLOW": c_uint(13),    #Frame buffer overflow status.
+    }
+
+#Enumerator for GPO port selection.
+XI_GPO_SELECTOR = { 
+    "XI_GPO_PORT1": c_uint(1),    #GPO port 1
+    "XI_GPO_PORT2": c_uint(2),    #GPO port 2
+    "XI_GPO_PORT3": c_uint(3),    #GPO port 3
+    "XI_GPO_PORT4": c_uint(4),    #GPO port 4
+    "XI_GPO_PORT5": c_uint(5),    #GPO port 5
+    "XI_GPO_PORT6": c_uint(6),    #GPO port 6
+    }
+
+#structure containing information about LED functionality
+XI_LED_MODE = { 
+    "XI_LED_HEARTBEAT": c_uint(0),    #Blinking (1Hz) if all is OK (CURRERA-R only).
+    "XI_LED_TRIGGER_ACTIVE": c_uint(1),    #On if trigger detected (CURRERA-R only).
+    "XI_LED_EXT_EVENT_ACTIVE": c_uint(2),    #On if external signal detected (CURRERA-R only)
+    "XI_LED_LINK": c_uint(3),    #On if link is OK (Currera-R only)
+    "XI_LED_ACQUISITION": c_uint(4),    #On if data streaming is on
+    "XI_LED_EXPOSURE_ACTIVE": c_uint(5),    #On if sensor is integrating
+    "XI_LED_FRAME_ACTIVE": c_uint(6),    #On if frame is active (exposure or readout)
+    "XI_LED_OFF": c_uint(7),    #Off
+    "XI_LED_ON": c_uint(8),    #On
+    "XI_LED_BLINK": c_uint(9),    #Blinking (1Hz)
+    }
+
+#Enumerator for LED selection.
+XI_LED_SELECTOR = { 
+    "XI_LED_SEL1": c_uint(1),    #LED 1
+    "XI_LED_SEL2": c_uint(2),    #LED 2
+    "XI_LED_SEL3": c_uint(3),    #LED 3
+    "XI_LED_SEL4": c_uint(4),    #LED 4
+    }
+
+#structure contains frames counter
+XI_COUNTER_SELECTOR = { 
+    "XI_CNT_SEL_TRANSPORT_SKIPPED_FRAMES": c_uint(0),    #Number of skipped frames on transport layer (e.g. when image gets lost while transmission). Occur when capacity of transport channel does not allow to transfer all data.
+    "XI_CNT_SEL_API_SKIPPED_FRAMES": c_uint(1),    #Number of skipped frames on API layer. Occur when application does not process the images as quick as they are received from the camera.
+    "XI_CNT_SEL_TRANSPORT_TRANSFERRED_FRAMES": c_uint(2),    #Number of successfully transferred frames on transport layer.
+    "XI_CNT_SEL_FRAME_MISSED_TRIGGER_DUETO_OVERLAP": c_uint(3),    #Number of missed triggers due to overlap.
+    "XI_CNT_SEL_FRAME_MISSED_TRIGGER_DUETO_FRAME_BUFFER_OVR": c_uint(4),    #Number of missed triggers due to frame buffer full.
+    "XI_CNT_SEL_FRAME_BUFFER_OVERFLOW": c_uint(5),    #Frame buffer full counter.
+    }
+
+#structure containing information about time stamp reset arming
+XI_TS_RST_MODE = { 
+    "XI_TS_RST_ARM_ONCE": c_uint(0),    #TimeStamp reset is armed once, after execution engine is disabled
+    "XI_TS_RST_ARM_PERSIST": c_uint(1),    #TimeStamp reset is armed permanently if source is selected 
+    }
+
+#structure containing information about possible timestamp reset sources
+XI_TS_RST_SOURCE = { 
+    "XI_TS_RST_OFF": c_uint(0),    #No source selected, timestamp reset effectively disabled
+    "XI_TS_RST_SRC_GPI_1": c_uint(1),    #TimeStamp reset source selected GPI1 (after de bounce)
+    "XI_TS_RST_SRC_GPI_2": c_uint(2),    #TimeStamp reset source selected GPI2 (after de bounce)
+    "XI_TS_RST_SRC_GPI_3": c_uint(3),    #TimeStamp reset source selected GPI3 (after de bounce)
+    "XI_TS_RST_SRC_GPI_4": c_uint(4),    #TimeStamp reset source selected GPI4 (after de bounce)
+    "XI_TS_RST_SRC_GPI_1_INV": c_uint(5),    #TimeStamp reset source selected GPI1 inverted (after de bounce)
+    "XI_TS_RST_SRC_GPI_2_INV": c_uint(6),    #TimeStamp reset source selected GPI2 inverted (after de bounce)
+    "XI_TS_RST_SRC_GPI_3_INV": c_uint(7),    #TimeStamp reset source selected GPI3 inverted (after de bounce)
+    "XI_TS_RST_SRC_GPI_4_INV": c_uint(8),    #TimeStamp reset source selected GPI4 inverted (after de bounce)
+    "XI_TS_RST_SRC_GPO_1": c_uint(9),    #TimeStamp reset source selected GPO1 (after de bounce)
+    "XI_TS_RST_SRC_GPO_2": c_uint(10),    #TimeStamp reset source selected GPO2 (after de bounce)
+    "XI_TS_RST_SRC_GPO_3": c_uint(11),    #TimeStamp reset source selected GPO3 (after de bounce)
+    "XI_TS_RST_SRC_GPO_4": c_uint(12),    #TimeStamp reset source selected GPO4 (after de bounce)
+    "XI_TS_RST_SRC_GPO_1_INV": c_uint(13),    #TimeStamp reset source selected GPO1 inverted (after de bounce)
+    "XI_TS_RST_SRC_GPO_2_INV": c_uint(14),    #TimeStamp reset source selected GPO2 inverted (after de bounce)
+    "XI_TS_RST_SRC_GPO_3_INV": c_uint(15),    #TimeStamp reset source selected GPO3 inverted (after de bounce)
+    "XI_TS_RST_SRC_GPO_4_INV": c_uint(16),    #TimeStamp reset source selected GPO4 inverted (after de bounce)
+    "XI_TS_RST_SRC_TRIGGER": c_uint(17),    #TimeStamp reset source selected TRIGGER (signal for sensor)
+    "XI_TS_RST_SRC_TRIGGER_INV": c_uint(18),    #TimeStamp reset source selected TRIGGER (signal for sensor)
+    "XI_TS_RST_SRC_SW": c_uint(19),    #TimeStamp reset source selected software (has immediate effect and is self cleared)
+    "XI_TS_RST_SRC_EXPACTIVE": c_uint(20),    #TimeStamp reset source selected exposure active 
+    "XI_TS_RST_SRC_EXPACTIVE_INV": c_uint(21),    #TimeStamp reset source selected exposure active 
+    "XI_TS_RST_SRC_FVAL": c_uint(22),    #TimeStamp reset source selected frame valid signal from sensor
+    "XI_TS_RST_SRC_FVAL_INV": c_uint(23),    #TimeStamp reset source selected frame valid inverted signal from sensor
+    }
+
+#structure containing information about parameters type
+XI_PRM_TYPE = { 
+    "xiTypeInteger": c_uint(0),    #integer parameter type
+    "xiTypeFloat": c_uint(1),    #float parameter type
+    "xiTypeString": c_uint(2),    #string parameter type
+    "xiTypeEnum": c_uint(0),    #enumerator parameter type
+    "xiTypeBoolean": c_uint(0),    #boolean parameter type
+    "xiTypeCommand": c_uint(0),    #command parameter type
+    }
+
+#Turn parameter On/Off
+XI_SWITCH = { 
+    "XI_OFF": c_uint(0),    #Turn parameter off
+    "XI_ON": c_uint(1),    #Turn parameter on
+    }
+
+#Temperature selector
+XI_TEMP_SELECTOR = { 
+    "XI_TEMP_IMAGE_SENSOR_DIE_RAW": c_uint(0),    #Not calibrated temperature of image sensor die (silicon) - e.g. sensor register value
+    "XI_TEMP_IMAGE_SENSOR_DIE": c_uint(1),    #Calibrated temperature of image sensor die (silicon) - in degrees of Celsius
+    "XI_TEMP_SENSOR_BOARD": c_uint(2),    #Sensor board temperature
+    "XI_TEMP_INTERFACE_BOARD": c_uint(3),    #Interface board temperature
+    "XI_TEMP_FRONT_HOUSING": c_uint(4),    #Front part of camera housing temperature
+    "XI_TEMP_REAR_HOUSING": c_uint(5),    #Rear part of camera housing temperature
+    "XI_TEMP_TEC1_COLD": c_uint(6),    #TEC1 cold side temperature
+    "XI_TEMP_TEC1_HOT": c_uint(7),    #TEC1 hot side temperature
+    }
+
+#Temperature selector
+XI_TEMP_CTRL_MODE_SELECTOR = { 
+    "XI_TEMP_CTRL_MODE_OFF": c_uint(0),    #Temperature controlling is disabled (no fan or TEC (peltier) is enabled)
+    "XI_TEMP_CTRL_MODE_AUTO": c_uint(1),    #Automated temperature controlling is enabled - based on selected thermomether and target temperature.
+    "XI_TEMP_CTRL_MODE_MANUAL": c_uint(2),    #Manual controlling of temperature elements is enabled. Application can control the elements.
+    }
+
+#Temperature element selector
+XI_TEMP_ELEMENT_SELECTOR = { 
+    "XI_TEMP_ELEM_TEC1": c_uint(11),    #Temperature element TEC1 (peltier closest to sensor)
+    "XI_TEMP_ELEM_TEC2": c_uint(12),    #Temperature element TEC2 (peltier)
+    "XI_TEMP_ELEM_FAN1": c_uint(31),    #Temperature element fan current or rotation
+    "XI_TEMP_ELEM_FAN1_THRS_TEMP": c_uint(32),    #Temperature element fan start rotation threshold temperature
+    }
+
+#Data packing(grouping) types.
+XI_OUTPUT_DATA_PACKING_TYPE = { 
+    "XI_DATA_PACK_XI_GROUPING": c_uint(0),    #Data grouping (10g160, 12g192, 14g224).
+    "XI_DATA_PACK_PFNC_LSB_PACKING": c_uint(1),    #Data packing (10p, 12p)
+    }
+
+#Downsampling types
+XI_DOWNSAMPLING_TYPE = { 
+    "XI_BINNING": c_uint(0),    #Downsampling is using  binning
+    "XI_SKIPPING": c_uint(1),    #Downsampling is using  skipping
+    }
+
+#Image correction function
+XI_IMAGE_CORRECTION_SELECTOR = { 
+    "XI_CORRECTION_TYPE_SELECTOR": c_uint(0),    #Correction Type selected see XI_TYPE_CORRECTION_SELECTOR
+    "XI_DEFECT_ID": c_uint(1),    #Select defect id
+    "XI_DEFECTS_COUNT_BY_TYPE": c_uint(2),    #Count of defects selected by current XI_DEFECT_TYPE
+    "XI_DEFECT_TYPE": c_uint(3),    #Type of defect see XI_IMAGE_DEFECT_TYPE
+    "XI_DEFECT_SUB_TYPE": c_uint(4),    #Defect sub type see XI_IMAGE_DEFECT_SUB_TYPE
+    "XI_DEFECT_POS_X": c_uint(5),    #Defect position x
+    "XI_DEFECT_POS_Y": c_uint(6),    #Defect position y
+    "XI_DEFECT_CMD_ADD": c_uint(7),    #Write cached defect to the list
+    "XI_DEFECT_CMD_DELETE": c_uint(8),    #Delete defect to the list
+    "XI_DEFECT_CMD_APPLY_CHANGES": c_uint(9),    #Apply changes
+    "XI_DEFECT_CMD_LIST_CLEAR": c_uint(10),    #Clear list
+    "XI_DEFECT_CMD_LISTS_CLEAR": c_uint(11),    #Clear lists
+    "XI_DEFECT_CMD_SAVE": c_uint(12),    #Save list to device
+    "XI_CORRECTION_TYPE_ENABLED": c_uint(13),    #Enable or disable correction type
+    "XI_DEFECT_ID_BY_TYPE": c_uint(14),    #Select defect id by type
+    "XI_LIST_ID": c_uint(15),    #Select list id
+    "XI_DEFECT_CMD_APPLY_CHANGES_ALL": c_uint(16),    #Apply changes to all lists
+    "XI_LIST_STATUS": c_uint(17),    #Current list status (Read-only). Result is mask of bits XI_LIST_STATUS_GENERATED, XI_LIST_STATUS_...
+    "XI_IMG_COR_TAP_SELECTOR": c_uint(64),    #Selected tap id (0-N) for image correction
+    "XI_IMG_COR_GAIN_TUNE": c_uint(65),    #Adjustment of gain in dB. For multitap sensors, active tap is selected by XI_IMG_COR_TAP_SELECTOR.
+    "XI_IMG_COR_OFFSET_TUNE": c_uint(66),    #Adjustment of pixel values offset. For multitap sensors, active tap is selected by XI_IMG_COR_TAP_SELECTOR.
+    }
+
+#Define image  correction type
+XI_TYPE_CORRECTION_SELECTOR = { 
+    "XI_CORR_TYPE_SENSOR_DEFECTS_FACTORY": c_uint(0),    #Factory defect list
+    "XI_CORR_TYPE_SENSOR_COLUMN_FPN": c_uint(1),    #Select Fixed Pattern Noise Correction for Columns
+    "XI_CORR_TYPE_SENSOR_ADC_BLO": c_uint(2),    #ADC gain and black level offset sensor register correction
+    "XI_CORR_TYPE_SENSOR_ROW_FPN": c_uint(3),    #Select Fixed Pattern Noise Correction for Rows
+    "XI_CORR_TYPE_SENSOR_DEFECTS_USER0": c_uint(4),    #User defect list
+    "XI_CORR_TYPE_SENSOR_CHANNELS_TUNE": c_uint(5),    #Image channel/tap intensity correction
+    }
+
+#Define image defect types
+XI_IMAGE_DEFECT_TYPE = { 
+    "XI_IMAGE_DEFECT_TYPE_PIXEL": c_uint(0),    #Defect is pixel
+    "XI_IMAGE_DEFECT_TYPE_COLUMN": c_uint(1),    #Defect is column
+    "XI_IMAGE_DEFECT_TYPE_ROW": c_uint(2),    #Defect is row
+    }
+
+#Define image defect sub types
+XI_IMAGE_DEFECT_SUB_TYPE = { 
+    "XI_IMAGE_DEFECT_SUB_TYPE_DARK": c_uint(0),    #Defect pixel(s) is(are) too dark
+    "XI_IMAGE_DEFECT_SUB_TYPE_BRIGHT": c_uint(1),    #Defect pixel(s) is(are) out of range
+    "XI_IMAGE_DEFECT_SUB_TYPE_HOT": c_uint(2),    #Defect pixel(s) is(are) too bright
+    }
+
+#Gain selector
+XI_GAIN_SELECTOR_TYPE = { 
+    "XI_GAIN_SELECTOR_ALL": c_uint(0),    #Gain selector selects all channels. Implementation of gain type depends on camera.
+    "XI_GAIN_SELECTOR_ANALOG_ALL": c_uint(1),    #Gain selector selects all analog channels. This is available only on some cameras.
+    "XI_GAIN_SELECTOR_DIGITAL_ALL": c_uint(2),    #Gain selector selects all digital channels. This is available only on some cameras.
+    "XI_GAIN_SELECTOR_ANALOG_TAP1": c_uint(3),    #Gain selector selects tap 1. This is available only on some cameras.
+    "XI_GAIN_SELECTOR_ANALOG_TAP2": c_uint(4),    #Gain selector selects tap 2. This is available only on some cameras.
+    "XI_GAIN_SELECTOR_ANALOG_TAP3": c_uint(5),    #Gain selector selects tap 3. This is available only on some cameras.
+    "XI_GAIN_SELECTOR_ANALOG_TAP4": c_uint(6),    #Gain selector selects tap 4. This is available only on some cameras.
+    }
+
+#Shutter mode types
+XI_SHUTTER_TYPE = { 
+    "XI_SHUTTER_GLOBAL": c_uint(0),    #Sensor Global Shutter(CMOS sensor)
+    "XI_SHUTTER_ROLLING": c_uint(1),    #Sensor Electronic Rolling Shutter(CMOS sensor)
+    "XI_SHUTTER_GLOBAL_RESET_RELEASE": c_uint(2),    #Sensor Global Reset Release Shutter(CMOS sensor)
+    }
+
+#structure containing information about CMS functionality
+XI_CMS_MODE = { 
+    "XI_CMS_DIS": c_uint(0),    #CMS disable
+    "XI_CMS_EN": c_uint(1),    #CMS enable
+    "XI_CMS_EN_FAST": c_uint(2),    #CMS enable(fast)
+    }
+
+#structure containing information about ICC Intents
+XI_CMS_INTENT = { 
+    "XI_CMS_INTENT_PERCEPTUAL": c_uint(0),    #CMS intent perceptual
+    "XI_CMS_INTENT_RELATIVE_COLORIMETRIC": c_uint(1),    #CMS intent relative colorimetric
+    "XI_CMS_INTENT_SATURATION": c_uint(2),    #CMS intent saturation
+    "XI_CMS_INTENT_ABSOLUTE_COLORIMETRIC": c_uint(3),    #CMS intent absolute colorimetric
+    }
+
+#structure containing information about options for selection of camera before onening
+XI_OPEN_BY = { 
+    "XI_OPEN_BY_INST_PATH": c_uint(0),    #Open camera by its hardware path
+    "XI_OPEN_BY_SN": c_uint(1),    #Open camera by its serial number
+    "XI_OPEN_BY_USER_ID": c_uint(2),    #open camera by its custom user ID
+    "XI_OPEN_BY_LOC_PATH": c_uint(3),    #Open camera by its hardware location path
+    }
+
+#Lens feature selector selects which feature will be accessed.
+XI_LENS_FEATURE = { 
+    "XI_LENS_FEATURE_MOTORIZED_FOCUS_SWITCH": c_uint(1),    #Status of lens motorized focus switch
+    "XI_LENS_FEATURE_MOTORIZED_FOCUS_BOUNDED": c_uint(2),    #On read = 1 if motorized focus is on one of limits.
+    "XI_LENS_FEATURE_MOTORIZED_FOCUS_CALIBRATION": c_uint(3),    #On read = 1 if motorized focus is calibrated. Write 1 to start calibration.
+    "XI_LENS_FEATURE_IMAGE_STABILIZATION_ENABLED": c_uint(4),    #On read = 1 if image stabilization is enabled. Write 1 to enable image stabilization.
+    "XI_LENS_FEATURE_IMAGE_STABILIZATION_SWITCH_STATUS": c_uint(5),    #On read = 1 if image stabilization switch is in position On.
+    "XI_LENS_FEATURE_IMAGE_ZOOM_SUPPORTED": c_uint(6),    #On read = 1 if lens supports zoom = are not prime.
+    }
+
+#Sensor feature selector selects which feature will be accessed.
+XI_SENSOR_FEATURE_SELECTOR = { 
+    "XI_SENSOR_FEATURE_ZEROROT_ENABLE": c_uint(0),    #Zero ROT enable for ONSEMI PYTHON family
+    "XI_SENSOR_FEATURE_BLACK_LEVEL_CLAMP": c_uint(1),    #Black level offset clamping
+    "XI_SENSOR_FEATURE_MD_FPGA_DIGITAL_GAIN_DISABLE": c_uint(2),    #Disable digital component of gain for MD family
+    "XI_SENSOR_FEATURE_ACQUISITION_RUNNING": c_uint(3),    #Sensor acquisition is running status. Could be stopped by setting of 0.
+    }
+
+#Extended feature selector.
+XI_EXT_FEATURE_SELECTOR = { 
+    "XI_EXT_FEATURE_SEL_SIMULATOR_GENERATOR_FRAME_LOST_PERIOD_MIN": c_uint(1),    #Camera simulator lost frame generation minimum period (in frames).
+    "XI_EXT_FEATURE_SEL_SIMULATOR_GENERATOR_FRAME_LOST_PERIOD_MAX": c_uint(2),    #Camera simulator lost frame generation random period (in frames).
+    "XI_EXT_FEATURE_SEL_SIMULATOR_IMAGE_DATA_FORMAT": c_uint(3),    #Camera simulator image data format.
+    "XI_EXT_FEATURE_SEL_BANDWIDTH_MEASUREMENT_TIME_SECONDS": c_uint(4),    #Number of seconds for bandwidth measurement. Default = 1.
+    "XI_EXT_FEATURE_SEL_IMAGE_INTENSIFIER_VOLTAGE": c_uint(5),    #Input voltage for image intensifier. Default = 0.
+    "XI_EXT_FEATURE_SEL_TRIG_FRAME": c_uint(6),    #Triggers frame(s) on internal event. Default = 0.
+    "XI_EXT_FEATURE_SEL_IMAGE_OVERSAMPLING": c_uint(7),    #Enable/disable image pixels oversampling. Default = 0.
+    "XI_EXT_FEATURE_SEL_APPLY_DATA_FINAL": c_uint(8),    #Enable/disable applying data final. Default = 1.
+    "XI_EXT_FEATURE_SEL_FAN_RPM": c_uint(9),    #Sets camera cooling fan rpm (% from max). Default = 100.
+    "XI_EXT_FEATURE_SEL_DITHERING_HOST": c_uint(10),    #Enables/Disables shifted(left/up) image data dithering on HOST side. Default = 0(off).
+    "XI_EXT_FEATURE_SEL_DITHERING_DEVICE": c_uint(11),    #Enables/Disables shifted(left/up) image data dithering on DEVICE side. Default = 0(off).
+    "XI_EXT_FEATURE_SEL_FAN_THR_TEMP": c_uint(12),    #Sets camera fan/back side threshold temperature. Default = 35.
+    }
+
+#Device unit selector
+XI_DEVICE_UNIT_SELECTOR = { 
+    "XI_DEVICE_UNIT_SENSOR1": c_uint(0),    #Selects first sensor on device
+    "XI_DEVICE_UNIT_FPGA1": c_uint(1),    #Selects first FPGA on device
+    "XI_DEVICE_UNIT_SAL": c_uint(2),    #Selects sensor abstraction layer
+    "XI_DEVICE_UNIT_DAL": c_uint(3),    #Selects driver abstraction layer
+    "XI_DEVICE_UNIT_SCM": c_uint(4),    #Selects sensor correction module
+    "XI_DEVICE_UNIT_FGENTL": c_uint(5),    #Selects register in underlying GenTL layer
+    "XI_DEVICE_UNIT_MCU1": c_uint(6),    #Selects first MCU on device
+    "XI_DEVICE_UNIT_MCU2": c_uint(7),    #Selects second MCU on device
+    "XI_DEVICE_UNIT_CHF": c_uint(8),    #Selects Camera High Features Model
+    }
+
+#Camera sensor mode enumerator.
+XI_SENSOR_MODE = { 
+    "XI_SENS_MD0": c_uint(0),    #Sensor mode number 0
+    "XI_SENS_MD1": c_uint(1),    #Sensor mode number 1
+    "XI_SENS_MD2": c_uint(2),    #Sensor mode number 2
+    "XI_SENS_MD3": c_uint(3),    #Sensor mode number 3
+    "XI_SENS_MD4": c_uint(4),    #Sensor mode number 4
+    "XI_SENS_MD5": c_uint(5),    #Sensor mode number 5
+    "XI_SENS_MD6": c_uint(6),    #Sensor mode number 6
+    "XI_SENS_MD7": c_uint(7),    #Sensor mode number 7
+    "XI_SENS_MD8": c_uint(8),    #Sensor mode number 8
+    "XI_SENS_MD9": c_uint(9),    #Sensor mode number 9
+    "XI_SENS_MD10": c_uint(10),    #Sensor mode number 10
+    "XI_SENS_MD11": c_uint(11),    #Sensor mode number 11
+    "XI_SENS_MD12": c_uint(12),    #Sensor mode number 12
+    "XI_SENS_MD13": c_uint(13),    #Sensor mode number 13
+    "XI_SENS_MD14": c_uint(14),    #Sensor mode number 14
+    "XI_SENS_MD15": c_uint(15),    #Sensor mode number 15
+    }
+
+#Camera channel count enumerator.
+XI_SENSOR_OUTPUT_CHANNEL_COUNT = { 
+    "XI_CHANN_CNT2": c_uint(2),    #2 sensor readout channels.
+    "XI_CHANN_CNT4": c_uint(4),    #4 sensor readout channels.
+    "XI_CHANN_CNT8": c_uint(8),    #8 sensor readout channels.
+    "XI_CHANN_CNT16": c_uint(16),    #16 sensor readout channels.
+    "XI_CHANN_CNT32": c_uint(32),    #32 sensor readout channels.
+    }
+
+#Sensor defects correction list selector
+XI_SENS_DEFFECTS_CORR_LIST_SELECTOR = { 
+    "XI_SENS_DEFFECTS_CORR_LIST_SEL_FACTORY": c_uint(0),    #Factory defect correction list
+    "XI_SENS_DEFFECTS_CORR_LIST_SEL_USER0": c_uint(1),    #User defect correction list
+    }
+
+#Acquisition status Selector
+XI_ACQUISITION_STATUS_SELECTOR = { 
+    "XI_ACQUISITION_STATUS_ACQ_ACTIVE": c_uint(0),    # Device is currently doing an acquisition of one or many frames.
+    }
+
+
+XI_GenTL_Image_Format_e = { 
+    "XI_GenTL_Image_Format_Mono8": c_uint(0x01080001),    
+    }
