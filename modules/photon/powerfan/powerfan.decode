@@ -64,9 +64,9 @@ struct Bldc {
 }
 
 struct Pwm {
-    out: u32,
+    outDuty: f32,
     length: u16,
-    duty: u16,
+    input: u16,
     step: u16,
 }
 
