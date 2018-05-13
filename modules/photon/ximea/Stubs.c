@@ -6,44 +6,185 @@ void PhotonXimea_Init(){}
 void PhotonXimea_Tick(){}
 
 /*cmd handlers*/
-PhotonError PhotonXimea_ExecCmd_UpdateInfo(PhotonXimeaCameraItem cam){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Open(PhotonXimeaCameraItem cam){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Close(PhotonXimeaCameraItem cam){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Start(PhotonXimeaCameraItem cam, uint64_t number, uint64_t timeout){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Stop(PhotonXimeaCameraItem cam){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_exposure(PhotonXimeaCameraItem cam, int64_t val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_exposure_burst_count(PhotonXimeaCameraItem cam, int64_t val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_gain(PhotonXimeaCameraItem cam, float val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_gain_selector(PhotonXimeaCameraItem cam, PhotonXimeaGAIN_SELECTOR_TYPE val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_downsampling(PhotonXimeaCameraItem cam, PhotonXimeaDOWNSAMPLING_VALUE val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_downsampling_type(PhotonXimeaCameraItem cam, PhotonXimeaDOWNSAMPLING_TYPE val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_test_pattern_generator_selector(PhotonXimeaCameraItem cam, PhotonXimeaTEST_PATTERN_GENERATOR val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_test_pattern(PhotonXimeaCameraItem cam, PhotonXimeaTEST_PATTERN val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_imgdataformat(PhotonXimeaCameraItem cam, PhotonXimeaIMG_FORMAT val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_shutter_type(PhotonXimeaCameraItem cam, PhotonXimeaSHUTTER_TYPE val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_sensor_taps(PhotonXimeaCameraItem cam, PhotonXimeaSENSOR_TAP_CNT val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_aeag(PhotonXimeaCameraItem cam, bool val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_aeag_roi_offset_x(PhotonXimeaCameraItem cam, int64_t val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_aeag_roi_offset_y(PhotonXimeaCameraItem cam, int64_t val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_aeag_roi_width(PhotonXimeaCameraItem cam, int64_t val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_aeag_roi_height(PhotonXimeaCameraItem cam, int64_t val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_bpc_list_selector(PhotonXimeaCameraItem cam, PhotonXimeaSENS_DEFFECTS_CORR_LIST_SELECTOR val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_sens_defects_corr_list_content(PhotonXimeaCameraItem cam, const PhotonDynArrayOfCharMaxSize512* val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_bpc(PhotonXimeaCameraItem cam, bool val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_auto_wb(PhotonXimeaCameraItem cam, bool val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_manual_wb(PhotonXimeaCameraItem cam, int64_t val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_wb_kr(PhotonXimeaCameraItem cam, float val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_wb_kg(PhotonXimeaCameraItem cam, float val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_wb_kb(PhotonXimeaCameraItem cam, float val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_width(PhotonXimeaCameraItem cam, int64_t val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_height(PhotonXimeaCameraItem cam, int64_t val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_offsetX(PhotonXimeaCameraItem cam, int64_t val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_offsetY(PhotonXimeaCameraItem cam, int64_t val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_region_selector(PhotonXimeaCameraItem cam, int64_t val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_region_mode(PhotonXimeaCameraItem cam, int64_t val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_horizontal_flip(PhotonXimeaCameraItem cam, bool val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_vertical_flip(PhotonXimeaCameraItem cam, bool val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_ffc(PhotonXimeaCameraItem cam, bool val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_ffc_flat_field_file_name(PhotonXimeaCameraItem cam, const PhotonDynArrayOfCharMaxSize512* val){ return PhotonError_Ok; }
-PhotonError PhotonXimea_ExecCmd_Set_ffc_dark_field_file_name(PhotonXimeaCameraItem cam, const PhotonDynArrayOfCharMaxSize512* val){ return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_exposure(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_exposure_burst_count(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_gain_selector(PhotonXimeaCameraItem cam, PhotonXimeaXI_GAIN_SELECTOR_TYPE val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_gain(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_downsampling(PhotonXimeaCameraItem cam, PhotonXimeaXI_DOWNSAMPLING_VALUE val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_downsampling_type(PhotonXimeaCameraItem cam, PhotonXimeaXI_DOWNSAMPLING_TYPE val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_test_pattern_generator_selector(PhotonXimeaCameraItem cam, PhotonXimeaXI_TEST_PATTERN_GENERATOR val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_test_pattern(PhotonXimeaCameraItem cam, PhotonXimeaXI_TEST_PATTERN val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_imgdataformat(PhotonXimeaCameraItem cam, PhotonXimeaXI_IMG_FORMAT val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_shutter_type(PhotonXimeaCameraItem cam, PhotonXimeaXI_SHUTTER_TYPE val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_sensor_taps(PhotonXimeaCameraItem cam, PhotonXimeaXI_SENSOR_TAP_CNT val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_aeag(PhotonXimeaCameraItem cam, PhotonXimeaBoolean val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_aeag_roi_offset_x(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_aeag_roi_offset_y(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_aeag_roi_width(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_aeag_roi_height(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_bpc_list_selector(PhotonXimeaCameraItem cam, PhotonXimeaXI_SENS_DEFFECTS_CORR_LIST_SELECTOR val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_bpc(PhotonXimeaCameraItem cam, PhotonXimeaBoolean val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_auto_wb(PhotonXimeaCameraItem cam, PhotonXimeaBoolean val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_manual_wb(PhotonXimeaCameraItem cam, PhotonXimeaCommand val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_wb_kr(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_wb_kg(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_wb_kb(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_width(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_height(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_offsetX(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_offsetY(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_region_selector(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_region_mode(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_horizontal_flip(PhotonXimeaCameraItem cam, PhotonXimeaBoolean val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_vertical_flip(PhotonXimeaCameraItem cam, PhotonXimeaBoolean val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_ffc(PhotonXimeaCameraItem cam, PhotonXimeaBoolean val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_binning_selector(PhotonXimeaCameraItem cam, PhotonXimeaXI_BIN_SELECTOR val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_binning_vertical_mode(PhotonXimeaCameraItem cam, PhotonXimeaXI_BIN_MODE val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_binning_vertical(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_binning_horizontal_mode(PhotonXimeaCameraItem cam, PhotonXimeaXI_BIN_MODE val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_binning_horizontal(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_binning_horizontal_pattern(PhotonXimeaCameraItem cam, PhotonXimeaXI_BIN_PATTERN val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_binning_vertical_pattern(PhotonXimeaCameraItem cam, PhotonXimeaXI_BIN_PATTERN val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_decimation_selector(PhotonXimeaCameraItem cam, PhotonXimeaXI_DEC_SELECTOR val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_decimation_vertical(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_decimation_horizontal(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_decimation_horizontal_pattern(PhotonXimeaCameraItem cam, PhotonXimeaXI_DEC_PATTERN val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_decimation_vertical_pattern(PhotonXimeaCameraItem cam, PhotonXimeaXI_DEC_PATTERN val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_exp_priority(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_ag_max_limit(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_ae_max_limit(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_aeag_level(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_limit_bandwidth(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_limit_bandwidth_mode(PhotonXimeaCameraItem cam, PhotonXimeaXI_SWITCH val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_sensor_line_period(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_sensor_bit_depth(PhotonXimeaCameraItem cam, PhotonXimeaXI_BIT_DEPTH val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_output_bit_depth(PhotonXimeaCameraItem cam, PhotonXimeaXI_BIT_DEPTH val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_image_data_bit_depth(PhotonXimeaCameraItem cam, PhotonXimeaXI_BIT_DEPTH val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_output_bit_packing(PhotonXimeaCameraItem cam, PhotonXimeaBoolean val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_output_bit_packing_type(PhotonXimeaCameraItem cam, PhotonXimeaXI_OUTPUT_DATA_PACKING_TYPE val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_iscooled(PhotonXimeaCameraItem cam, PhotonXimeaBoolean val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_cooling(PhotonXimeaCameraItem cam, PhotonXimeaXI_TEMP_CTRL_MODE_SELECTOR val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_target_temp(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_temp_selector(PhotonXimeaCameraItem cam, PhotonXimeaXI_TEMP_SELECTOR val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_temp(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_device_temperature_ctrl_mode(PhotonXimeaCameraItem cam, PhotonXimeaXI_TEMP_CTRL_MODE_SELECTOR val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_chip_temp(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_hous_temp(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_hous_back_side_temp(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_sensor_board_temp(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_device_temperature_element_sel(PhotonXimeaCameraItem cam, PhotonXimeaXI_TEMP_ELEMENT_SELECTOR val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_device_temperature_element_val(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_cms(PhotonXimeaCameraItem cam, PhotonXimeaXI_CMS_MODE val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_cms_intent(PhotonXimeaCameraItem cam, PhotonXimeaXI_CMS_INTENT val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_apply_cms(PhotonXimeaCameraItem cam, PhotonXimeaBoolean val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_iscolor(PhotonXimeaCameraItem cam, PhotonXimeaBoolean val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_cfa(PhotonXimeaCameraItem cam, PhotonXimeaXI_COLOR_FILTER_ARRAY val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_gammaY(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_gammaC(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_sharpness(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_ccMTX00(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_ccMTX01(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_ccMTX02(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_ccMTX03(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_ccMTX10(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_ccMTX11(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_ccMTX12(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_ccMTX13(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_ccMTX20(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_ccMTX21(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_ccMTX22(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_ccMTX23(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_ccMTX30(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_ccMTX31(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_ccMTX32(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_ccMTX33(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_defccMTX(PhotonXimeaCameraItem cam, PhotonXimeaCommand val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_trigger_source(PhotonXimeaCameraItem cam, PhotonXimeaXI_TRG_SOURCE val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_trigger_software(PhotonXimeaCameraItem cam, PhotonXimeaCommand val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_trigger_selector(PhotonXimeaCameraItem cam, PhotonXimeaXI_TRG_SELECTOR val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_trigger_overlap(PhotonXimeaCameraItem cam, PhotonXimeaXI_TRG_OVERLAP val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_acq_frame_burst_count(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_gpi_selector(PhotonXimeaCameraItem cam, PhotonXimeaXI_GPI_SELECTOR val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_gpi_mode(PhotonXimeaCameraItem cam, PhotonXimeaXI_GPI_MODE val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_gpi_level(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_gpo_selector(PhotonXimeaCameraItem cam, PhotonXimeaXI_GPO_SELECTOR val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_gpo_mode(PhotonXimeaCameraItem cam, PhotonXimeaXI_GPO_MODE val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_led_selector(PhotonXimeaCameraItem cam, PhotonXimeaXI_LED_SELECTOR val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_led_mode(PhotonXimeaCameraItem cam, PhotonXimeaXI_LED_MODE val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_dbnc_en(PhotonXimeaCameraItem cam, PhotonXimeaBoolean val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_dbnc_t0(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_dbnc_t1(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_dbnc_pol(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_lens_mode(PhotonXimeaCameraItem cam, PhotonXimeaBoolean val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_lens_aperture_value(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_lens_focus_movement_value(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_lens_focus_move(PhotonXimeaCameraItem cam, PhotonXimeaCommand val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_lens_focus_distance(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_lens_focal_length(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_lens_feature_selector(PhotonXimeaCameraItem cam, PhotonXimeaXI_LENS_FEATURE val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_lens_feature(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_device_model_id(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_sensor_model_id(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_image_user_data(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_imgdataformatrgb32alpha(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_imgpayloadsize(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_transport_pixel_format(PhotonXimeaCameraItem cam, PhotonXimeaXI_GenTL_Image_Format_e val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_transport_data_target(PhotonXimeaCameraItem cam, PhotonXimeaXI_TRANSPORT_DATA_TARGET_MODE val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_sensor_clock_freq_hz(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_sensor_clock_freq_index(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_sensor_output_channel_count(PhotonXimeaCameraItem cam, PhotonXimeaXI_SENSOR_OUTPUT_CHANNEL_COUNT val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_framerate(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_counter_selector(PhotonXimeaCameraItem cam, PhotonXimeaXI_COUNTER_SELECTOR val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_counter_value(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_acq_timing_mode(PhotonXimeaCameraItem cam, PhotonXimeaXI_ACQ_TIMING_MODE val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_available_bandwidth(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_buffer_policy(PhotonXimeaCameraItem cam, PhotonXimeaXI_BP val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_LUTEnable(PhotonXimeaCameraItem cam, PhotonXimeaBoolean val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_LUTIndex(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_LUTValue(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_trigger_delay(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_ts_rst_mode(PhotonXimeaCameraItem cam, PhotonXimeaXI_TS_RST_MODE val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_ts_rst_source(PhotonXimeaCameraItem cam, PhotonXimeaXI_TS_RST_SOURCE val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_isexist(PhotonXimeaCameraItem cam, PhotonXimeaBoolean val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_acq_buffer_size(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_acq_buffer_size_unit(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_acq_transport_buffer_size(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_acq_transport_packet_size(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_buffers_queue_size(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_acq_transport_buffer_commit(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_recent_frame(PhotonXimeaCameraItem cam, PhotonXimeaBoolean val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_device_reset(PhotonXimeaCameraItem cam, PhotonXimeaCommand val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_column_fpn_correction(PhotonXimeaCameraItem cam, PhotonXimeaXI_SWITCH val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_row_fpn_correction(PhotonXimeaCameraItem cam, PhotonXimeaXI_SWITCH val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_image_correction_selector(PhotonXimeaCameraItem cam, PhotonXimeaXI_IMAGE_CORRECTION_SELECTOR val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_image_correction_value(PhotonXimeaCameraItem cam, PhotonXimeaFloat val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_sensor_mode(PhotonXimeaCameraItem cam, PhotonXimeaXI_SENSOR_MODE val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_hdr(PhotonXimeaCameraItem cam, PhotonXimeaBoolean val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_hdr_kneepoint_count(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_hdr_t1(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_hdr_t2(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_hdr_kneepoint1(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_hdr_kneepoint2(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_image_black_level(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_debug_level(PhotonXimeaCameraItem cam, PhotonXimeaXI_DEBUG_LEVEL val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_auto_bandwidth_calculation(PhotonXimeaCameraItem cam, PhotonXimeaBoolean val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_new_process_chain_enable(PhotonXimeaCameraItem cam, PhotonXimeaBoolean val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_cam_enum_golden_enabled(PhotonXimeaCameraItem cam, PhotonXimeaBoolean val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_reset_usb_if_bootloader(PhotonXimeaCameraItem cam, PhotonXimeaBoolean val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_cam_simulators_count(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_cam_sensor_init_disabled(PhotonXimeaCameraItem cam, PhotonXimeaBoolean val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_ffs_file_id(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_ffs_file_size(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_free_ffs_size(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_used_ffs_size(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_ffs_access_key(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_sensor_feature_selector(PhotonXimeaCameraItem cam, PhotonXimeaXI_SENSOR_FEATURE_SELECTOR val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_sensor_feature_value(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_ext_feature_selector(PhotonXimeaCameraItem cam, PhotonXimeaXI_EXT_FEATURE_SELECTOR val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_ext_feature(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_device_unit_selector(PhotonXimeaCameraItem cam, PhotonXimeaXI_DEVICE_UNIT_SELECTOR val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_device_unit_register_selector(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_device_unit_register_value(PhotonXimeaCameraItem cam, PhotonXimeaInteger val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_acquisition_status_selector(PhotonXimeaCameraItem cam, PhotonXimeaXI_ACQUISITION_STATUS_SELECTOR val) { return PhotonError_Ok; }
+PhotonError PhotonXimea_ExecCmd_Set_acquisition_status(PhotonXimeaCameraItem cam, PhotonXimeaXI_SWITCH val) { return PhotonError_Ok; }
 #endif

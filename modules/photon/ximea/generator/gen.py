@@ -2,11 +2,12 @@ import re
 
 ModuleDef = """module ximea
 
-type xiTypeInteger = varint;
-type xiTypeFloat = f32;
-type xiTypeBoolean = bool;
-type xiTypeCommand = varint;
-type xiTypeString = &[char; 512];
+type Integer = varint;
+type Enum = varint;
+type Float = f32;
+type Boolean = bool;
+type Command = varint;
+type String = &[char; 512];
 """
 
 CTypes = """
@@ -82,7 +83,7 @@ def get_enumdefs():
     with open('enumdefs.txt', 'r') as myfile:
         content=myfile.read()
 
-    enums = []
+    enums = {}
     enum_strs = re.findall(r'#[^}]*}', content, re.MULTILINE|re.DOTALL)
     for enum_str in enum_strs:
         enum_items = enum_str.split('\n')
@@ -90,18 +91,22 @@ def get_enumdefs():
         e.comment = enum_items[0][2:-1]
         e.name = enum_items[1].split(' ')[0]
         e.vals = []
+        e.min_value = None
         for val_str in enum_items[2:-1]:
             ev = EnumVal()
             ev.name = val_str.split('\"')[1]
             ev.value = val_str.replace(')', '(').split('(')[1]
             ev.comment = val_str.split('#')[1]
             e.vals.append(ev)
-        enums.append(e)
+            if e.min_value == None or e.min_value > ev.value:
+                e.min_value = ev.value
+                e.min_name = ev.name
+        enums[e.name] = e
     return enums
 
 enums = get_enumdefs()
 ps = {}
-types = {}
+types = {'xiTypeInteger': 'Integer', 'xiTypeFloat': 'Float', 'xiTypeBoolean': 'Boolean', 'xiTypeCommand': 'Command', 'xiTypeString': 'String', 'xiTypeEnum': 'Enum'}
 
 for line in file_params:
     ns = line.split('"')
@@ -110,7 +115,6 @@ for line in file_params:
     p.type = ns[3]
     p.comment = ns[4][ns[4].find('#')+1:-1]
     ps[p.name] = p
-    types[p.type] = ''
 
 for line in file_enums:
     e = Enum()
@@ -119,16 +123,15 @@ for line in file_enums:
     s = line.find(':') + 1
     e.type = line[s : line.find(',', s)]
     e.comment = line[line.find('#'):-1]
-    ps[e.name].enum = e.type
+    ps[e.name].enum = e.type.strip()
 
 decode = open('ximea.decode', 'w+')
-
 decode.write(ModuleDef)
 decode.write('\n')
 
-for i in enums:
-    decode.write('enum {} {{\n'.format(i.name))
-    for j in i.vals:
+for key, value in enums.items():
+    decode.write('enum {} {{\n'.format(value.name))
+    for j in value.vals:
         decode.write('    {} = {},\n'.format(j.name, j.value))
     decode.write('}\n\n')
 
@@ -136,7 +139,7 @@ decode.write('struct Fields {\n')
 for key, p in ps.items():
     if p.type != 'xiTypeString':
         decode.write('    ///{}\n'.format(p.comment))
-        decode.write('    {}: {},\n'.format(p.name, p.type if p.type != 'xiTypeEnum' else p.enum))
+        decode.write('    {}: {},\n'.format(p.name, types[p.type] if p.type != 'xiTypeEnum' else p.enum))
 decode.write('}\n')
 
 decode.write('\n')
@@ -151,31 +154,64 @@ decode.write(Cmds)
 decode.write('\n')
 for key, p in ps.items():
     decode.write('        ///{}\n'.format(p.comment))
-    decode.write('        fn set_{}(cam: CameraItem, val: {})\n'.format(p.name, p.type if p.type != 'xiTypeEnum' else p.enum))
+    if p.type != 'xiTypeString':
+        decode.write('        fn set_{}(cam: CameraItem, val: {})\n'.format(p.name, types[p.type] if p.type != 'xiTypeEnum' else p.enum))
 decode.write('    }\n')
 
 decode.write(Impl)
 decode.write('}\n')
 decode.write('')
-
-
 decode.close()
 
 
 cpp = open('ximea.cpp', 'w+')
+
+cpp.write('void ini_enums(PhotonXimeaCamera* cam)\n{\n')
 for key, p in ps.items():
-    cmd_str = 'PhotonError PhotonXimea_ExecCmd_Set_{0}(PhotonXimeaCameraItem cam, PhotonXimeaxiType{1} val) {{ return PhotonXimea_Send_Integer(cam, \"{0}\", val); }}\n'
+    if p.type == 'xiTypeEnum':
+        cpp.write('    cam->basic.{0} = PhotonXimea{1}_{2};\n'.format(p.name, p.enum, enums[p.enum].min_name))
+cpp.write('}\n')
+
+cpp.write('void parse_tm()\n{\n')
+for key, p in ps.items():
+    if p.type != 'xiTypeString':
+        cpp.write('    if (strcmp(name, "{0}") == 0) return Setter{1}(value, &p->basic.{0});\n'.format(p.name, types[p.type]))
+cpp.write('}\n')
+
+
+for key, p in ps.items():
+    cmd_str = 'PhotonError PhotonXimea_ExecCmd_Set_{0}(PhotonXimeaCameraItem cam, PhotonXimea{1} val) {{ return PhotonXimea_Send_{2}(cam, \"{0}\", val); }}\n'
     if p.type == 'xiTypeInteger':
-        cpp.write(cmd_str.format(p.name, p.type))
+        cpp.write(cmd_str.format(p.name, types[p.type], types[p.type]))
     elif p.type == 'xiTypeFloat':
-        cpp.write(cmd_str.format(p.name, p.type, 'Float'))
+        cpp.write(cmd_str.format(p.name, types[p.type], types[p.type]))
     elif p.type == 'xiTypeBoolean':
-        cpp.write(cmd_str.format(p.name, p.type, 'Bool'))
+        cpp.write(cmd_str.format(p.name, types[p.type], types[p.type]))
     elif p.type == 'xiTypeCommand':
-        cpp.write(cmd_str.format(p.name, p.type, 'Integer'))
+        cpp.write(cmd_str.format(p.name, types[p.type], types[p.type]))
 #    elif p.type == 'xiTypeString':
-#        cpp.write(cmd_str.format(p.name, p.type, 'String'))
+#        cpp.write(cmd_str.format(p.name, types[p.type], types[p.type]))
     elif p.type == 'xiTypeEnum':
-        cpp.write(cmd_str.format(p.name, p.type, 'String'))
+        cpp.write(cmd_str.format(p.name, p.enum, types[p.type]))
+
+cpp.close()
+
+
+cpp = open('stbus.cpp', 'w+')
+
+for key, p in ps.items():
+    cmd_str = 'PhotonError PhotonXimea_ExecCmd_Set_{0}(PhotonXimeaCameraItem cam, PhotonXimea{1} val) {{ return PhotonError_Ok; }}\n'
+    if p.type == 'xiTypeInteger':
+        cpp.write(cmd_str.format(p.name, types[p.type]))
+    elif p.type == 'xiTypeFloat':
+        cpp.write(cmd_str.format(p.name, types[p.type]))
+    elif p.type == 'xiTypeBoolean':
+        cpp.write(cmd_str.format(p.name, types[p.type]))
+    elif p.type == 'xiTypeCommand':
+        cpp.write(cmd_str.format(p.name, types[p.type]))
+#    elif p.type == 'xiTypeString':
+#        cpp.write(cmd_str.format(p.name, types[p.type]))
+    elif p.type == 'xiTypeEnum':
+        cpp.write(cmd_str.format(p.name, p.enum))
 
 cpp.close()

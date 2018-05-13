@@ -304,16 +304,6 @@ XI_TS_RST_SOURCE = {
     "XI_TS_RST_SRC_FVAL_INV": c_uint(23),    #TimeStamp reset source selected frame valid inverted signal from sensor
     }
 
-#structure containing information about parameters type
-XI_PRM_TYPE = { 
-    "xiTypeInteger": c_uint(0),    #integer parameter type
-    "xiTypeFloat": c_uint(1),    #float parameter type
-    "xiTypeString": c_uint(2),    #string parameter type
-    "xiTypeEnum": c_uint(0),    #enumerator parameter type
-    "xiTypeBoolean": c_uint(0),    #boolean parameter type
-    "xiTypeCommand": c_uint(0),    #command parameter type
-    }
-
 #Turn parameter On/Off
 XI_SWITCH = { 
     "XI_OFF": c_uint(0),    #Turn parameter off
