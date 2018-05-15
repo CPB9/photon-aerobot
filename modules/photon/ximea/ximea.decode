@@ -483,7 +483,7 @@ enum XI_ACQUISITION_STATUS_SELECTOR {
 }
 
 enum XI_GenTL_Image_Format_e {
-    XI_GenTL_Image_Format_Mono8 = 0x01080001,
+    XI_GenTL_Image_Format_Mono8 = 17301505,
 }
 
 struct Fields {
