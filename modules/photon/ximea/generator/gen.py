@@ -1,4 +1,5 @@
 import re
+import collections
 
 ModuleDef = """module ximea
 
@@ -115,6 +116,7 @@ for line in file_params:
     p.type = ns[3]
     p.comment = ns[4][ns[4].find('#')+1:-1]
     ps[p.name] = p
+ps = collections.OrderedDict(sorted(ps.items()))
 
 for line in file_enums:
     e = Enum()
