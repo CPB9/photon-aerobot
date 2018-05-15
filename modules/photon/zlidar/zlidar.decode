@@ -30,11 +30,13 @@ struct DeviceInfo {
     softwarePartNumber      : TextLine,
 }
 
-enum OperationMode {
+enum OperationModeWrite {
     WriteStop               = 0,
     WriteContinuous         = 1,
     WriteSingle             = 2,
+}
 
+enum OperationModeRead {
     ReadStopped             = 10,
     ReadContinuous          = 11,
     ReadSingle              = 12,
@@ -58,7 +60,7 @@ struct DeviceParameters {
     ledPower                : u8,
 /// first 6 bits
     acquisitionOption       : u8,
-    operationMode           : OperationMode,
+    operationMode           : OperationModeRead,
 }
 
 /// Distances values
@@ -98,6 +100,26 @@ enum Frames {
     DistancesFrame          = 4,
     DistancesTempFrame      = 5,
 }
+enum Accumulations {
+    Accumulation1           = 1,
+    Accumulation2           = 2,
+    Accumulation4           = 4,
+    Accumulation8           = 8,
+    Accumulation16          = 16,
+    Accumulation32          = 32,
+    Accumulation64          = 64,
+    Accumulation128         = 128,
+    Accumulation256         = 256,
+    Accumulation512         = 512,
+    Accumulation1024        = 1024,
+}
+
+enum Oversamplings {
+    Oversampling1           = 1,
+    Oversampling2           = 2,
+    Oversampling4           = 4,
+    Oversampling8           = 8,
+}
 
 component {
     variables {
@@ -117,9 +139,56 @@ component {
     }
 
     commands {
+/// Request data frame
         fn updateInfo(frameCode : Frames)
+/// Start read distances from lidar
         fn start()
+/// Stop read distances from lidar
         fn stop()
+/// Set number of accumulations
+///
+/// Higher values enhance the range, and reduce the measurement rate and noise.
+        fn setAccumulation(accumulation : Accumulations)
+/// Number of oversampling cycles
+///
+/// Higher values enhance the accuracy/precision/resolution and reduce the measurement rate.
+        fn setOversampling(oversampling : Oversamplings)
+/// Number of base sample points
+///
+/// Determines the maximum detection range.
+        fn setPoints(points : u16)
+/// Modification to the amplitude threshold (Sensitivity)
+///
+/// Higher values decrease the sensitivity and reduce the range.
+        fn setThresholdOffset(sensitivity : f32)
+/// Object smoothing algorithm
+///
+/// Smooths the LeddarVu module measurements.
+/// The behavior of the smoothing algorithm can be adjusted by a value ranging from -16 to 16. Higher values enhance the module precision, but reduce the module reactivity.
+        fn setSmoothing(smoothing : i8)
+/// LED power
+///
+/// Light source power in percentage of the maximum. A value above 100 is an error. If a value is specified that is not one of the pre-defined values, the closest pre-defined value will be used.
+/// The register can be read back to know the actual value set.
+/// There is a total of 5 light source power levels. Their approximate relative power is evenly distributed between 0 through 100%.
+        fn setLedPower(power : u8)
+/// Bit field of acquisition options.
+///
+/// Bit-0: Automatic light source power enabled
+/// Bit-1: Demerge object enabled
+/// Bit-2: Static noise removal enabled
+/// Bit-3: Precision enabled
+/// Bit-4: Saturation compensation enabled
+/// Bit-5: Overshoot management enabled
+        fn setAcquisitionOption(acquisition : u8)
+/// Auto light source power change delay in number of measurements
+        fn setAutoFrame(frame : u16)
+/// Number of echoes for saturation acceptance
+///
+/// The number of echoes can be saturated to avoid decreasing the light source power in automatic mode.
+        fn setAutoEcho(echo : u16)
+/// Operation mode
+        fn setOperationMode(mode : OperationModeWrite)
     }
 
     impl {
