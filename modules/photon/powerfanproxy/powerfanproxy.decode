@@ -33,6 +33,8 @@ component {
         fn setCurrentPresetReg(id: BldcId, reg: Reg, value: u8)
         fn pwmSetDuty(id: BldcId, value: f64)
         fn pwmSetStep(id: BldcId, value: u16)
+        fn saveVars(id: BldcId)
+        fn loadVars(id: BldcId)
     }
 
     statuses {
