@@ -24,12 +24,14 @@ struct SlaveRunningState {
 
 component {
     variables {
-        slavesState: SlaveRunningState
+        slavesState: SlaveRunningState,
+        altimeterAltitude: f32,
     }
 
     statuses {
         [slaveState, 1, true]: {slavesState.powerCom, slavesState.powerFan1, slavesState.powerFan2}
         [slaveLastTimes, 1, false]: {slavesState.powerComLastTime, slavesState.powerFan1LastTime, slavesState.powerFan2LastTime}
+        [altimeter, 1, true]: {altimeterAltitude}
     }
     
     events {
