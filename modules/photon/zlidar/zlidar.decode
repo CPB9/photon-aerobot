@@ -119,6 +119,16 @@ enum Oversamplings {
     Oversampling2           = 2,
     Oversampling4           = 4,
     Oversampling8           = 8,
+    Oversampling16          = 16,
+    Oversampling32          = 32,
+}
+
+enum LedPowers {
+    LedPower6               = 6,
+    LedPower28              = 28,
+    LedPower53              = 53,
+    LedPower81              = 81,
+    LedPower100             = 100,
 }
 
 component {
@@ -133,7 +143,7 @@ component {
     statuses {
         [deviceInfo,        1, false]: {deviceInfo},
         [deviceParameters,  1, false]: {deviceParameters},
-        [deviceStatus,      1, false]: {deviceStatus},
+        [deviceStatus,      1, true ]: {deviceStatus},
         [distances,         1, false]: {distances},
         [distancesTemp,     1, false]: {distancesTemp},
     }
@@ -155,11 +165,11 @@ component {
         fn setOversampling(oversampling : Oversamplings)
 /// Number of base sample points
 ///
-/// Determines the maximum detection range.
+/// Determines the maximum detection range. From 2 to 128.
         fn setPoints(points : u16)
 /// Modification to the amplitude threshold (Sensitivity)
 ///
-/// Higher values decrease the sensitivity and reduce the range.
+/// Higher values decrease the sensitivity and reduce the range. From -50.0 to 500.0.
         fn setThresholdOffset(sensitivity : f32)
 /// Object smoothing algorithm
 ///
@@ -171,7 +181,7 @@ component {
 /// Light source power in percentage of the maximum. A value above 100 is an error. If a value is specified that is not one of the pre-defined values, the closest pre-defined value will be used.
 /// The register can be read back to know the actual value set.
 /// There is a total of 5 light source power levels. Their approximate relative power is evenly distributed between 0 through 100%.
-        fn setLedPower(power : u8)
+        fn setLedPower(power : LedPowers)
 /// Bit field of acquisition options.
 ///
 /// Bit-0: Automatic light source power enabled
@@ -182,10 +192,12 @@ component {
 /// Bit-5: Overshoot management enabled
         fn setAcquisitionOption(acquisition : u8)
 /// Auto light source power change delay in number of measurements
+///
+/// From 1 to 8192.
         fn setAutoFrame(frame : u16)
 /// Number of echoes for saturation acceptance
 ///
-/// The number of echoes can be saturated to avoid decreasing the light source power in automatic mode.
+/// The number of echoes can be saturated to avoid decreasing the light source power in automatic mode. From 0 to 8.
         fn setAutoEcho(echo : u16)
 /// Operation mode
         fn setOperationMode(mode : OperationModeWrite)
