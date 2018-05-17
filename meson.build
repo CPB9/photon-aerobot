@@ -58,7 +58,7 @@ mod_opt += ']'
 photon_opts += 'project=project-meson.toml'
 photon_opts += 'project_prefix=' + meson.current_build_dir()
 photon_opts += 'additional_depends=' + mod_opt
-photon_opts += 'targets=[\'cvm\', \'fcu\']'
+photon_opts += 'targets=[\'cvm\', \'fcu\', \'powercom\']'
 photon_opts += 'use_stubs=' + get_option('use_stubs').to_string()
 photon_opts += 'log_level=' + get_option('log_level')
 photon_opts += 'target_tests=' + get_option('target_tests').to_string()
