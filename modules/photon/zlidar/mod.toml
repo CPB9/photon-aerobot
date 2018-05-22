@@ -2,4 +2,4 @@ name = "zlidar"
 decode = "zlidar.decode"
 dest = "photon/zlidar"
 id = 69
-sources = []
+sources = ["Stubs.c"]
