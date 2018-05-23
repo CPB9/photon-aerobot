@@ -66,14 +66,12 @@ struct DeviceParameters {
 /// Distances values
 struct Distances {
     detections              : u8,
-    offset                  : f32,
     values                  : &[Detection;8],
 }
 
 /// Temporary distances datagram
 struct DistancesTemp {
     detections              : u8,
-    offset                  : f32,
     value0                  : Detection,
     value1                  : Detection,
     value2                  : Detection,
@@ -96,11 +94,12 @@ struct DeviceStatus {
 
 /// List of avaiable frames
 enum Frames {
-    DeviceInfoFrame         =  1,
-    DeviceParametersFrame   =  2,
-    DeviceStatusFrame       =  4,
-    DistancesFrame          =  8,
-    DistancesTempFrame      = 16,
+    DeviceInfoFrame         =   1,
+    DeviceParametersFrame   =   2,
+    DeviceStatusFrame       =   4,
+    DistancesFrame          =   8,
+    DistanceOffsetFrame     =  16,
+    DistancesTempFrame      = 128,
 }
 enum Accumulations {
     Accumulation1           = 1,
@@ -139,6 +138,7 @@ component {
         deviceParameters    : DeviceParameters,
         deviceStatus        : DeviceStatus,
         distances           : Distances,
+        distanceOffset      : f32,
         distancesTemp       : DistancesTemp,
     }
 
@@ -147,6 +147,7 @@ component {
         [deviceParameters,  1, false]: {deviceParameters},
         [deviceStatus,      1, true ]: {deviceStatus},
         [distances,         1, false]: {distances},
+        [distanceOffset,    1, false]: {distanceOffset},
         [distancesTemp,     1, false]: {distancesTemp},
     }
 
@@ -212,5 +213,9 @@ component {
     impl {
         fn init()
         fn tick()
+    }
+
+    autosave {
+        distanceOffset,
     }
 }
