@@ -7,8 +7,10 @@ void PhotonZlidar_Tick(){}
 
 /*cmd handlers*/
 PhotonError PhotonZlidar_ExecCmd_UpdateInfo(PhotonZlidarFrames frameCode) { return PhotonError_NotImplemented; }
+PhotonError PhotonZlidar_ExecCmd_UpdateInfoMultiple(uint64_t frames) { return PhotonError_NotImplemented; }
 PhotonError PhotonZlidar_ExecCmd_Start() { return PhotonError_NotImplemented; }
 PhotonError PhotonZlidar_ExecCmd_Stop() { return PhotonError_NotImplemented; }
+PhotonError PhotonZlidar_ExecCmd_SetDistanceOffset(float offset) { return PhotonError_NotImplemented; }
 PhotonError PhotonZlidar_ExecCmd_SetAccumulation(PhotonZlidarAccumulations accumulation) { return PhotonError_NotImplemented; }
 PhotonError PhotonZlidar_ExecCmd_SetOversampling(PhotonZlidarOversamplings oversampling) { return PhotonError_NotImplemented; }
 PhotonError PhotonZlidar_ExecCmd_SetPoints(uint16_t points) { return PhotonError_NotImplemented; }

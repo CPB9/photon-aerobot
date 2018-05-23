@@ -66,12 +66,14 @@ struct DeviceParameters {
 /// Distances values
 struct Distances {
     detections              : u8,
+    offset                  : f32,
     values                  : &[Detection;8],
 }
 
 /// Temporary distances datagram
 struct DistancesTemp {
     detections              : u8,
+    offset                  : f32,
     value0                  : Detection,
     value1                  : Detection,
     value2                  : Detection,
@@ -94,11 +96,11 @@ struct DeviceStatus {
 
 /// List of avaiable frames
 enum Frames {
-    DeviceInfoFrame         = 1,
-    DeviceParametersFrame   = 2,
-    DeviceStatusFrame       = 3,
-    DistancesFrame          = 4,
-    DistancesTempFrame      = 5,
+    DeviceInfoFrame         =  1,
+    DeviceParametersFrame   =  2,
+    DeviceStatusFrame       =  4,
+    DistancesFrame          =  8,
+    DistancesTempFrame      = 16,
 }
 enum Accumulations {
     Accumulation1           = 1,
@@ -151,10 +153,14 @@ component {
     commands {
 /// Request data frame
         fn updateInfo(frameCode : Frames)
+/// Request many data frames
+        fn updateInfoMultiple(frames : varuint)
 /// Start read distances from lidar
         fn start()
 /// Stop read distances from lidar
         fn stop()
+/// Set distance offset for zero point calibration
+        fn setDistanceOffset(offset : f32)
 /// Set number of accumulations
 ///
 /// Higher values enhance the range, and reduce the measurement rate and noise.
