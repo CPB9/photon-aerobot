@@ -180,6 +180,7 @@ component {
     }
 
     events {
+        [scriptMessage, true]: {text: &[char; 128]},
         [unsupportedFcuVersion, true]: {version: u8},
         [unknownSensor, true]: {sensor: &[char; 128]},
         [failedToParse, true]: {msg: &[char; 256]},
