@@ -98,6 +98,67 @@ struct CalibrationState {
     skipEnabled: bool
 }
 
+struct RcRatio {
+    rcMin: i16,
+    rcMax: i16,
+    trim: i16,
+    rev: bool
+}
+
+enum RcCalFunction {
+    Roll = 0,
+    Pitch = 1,
+    Yaw = 2,
+    Throttle = 3,
+}
+
+enum RcChannel {
+    Unassigned = 0,
+    Channel1 = 1,
+    Channel2 = 2,
+    Channel3 = 3,
+    Channel4 = 4,
+    Channel5 = 5,
+    Channel6 = 6,
+    Channel7 = 7,
+    Channel8 = 8,
+    Channel9 = 9,
+    Channel10 = 10,
+    Channel11 = 11,
+    Channel12 = 12,
+    Channel13 = 13,
+    Channel14 = 14,
+    Channel15 = 15,
+    Channel16 = 16,
+    Channel17 = 17,
+    Channel18 = 18,
+}
+
+enum FlightMode {
+    Unassigned = -1,
+    Manual = 0,
+    Altitude = 1,
+    Position = 2,
+    Mission = 3,
+    Hold = 4,
+    Return = 5,
+    Acro = 6,
+    Offboard = 7,
+    Stabilized = 8,
+    Rattitude = 9,
+    Takeoff = 10,
+    Land = 11,
+    FollowMe = 12
+}
+
+struct FlightModes {
+    modes: [FlightMode; 6],
+    killSwitchChannel: RcChannel,
+    offboardSwitchChannel: RcChannel,
+    returnSwitchChannel: RcChannel,
+    flightModeChannel: RcChannel
+}
+
 component {
     variables {
         heartbeat: Heartbeat,
@@ -106,6 +167,7 @@ component {
         rcChannels: RcChannels,
         lastMessage: LastMessage,
         calibrationState: CalibrationState,
+        flightModes: FlightModes,
     }
 
     statuses {
@@ -113,7 +175,8 @@ component {
         [systemStatus, 0, true]:    { systemStatus     }
         [rcChannels, 0, false]:     { rcChannels       }
         [lastMessage, 0, true]:     { lastMessage      }
-        [calibration, 0, false]:     { calibrationState }
+        [calibration, 0, false]:    { calibrationState }
+        [flightModes, 0, false]:    { flightModes      }
     }
 
     events {
@@ -126,13 +189,19 @@ component {
         [calibrationCancelled, true]: {sensor: Sensors},
         [calibrationSideStarted, true]: {sensor: Sensors, side: Sides}
         [calibrationSideDone, true]: {sensor: Sensors, side: Sides}
+        [radioCalibrationValidationFailed, true]: {}
     }
     
     commands {
         fn arm()
         fn disarm()
-        fn startCalibration(sensor: Sensors)
-        fn cancelCalibration()
+        fn startSensorCalibration(sensor: Sensors)
+        fn cancelSensorCalibration()
+        fn writeRadioCalibrationRatios(rcRatios: [RcRatio; 18], calFunctions: [RcCalFunction; 4])
+        fn takeOff()
+        fn land()
+        fn setMode(mode: [char; 256])
+        fn runMission(name: [char; 256])
     }
 
     impl {
