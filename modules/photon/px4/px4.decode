@@ -198,10 +198,10 @@ component {
         fn startSensorCalibration(sensor: Sensors)
         fn cancelSensorCalibration()
         fn writeRadioCalibrationRatios(rcRatios: [RcRatio; 18], calFunctions: [RcCalFunction; 4])
+        fn setActive(active: bool)
         fn takeOff()
         fn land()
-        fn setMode(mode: [char; 256])
-        fn runMission(name: [char; 256])
+        fn setMode(mode: &[char; 256])
     }
 
     impl {
