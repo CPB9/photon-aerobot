@@ -32,7 +32,7 @@ name = "cvm"
 id = 1
 cmd_targets = ["cvm", "powerfan1", "powerfan2"]
 tm_sources = ["cvm", "powerfan1", "powerfan2"]
-modules = ["test", "nav", "fl", "udp", "grp", "px4", "px4_autogen", "usm", "powercom", "powerfanproxy", "zcvm", "ximea", "zlidar", "asv"]
+modules = ["test", "nav", "fl", "udp", "grp", "px4_autogen", "fcu", "usm", "powercom", "powerfanproxy", "zcvm", "ximea", "zlidar", "asv"]
 
 [[devices]]
 name = "powercom"
