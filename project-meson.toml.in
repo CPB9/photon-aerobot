@@ -7,6 +7,7 @@ module_dirs = [
   '@PHOTON_ROOT@/modules/photon/asv',
   '@PHOTON_ROOT@/modules/photon/core',
   '@PHOTON_ROOT@/modules/photon/tm',
+  '@PHOTON_ROOT@/modules/photon/dfu',
   '@PHOTON_ROOT@/modules/photon/fwt',
   '@PHOTON_ROOT@/modules/photon/pvu',
   '@PHOTON_ROOT@/modules/photon/test',

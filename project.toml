@@ -9,6 +9,7 @@ module_dirs = [
   "thirdparty/photon/modules/photon/tm",
   "thirdparty/photon/modules/photon/fwt",
   "thirdparty/photon/modules/photon/pvu",
+  "thirdparty/photon/modules/photon/dfu",
   "thirdparty/photon/modules/photon/test",
   "thirdparty/photon/modules/photon/exc",
   "thirdparty/photon/modules/photon/clk",
