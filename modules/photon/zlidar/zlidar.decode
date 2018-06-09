@@ -48,7 +48,7 @@ enum OperationModeRead {
 /// Device parameters
 struct DeviceParameters {
     sensitivity             : f32,
-    segmentEnabled          : u32,
+    segmentMask             : u32,
     accumulationExponent    : u16,
     oversamplingExponent    : u16,
     baseSamples             : u16,
