@@ -30,13 +30,11 @@ struct DeviceInfo {
     softwarePartNumber      : TextLine,
 }
 
-enum OperationModeWrite {
+enum OperationMode {
     WriteStop               = 0,
     WriteContinuous         = 1,
     WriteSingle             = 2,
-}
 
-enum OperationModeRead {
     ReadStopped             = 10,
     ReadContinuous          = 11,
     ReadSingle              = 12,
@@ -60,7 +58,7 @@ struct DeviceParameters {
     ledPower                : u8,
 /// first 6 bits
     acquisitionOption       : u8,
-    operationMode           : OperationModeRead,
+    operationMode           : OperationMode,
 }
 
 /// Distances values
@@ -207,7 +205,7 @@ component {
 /// The number of echoes can be saturated to avoid decreasing the light source power in automatic mode. From 0 to 8.
         fn setAutoEcho(echo : u16)
 /// Operation mode
-        fn setOperationMode(mode : OperationModeWrite)
+        fn setOperationMode(mode : OperationMode)
     }
 
     impl {
