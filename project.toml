@@ -27,6 +27,31 @@ module_dirs = [
   "modules/photon/zlidar",
 ]
 
+[component_numbers]
+asv = 0
+clk = 1
+core = 2
+exc = 3
+fl = 4
+fwt = 5
+grp = 6
+nav = 7
+powercom = 8
+powerfan = 9
+powerfanproxy = 10
+pvu = 11
+px4 = 12
+px4_autogen = 13
+test = 14
+tm = 15
+udp = 16
+usm = 17
+ximea = 18
+zcvm = 19
+zlidar = 20
+dfu = 21
+fcu = 22
+
 [[devices]]
 name = "cvm"
 id = 1
