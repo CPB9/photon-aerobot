@@ -100,17 +100,17 @@ enum Frames {
     DistancesTempFrame      = 128,
 }
 enum Accumulations {
-    Accumulation1           = 1,
-    Accumulation2           = 2,
-    Accumulation4           = 4,
-    Accumulation8           = 8,
-    Accumulation16          = 16,
-    Accumulation32          = 32,
-    Accumulation64          = 64,
-    Accumulation128         = 128,
-    Accumulation256         = 256,
-    Accumulation512         = 512,
-    Accumulation1024        = 1024,
+    Accumulation1           = 0,
+    Accumulation2           = 1,
+    Accumulation4           = 2,
+    Accumulation8           = 3,
+    Accumulation16          = 4,
+    Accumulation32          = 5,
+    Accumulation64          = 6,
+    Accumulation128         = 7,
+    Accumulation256         = 8,
+    Accumulation512         = 9,
+    Accumulation1024        = 10,
 }
 
 enum Oversamplings {
