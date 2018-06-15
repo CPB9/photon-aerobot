@@ -47,57 +47,6 @@ void PhotonZcvm_Tick()
         _photonZcvm.slavesState.powerFan2 = state.powerFan2;
         PhotonZcvm_QueueEvent_SlaveConnectionChanged(&_photonZcvm.slavesState);
     }
-
-    if (_photonZcvm.slavesState.powerCom && !ledsDisabled)
-    {
-        if(_photonPowercom.chan12_1.isEnabled)
-            PhotonPowercom_ExecCmd_DisableChannel(PhotonPowercomChannel_Chan12_1);
-        if(_photonPowercom.chan12_2.isEnabled)
-            PhotonPowercom_ExecCmd_DisableChannel(PhotonPowercomChannel_Chan12_2);
-        if(_photonPowercom.chan12_3.isEnabled)
-            PhotonPowercom_ExecCmd_DisableChannel(PhotonPowercomChannel_Chan12_3);
-        if(_photonPowercom.chan12_4.isEnabled)
-            PhotonPowercom_ExecCmd_DisableChannel(PhotonPowercomChannel_Chan12_4);
-
-        if(!_photonPowercom.chan12_1.isEnabled &&
-           !_photonPowercom.chan12_2.isEnabled &&
-           !_photonPowercom.chan12_3.isEnabled &&
-           !_photonPowercom.chan12_4.isEnabled)
-        {
-            ledsDisabled = true;
-        }
-    }
-
-    if (_photonZcvm.slavesState.powerFan1)
-    {
-        bool canSend = (PhotonClk_GetTickTime() - bldcCmdTime) > 1000;
-        if (_photonPowerfanproxy.bldc1.config.DIR != 1 && canSend)
-        {
-            setBldcDir(PhotonPowerfanproxyBldcId_Bldc1, PhotonPowerfanReg_DIR, 1);
-            return;
-        }
-        if (_photonPowerfanproxy.bldc2.config.DIR != 0 && canSend)
-        {
-            setBldcDir(PhotonPowerfanproxyBldcId_Bldc2, PhotonPowerfanReg_DIR, 0);
-            return;
-        }
-    }
-
-    if (_photonZcvm.slavesState.powerFan2)
-    {
-        bool canSend = (PhotonClk_GetTickTime() - bldcCmdTime) > 1000;
-
-        if (_photonPowerfanproxy.bldc3.config.DIR != 0 && canSend)
-        {
-            setBldcDir(PhotonPowerfanproxyBldcId_Bldc3, PhotonPowerfanReg_DIR, 0);
-            return;
-        }
-        if (_photonPowerfanproxy.bldc4.config.DIR != 1 && canSend)
-        {
-            setBldcDir(PhotonPowerfanproxyBldcId_Bldc4, PhotonPowerfanReg_DIR, 1);
-            return;
-        }
-    }
 }
 
 void PhotonZcvm_UpdateSlaveMessageTime(PhotonZcvmSlaves slave)
