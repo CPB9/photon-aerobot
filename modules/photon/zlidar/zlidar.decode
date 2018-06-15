@@ -114,12 +114,12 @@ enum Accumulations {
 }
 
 enum Oversamplings {
-    Oversampling1           = 1,
-    Oversampling2           = 2,
-    Oversampling4           = 4,
-    Oversampling8           = 8,
-    Oversampling16          = 16,
-    Oversampling32          = 32,
+    Oversampling1           = 0,
+    Oversampling2           = 1,
+    Oversampling4           = 2,
+    Oversampling8           = 3,
+    Oversampling16          = 4,
+    Oversampling32          = 5,
 }
 
 enum LedPowers {
