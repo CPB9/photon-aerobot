@@ -21,5 +21,6 @@ PhotonError PhotonZlidar_ExecCmd_SetAcquisitionOption(uint8_t acquisition) { ret
 PhotonError PhotonZlidar_ExecCmd_SetAutoFrame(uint16_t frame) { return PhotonError_NotImplemented; }
 PhotonError PhotonZlidar_ExecCmd_SetAutoEcho(uint16_t echo) { return PhotonError_NotImplemented; }
 PhotonError PhotonZlidar_ExecCmd_SetOperationMode(PhotonZlidarOperationMode mode) { return PhotonError_NotImplemented; }
+PhotonError PhotonZlidar_ExecCmd_ResetParameters() { return PhotonError_NotImplemented; }
 
 #endif

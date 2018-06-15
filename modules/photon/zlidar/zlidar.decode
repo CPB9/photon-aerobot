@@ -206,6 +206,8 @@ component {
         fn setAutoEcho(echo : u16)
 /// Operation mode
         fn setOperationMode(mode : OperationMode)
+/// Set parameters to default values
+        fn resetParameters()
     }
 
     impl {
