@@ -64,3 +64,30 @@ void PhotonZcvm_UpdateSlaveMessageTime(PhotonZcvmSlaves slave)
             break;
     }
 }
+
+PhotonError PhotonZcvm_ExecCmd_ReverseEngineRotation(PhotonPowerfanproxyBldcId id)
+{
+    uint8_t currentDir;
+    switch (id)
+    {
+        case PhotonPowerfanproxyBldcId_Bldc1:
+            currentDir = _photonPowerfanproxy.bldc1.config.DIR;
+            break;
+        case PhotonPowerfanproxyBldcId_Bldc2:
+            currentDir = _photonPowerfanproxy.bldc2.config.DIR;
+            break;
+        case PhotonPowerfanproxyBldcId_Bldc3:
+            currentDir = _photonPowerfanproxy.bldc3.config.DIR;
+            break;
+        case PhotonPowerfanproxyBldcId_Bldc4:
+            currentDir = _photonPowerfanproxy.bldc4.config.DIR;
+            break;
+    }
+    if (currentDir == 1)
+        currentDir = 0;
+    else
+        currentDir = 1;
+
+    setBldcDir(id, PhotonPowerfanReg_DIR, currentDir);
+    return PhotonError_Ok;
+}

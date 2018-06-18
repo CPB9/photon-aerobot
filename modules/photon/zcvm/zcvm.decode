@@ -46,5 +46,6 @@ component {
     }
     
     commands {
+        fn reverseEngineRotation(id: BldcId)
     }
 }
