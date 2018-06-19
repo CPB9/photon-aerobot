@@ -15,6 +15,11 @@ void PhotonZcvm_Init()
     _photonZcvm.slavesState.powerComLastTime = 0;
     _photonZcvm.slavesState.powerFan1LastTime = 0;
     _photonZcvm.slavesState.powerFan2LastTime = 0;
+
+    _photonZcvm.enginesRotation.dir1 = 0;
+    _photonZcvm.enginesRotation.dir2 = 0;
+    _photonZcvm.enginesRotation.dir3 = 0;
+    _photonZcvm.enginesRotation.dir4 = 0;
 }
 
 void setBldcDir(PhotonPowerfanproxyBldcId id, PhotonPowerfanReg reg, uint8_t value)
@@ -46,6 +51,41 @@ void PhotonZcvm_Tick()
         _photonZcvm.slavesState.powerFan1 = state.powerFan1;
         _photonZcvm.slavesState.powerFan2 = state.powerFan2;
         PhotonZcvm_QueueEvent_SlaveConnectionChanged(&_photonZcvm.slavesState);
+    }
+
+    if (_photonZcvm.slavesState.powerFan1)
+    {
+        bool canSend = (PhotonClk_GetTickTime() - bldcCmdTime) > 1000;
+        uint8_t bldc1Dir = _photonZcvm.enginesRotation.dir1;
+        uint8_t bldc2Dir = _photonZcvm.enginesRotation.dir2;
+        if (_photonPowerfanproxy.bldc1.config.DIR != bldc1Dir && canSend)
+        {
+            setBldcDir(PhotonPowerfanproxyBldcId_Bldc1, PhotonPowerfanReg_DIR, bldc1Dir);
+            return;
+        }
+        if (_photonPowerfanproxy.bldc2.config.DIR != bldc2Dir && canSend)
+        {
+            setBldcDir(PhotonPowerfanproxyBldcId_Bldc2, PhotonPowerfanReg_DIR, bldc2Dir);
+            return;
+        }
+    }
+
+    if (_photonZcvm.slavesState.powerFan2)
+    {
+        bool canSend = (PhotonClk_GetTickTime() - bldcCmdTime) > 1000;
+        uint8_t bldc3Dir = _photonZcvm.enginesRotation.dir3;
+        uint8_t bldc4Dir = _photonZcvm.enginesRotation.dir4;
+
+        if (_photonPowerfanproxy.bldc3.config.DIR != bldc3Dir && canSend)
+        {
+            setBldcDir(PhotonPowerfanproxyBldcId_Bldc3, PhotonPowerfanReg_DIR, bldc3Dir);
+            return;
+        }
+        if (_photonPowerfanproxy.bldc4.config.DIR != bldc4Dir && canSend)
+        {
+            setBldcDir(PhotonPowerfanproxyBldcId_Bldc4, PhotonPowerfanReg_DIR, bldc4Dir);
+            return;
+        }
     }
 }
 
@@ -91,3 +131,16 @@ PhotonError PhotonZcvm_ExecCmd_ReverseEngineRotation(PhotonPowerfanproxyBldcId i
     setBldcDir(id, PhotonPowerfanReg_DIR, currentDir);
     return PhotonError_Ok;
 }
+
+PhotonError PhotonZcvm_ExecCmd_SetEnginesRotation(const PhotonZcvmEngineRotation* dirs)
+{
+    _photonZcvm.enginesRotation.dir1 = dirs->dir1;
+    _photonZcvm.enginesRotation.dir2 = dirs->dir2;
+    _photonZcvm.enginesRotation.dir3 = dirs->dir3;
+    _photonZcvm.enginesRotation.dir4 = dirs->dir4;
+
+    PhotonAsv_SaveVars();
+
+    return PhotonError_Ok;
+}
+
