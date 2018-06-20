@@ -20,6 +20,19 @@ void PhotonZcvm_Init()
     _photonZcvm.enginesRotation.dir2 = 0;
     _photonZcvm.enginesRotation.dir3 = 0;
     _photonZcvm.enginesRotation.dir4 = 0;
+    _photonZcvm.currentChannel = PhotonZcvmExcChannelId_None;
+
+    _photonZcvm.excChannels[0].id = PhotonZcvmExcChannelId_Modem1;
+    _photonZcvm.excChannels[0].bytesReceived = 0;
+    _photonZcvm.excChannels[0].bytesSent = 0;
+
+    _photonZcvm.excChannels[1].id = PhotonZcvmExcChannelId_Modem2;
+    _photonZcvm.excChannels[1].bytesReceived = 0;
+    _photonZcvm.excChannels[1].bytesSent = 0;
+
+    _photonZcvm.excChannels[2].id = PhotonZcvmExcChannelId_Ethernet;
+    _photonZcvm.excChannels[2].bytesReceived = 0;
+    _photonZcvm.excChannels[2].bytesSent = 0;
 }
 
 void setBldcDir(PhotonPowerfanproxyBldcId id, PhotonPowerfanReg reg, uint8_t value)
@@ -144,3 +157,34 @@ PhotonError PhotonZcvm_ExecCmd_SetEnginesRotation(const PhotonZcvmEngineRotation
     return PhotonError_Ok;
 }
 
+bool PhotonZcvm_CanSendToChannel(PhotonZcvmExcChannelId id)
+{
+    return _photonZcvm.currentChannel == id;
+}
+
+void PhotonZcvm_SetCurrentChannel(PhotonZcvmExcChannelId id)
+{
+    if (_photonZcvm.currentChannel != id)
+        PhotonZcvm_QueueEvent_ExcChannelChanged(id);
+
+    _photonZcvm.currentChannel = id;
+}
+
+void PhotonZcvm_UpdateChannelStats(PhotonZcvmExcChannelId id, uint64_t bytesSent, uint64_t bytesReceived)
+{
+    PhotonZcvmExcChannelState* channel;
+    switch (id)
+    {
+        case PhotonZcvmExcChannelId_Modem1:
+            channel = &_photonZcvm.excChannels[0];
+            break;
+        case PhotonZcvmExcChannelId_Modem2:
+            channel = &_photonZcvm.excChannels[1];
+            break;
+        case PhotonZcvmExcChannelId_Ethernet:
+            channel = &_photonZcvm.excChannels[2];
+            break;
+    }
+    channel->bytesSent += bytesSent;
+    channel->bytesReceived += bytesReceived;
+}

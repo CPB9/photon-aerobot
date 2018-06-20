@@ -29,11 +29,26 @@ struct EngineRotation {
    dir4: u8
 }
 
+enum ExcChannelId {
+    None,
+    Modem1,
+    Modem2,
+    Ethernet
+}
+
+struct ExcChannelState {
+    id: ExcChannelId,
+    bytesReceived: varuint,
+    bytesSent: varuint
+}
+
 component {
     variables {
         slavesState: SlaveRunningState,
         altimeterAltitude: f32,
-        enginesRotation: EngineRotation
+        enginesRotation: EngineRotation,
+        currentChannel: ExcChannelId,
+        excChannels: [ExcChannelState;3]
     }
 
     statuses {
@@ -41,17 +56,22 @@ component {
         [slaveLastTimes, 1, false]: {slavesState.powerComLastTime, slavesState.powerFan1LastTime, slavesState.powerFan2LastTime}
         [altimeter, 1, true]: {altimeterAltitude}
         [enginesRotation, 1, false]: {enginesRotation}
+        [excState, 1, true]: {currentChannel, excChannels}
     }
     
     events {
         [slaveConnectionChanged, true]: {state: SlaveRunningState},
         [restoreBldcReg, true]: {bldc: BldcId, reg: Reg, value: u8},
+        [excChannelChanged, true]: {id: ExcChannelId}
     }
     
     impl {
         fn init()
         fn tick()
         fn updateSlaveMessageTime(slave: Slaves)
+        fn canSendToChannel(id: ExcChannelId) -> bool
+        fn setCurrentChannel(id: ExcChannelId)
+        fn updateChannelStats(id: ExcChannelId, bytesSent: varuint, bytesReceived: varuint)
     }
     
     commands {
