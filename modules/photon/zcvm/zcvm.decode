@@ -75,7 +75,6 @@ component {
     }
     
     commands {
-        fn reverseEngineRotation(id: BldcId)
         fn setEnginesRotation(dirs: EngineRotation)
     }
 }
