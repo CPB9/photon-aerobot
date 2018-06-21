@@ -41,10 +41,27 @@ void setBldcDir(PhotonPowerfanproxyBldcId id, PhotonPowerfanReg reg, uint8_t val
 
     PhotonZcvm_QueueEvent_RestoreBldcReg(id, reg, value);
 
+    int lastVal = 0;
+    switch (id)
+    {
+        case PhotonPowerfanproxyBldcId_Bldc1:
+            lastVal = _photonPowerfanproxy.bldc1.config.RUN;
+            break;
+        case PhotonPowerfanproxyBldcId_Bldc2:
+            lastVal = _photonPowerfanproxy.bldc2.config.RUN;
+            break;
+        case PhotonPowerfanproxyBldcId_Bldc3:
+            lastVal = _photonPowerfanproxy.bldc3.config.RUN;
+            break;
+        case PhotonPowerfanproxyBldcId_Bldc4:
+            lastVal = _photonPowerfanproxy.bldc4.config.RUN;
+            break;
+    }
+
+    PhotonPowerfanproxy_ExecCmd_Stop(id);
     PhotonPowerfanproxy_ExecCmd_SetCurrentPresetReg(id, PhotonPowerfanReg_DIR, value);
-    PhotonPowerfanproxy_ExecCmd_SetCurrentPresetReg(id, PhotonPowerfanReg_RUN, 0);
+    PhotonPowerfanproxy_ExecCmd_SetCurrentPresetReg(id, PhotonPowerfanReg_RUN, lastVal);
     PhotonPowerfanproxy_ExecCmd_ApplyCurrentPreset(id);
-    PhotonPowerfanproxy_ExecCmd_SetCurrentPresetReg(id, PhotonPowerfanReg_RUN, 1);
 }
 
 void PhotonZcvm_Tick()
