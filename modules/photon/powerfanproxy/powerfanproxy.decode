@@ -23,6 +23,12 @@ component {
         pwm4: Pwm,
     }
 
+    events {
+        [inverseEngineRotationRequest, true]: {bldc: BldcId}
+        [regChanged, true]: {bldc: BldcId, reg: Reg, value: u8},
+        [dataSaved, true]: {id: BldcId}
+    }
+    
     commands {
         fn stop(id: BldcId)
         fn setFlow(id: BldcId, flow: f32)
@@ -35,6 +41,7 @@ component {
         fn pwmSetStep(id: BldcId, value: u16)
         fn saveVars(id: BldcId)
         fn loadVars(id: BldcId)
+        fn inverseEngineRotation(id: BldcId)
     }
 
     statuses {

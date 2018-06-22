@@ -2,7 +2,6 @@ module zcvm
 
 import clk::{TimePoint, Duration}
 import powerfan::{Reg}
-import powerfanproxy::{BldcId}
 
 enum Slaves {
     PowerCom,
@@ -19,14 +18,7 @@ struct SlaveRunningState {
     powerFan2: bool,
     powerComLastTime: TimePoint,
     powerFan1LastTime: TimePoint,
-    powerFan2LastTime: TimePoint,    
-}
-
-struct EngineRotation {
-   dir1: u8,
-   dir2: u8,
-   dir3: u8,
-   dir4: u8
+    powerFan2LastTime: TimePoint,
 }
 
 enum ExcChannelId {
@@ -46,7 +38,6 @@ component {
     variables {
         slavesState: SlaveRunningState,
         altimeterAltitude: f32,
-        enginesRotation: EngineRotation,
         currentChannel: ExcChannelId,
         excChannels: [ExcChannelState;3]
     }
@@ -55,16 +46,14 @@ component {
         [slaveState, 1, true]: {slavesState.powerCom, slavesState.powerFan1, slavesState.powerFan2}
         [slaveLastTimes, 1, false]: {slavesState.powerComLastTime, slavesState.powerFan1LastTime, slavesState.powerFan2LastTime}
         [altimeter, 1, true]: {altimeterAltitude}
-        [enginesRotation, 1, false]: {enginesRotation}
         [excState, 1, true]: {currentChannel, excChannels}
     }
-    
+
     events {
         [slaveConnectionChanged, true]: {state: SlaveRunningState},
-        [restoreBldcReg, true]: {bldc: BldcId, reg: Reg, value: u8},
         [excChannelChanged, true]: {id: ExcChannelId}
     }
-    
+
     impl {
         fn init()
         fn tick()
@@ -72,9 +61,5 @@ component {
         fn canSendToChannel(id: ExcChannelId) -> bool
         fn setCurrentChannel(id: ExcChannelId)
         fn updateChannelStats(id: ExcChannelId, bytesSent: varuint, bytesReceived: varuint)
-    }
-    
-    commands {
-        fn setEnginesRotation(dirs: EngineRotation)
     }
 }
