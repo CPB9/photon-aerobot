@@ -130,8 +130,8 @@ class CodeGenerator:
         mainStruct = "_photon{}".format(moduleName)
 
         lower_module_name = self._module._name.lower()
-        buffer = "#include \"photon/{}/{}.Component.h\"\n".format(lower_module_name, moduleName)
-        buffer += "#include \"photon/tm/Tm.Component.h\"\n\n"
+        buffer = "#include \"photongen/onboard/{}/{}.Component.h\"\n".format(lower_module_name, moduleName)
+        buffer += "#include \"photongen/onboard/tm/Tm.Component.h\"\n\n"
 
         for s in self._module._structs:
             for p in s._members:
