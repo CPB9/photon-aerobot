@@ -8,6 +8,7 @@ TYPES_MAP = {
         "FLOAT" : "f32"
 }
 
+reference_params = []
 
 class Module:
     def __init__(self, name):
@@ -35,6 +36,9 @@ class Struct:
     def add_member(self, member):
         self._members.append(member)
 
+    def has_members(self):
+        return len(self._members) > 0
+        
     def generate(self):
         buffer = "struct {} {{\n".format(self._name)
         for m in self._members:
@@ -182,7 +186,7 @@ def normalize_struct_name(src_name):
 def parse_px4_params_file(filename):
     tree = ET.parse(filename)
     module = Module("px4_autogen")
-
+                
     for group in tree.findall("group"):
         group_name = normalize_struct_name(group.get("name"))
         struct = Struct(group_name)
@@ -195,6 +199,9 @@ def parse_px4_params_file(filename):
             unit = None
             min = None
             max = None
+
+            if not (name in reference_params):
+                continue
 
             short_desc_field = param.find("short_desc")
             long_desc_field = param.find("long_desc")
@@ -219,7 +226,8 @@ def parse_px4_params_file(filename):
 
             struct.add_member(StructMember(name, type, default, short_desc, long_desc, min, max, unit))
 
-        module.add_struct(struct)
+        if struct.has_members():
+            module.add_struct(struct)
 
     return module
 
@@ -229,8 +237,16 @@ def ensure_dir(file_path):
     if not os.path.exists(directory):
         os.makedirs(directory)
 
-
-def generate_module(params_file, out_dir):
+def read_reference_params(filename):
+    f = open(filename, "r")
+    lines = f.readlines()[1:]
+    for line in lines:
+        param, name = line.split(",")
+        reference_params.append(param)
+    
+def generate_module(params_file, reference_params_file, out_dir):
+    read_reference_params(reference_params_file)
+    
     module = parse_px4_params_file("parameters.xml")
     module.finalize()
 
@@ -255,4 +271,4 @@ def generate_module(params_file, out_dir):
         code.write(code_gen.generate())
 
 if __name__ == "__main__":
-    generate_module("parameters.xml", os.path.dirname(os.path.abspath(__file__)))
+    generate_module("parameters.xml", "test.params", os.path.dirname(os.path.abspath(__file__)))
