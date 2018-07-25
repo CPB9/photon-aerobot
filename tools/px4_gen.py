@@ -109,8 +109,12 @@ class DecodeGenerator:
         buffer += "        fn init()\n"
         buffer += "        fn initParam(name: *const char, callback: &Fn(u32))\n"
         buffer += "        fn setParam(name: *const char, value: u32)\n"
+        buffer += "    }\n\n" 
+        buffer += "    commands {\n"
+        buffer += "        fn updateFcuParams()\n"
+        buffer += "        fn requestAllParams()\n"
+        buffer += "        fn requestParam(name: *const char)\n"
         buffer += "    }\n"
-
         buffer += "}\n"
 
         return buffer
@@ -271,4 +275,4 @@ def generate_module(params_file, reference_params_file, out_dir):
         code.write(code_gen.generate())
 
 if __name__ == "__main__":
-    generate_module("parameters.xml", "test.params", os.path.dirname(os.path.abspath(__file__)))
+    generate_module("parameters.xml", "bila.params", os.path.dirname(os.path.abspath(__file__)))
