@@ -101,6 +101,7 @@ class DecodeGenerator:
         buffer += "    }\n\n"
 
         buffer += "    statuses {\n"
+        buffer += "        [global, 0, true]: { inited },\n"
         for s in self._module._statuses:
             buffer += "        {},\n".format(s.generate())
         buffer += "    }\n\n"
