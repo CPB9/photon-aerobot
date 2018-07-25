@@ -94,7 +94,7 @@ class DecodeGenerator:
             buffer += "\n"
 
         buffer += "component {\n"
-        buffer += "    parameters {\n"
+        buffer += "    variables {\n"
         buffer += "        inited: bool,\n"
         for s in self._module._structs:
             buffer += "        {},\n".format(s.generate_parameter())
