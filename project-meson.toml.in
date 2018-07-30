@@ -18,6 +18,7 @@ module_dirs = [
   '@PHOTON_ROOT@/modules/photon/grp',
   '@PHOTON_ROOT@/modules/photon/usm',
   '@PHOTON_ROOT@/modules/photon/fcu',
+  '@PHOTON_ROOT@/modules/photon/blog',
   '@AEROBOT_ROOT@/modules/aerobot/udp',
   '@AEROBOT_ROOT@/modules/photon/px4_autogen',
   '@AEROBOT_ROOT@/modules/photon/powercom',
@@ -52,13 +53,14 @@ zcvm = 19
 zlidar = 20
 dfu = 21
 fcu = 22
+blog = 23
 
 [[devices]]
 name = "cvm"
 id = 1
 cmd_targets = ["cvm", "powerfan1", "powerfan2"]
 tm_sources = ["cvm", "powerfan1", "powerfan2"]
-modules = ["test", "nav", "fl", "udp", "grp", "px4_autogen", "fcu", "usm", "powercom", "powerfanproxy", "zcvm", "ximea", "zlidar", "asv"]
+modules = ["test", "nav", "fl", "udp", "grp", "px4_autogen", "fcu", "usm", "powercom", "powerfanproxy", "zcvm", "ximea", "zlidar", "asv", "blog"]
 
 [[devices]]
 name = "powercom"
