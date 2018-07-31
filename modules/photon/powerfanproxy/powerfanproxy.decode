@@ -1,6 +1,6 @@
 module powerfanproxy
 
-import powerfan::{A4960Config, Reg, Bldc, Pwm}
+import powerfan::{A4960Config, Reg, Bldc, Pwm, PwmConstants}
 
 type PresetName = &[char; 32];
 
@@ -21,6 +21,8 @@ component {
         pwm2: Pwm,
         pwm3: Pwm,
         pwm4: Pwm,
+        pwmConstants1: PwmConstants,
+        pwmConstants2: PwmConstants,
     }
 
     events {
@@ -31,14 +33,18 @@ component {
     
     commands {
         fn stop(id: BldcId)
-        fn setFlow(id: BldcId, flow: f32)
         fn run(id: BldcId)
         fn applyCurrentPreset(id: BldcId)
         fn setCurrentPreset(id: BldcId, preset: A4960Config)
         fn setCurrentPresetName(id: BldcId, name: PresetName)
         fn setCurrentPresetReg(id: BldcId, reg: Reg, value: u8)
-        fn pwmSetDuty(id: BldcId, value: f64)
+        fn enablePwmCapture(id: BldcId, isCaptured: bool)
+        fn setTestPwmInput(id: BldcId, value: u16)
+        fn pwmSetDisarmed(id: BldcId, value: u16)
+        fn pwmSetMinMax(id: BldcId, min: u16, max: u16)
         fn pwmSetStep(id: BldcId, value: u16)
+        fn pwmSetMinDuty(id: BldcId, value: f32)
+        
         fn saveVars(id: BldcId)
         fn loadVars(id: BldcId)
         fn inverseEngineRotation(id: BldcId)
@@ -49,5 +55,6 @@ component {
         [all2, 1, true]: {bldc3, bldc4}
         [pwm1, 1, true]: {pwm1, pwm2}
         [pwm2, 1, true]: {pwm3, pwm4}
+        [pwmConstants, 1, true]: {pwmConstants1, pwmConstants2}
     }
 }
