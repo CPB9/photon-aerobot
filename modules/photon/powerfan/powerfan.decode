@@ -68,16 +68,17 @@ struct Pwm {
     outDuty: f32,
     length: u16,
     input: u16,
+    step: u16,
     current: u16,
     isCaptured: bool,
 }
 
 struct PwmConstants {
+    step: u16,
     minDuty: f32,
     disarmed: u16,
     min: u16,
     max: u16,
-    step: u16,
     mult: u16,
 }
 
@@ -92,11 +93,14 @@ component {
 
     commands {
         fn stop()
+        fn setFlow(flow: f32)
         fn run(id: BldcId)
         fn applyCurrentPreset(id: BldcId)
         fn setCurrentPreset(id: BldcId, preset: A4960Config)
         fn setCurrentPresetName(id: BldcId, name: PresetName)
         fn setCurrentPresetReg(id: BldcId, reg: Reg, value: u8)
+        fn pwmSetDuty(id: BldcId, value: f64)
+        fn pwmSetStep(id: BldcId, value: u16)
 
         fn enablePwmCapture(id: BldcId, isCaptured: bool)
 
@@ -104,8 +108,8 @@ component {
 
         fn pwmSetDisarmed(value: u16)
         fn pwmSetMinMax(min: u16, max: u16)
-        fn pwmSetStep(value: u16)
-        fn pwmSetMult(value: u16)
+        fn pwmSetStepConstant(value: u16)
+        fn pwmSetMultConstant(value: u16)
         fn pwmSetMinDuty(value: f32)
         fn clearDiag(id: BldcId)
     }
