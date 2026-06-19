@@ -1,4 +1,4 @@
 [wrap-git]
 directory = decode
-url = https://github.com/acsl-mipt/decode.git
+url = https://github.com/CPB9/decode.git
 revision = head
